@@ -1,4 +1,4 @@
-<div class="lg:w-[64%] w-full overflow-hidden">
+<div class="lg:w-[57%] w-full overflow-hidden">
     <nav class="w-full flex h-[50px]  border-b-2">
 
         <div onclick="toggleConv()" class="w-[50px] flex block lg:hidden border-e-2">
