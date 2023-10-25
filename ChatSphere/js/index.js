@@ -42,3 +42,20 @@ function toggleMembers() {
         membersSection.classList.remove('w-[350px]');
     }
 }
+
+
+function handleShowFilter() {
+    const popUp = document.getElementById('filterPopUp');
+    if (popUp.classList.contains('max-h-0')) {
+        popUp.classList.add('py-1');
+        popUp.classList.add('px-2');
+        popUp.classList.remove('max-h-0');
+        popUp.classList.add('max-h-[1000px]');
+    } else {
+        popUp.classList.remove('py-1');
+        popUp.classList.remove('px-2');
+        popUp.classList.add('max-h-0');
+        popUp.classList.remove('max-h-[1000px]');
+    }
+
+}
