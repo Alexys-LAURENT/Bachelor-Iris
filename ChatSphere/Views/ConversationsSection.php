@@ -12,6 +12,7 @@
 
     <div class="flex justify-center ">
         <!-- content -->
+        <h1>test</h1>
     </div>
 
 </aside>
