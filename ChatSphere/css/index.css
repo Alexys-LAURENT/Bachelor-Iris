@@ -5,3 +5,9 @@ body {
 .text-2xs {
     font-size: 0.7rem;
 }
+
+.defaultAvatar {
+    background-image: url("../images/User-Profile.png");
+    background-position-y: center;
+    background-size: contain;
+}

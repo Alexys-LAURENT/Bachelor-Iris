@@ -19,4 +19,15 @@ class Modele
             echo $exp->getMessage();
         }
     }
+
+    public function getAllColleagues($idUser)
+    {
+        $sql = "select * from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser ;";
+        $donnees = array(
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        return $select->fetchAll();
+    }
 }
