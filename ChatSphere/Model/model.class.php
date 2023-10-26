@@ -30,4 +30,15 @@ class Modele
         $select->execute($donnees);
         return $select->fetchAll();
     }
+
+    public function getAllMessages($idDiscussion)
+    {
+        $sql = "select * from messages where idDiscussion = :idDiscussion order by timestamp asc;";
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        return $select->fetchAll();
+    }
 }

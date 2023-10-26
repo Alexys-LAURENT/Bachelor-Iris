@@ -14,4 +14,9 @@ class Controleur
     {
         return $this->unModele->getAllColleagues($idUser);
     }
+
+    public function getAllMessages($idDiscussion)
+    {
+        return $this->unModele->getAllMessages($idDiscussion);
+    }
 }

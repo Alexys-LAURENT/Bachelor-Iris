@@ -51,9 +51,13 @@ CREATE TABLE
     messages(
         idMessage int not null auto_increment,
         idDiscussion int not null,
-        content VARCHAR(250) not null,
+        idUser int not null,
+        -- 500 caractères pour le message
+        content varchar(255) NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         constraint PK_MESSAGES PRIMARY KEY(idMessage),
-        constraint FK_MESSAGES_DISCUSSION FOREIGN KEY(idDiscussion) REFERENCES discussions(idDiscussion)
+        constraint FK_MESSAGES_DISCUSSION FOREIGN KEY(idDiscussion) REFERENCES discussions(idDiscussion),
+        constraint FK_MESSAGES_USER FOREIGN KEY(idUser) REFERENCES users(idUser)
     ) engine = innodb,
     charset = utf8;
 
@@ -162,3 +166,85 @@ VALUES (
         '123',
         'Développeur Full-Stack'
     );
+
+-- Insertion des discussions
+
+INSERT INTO discussions VALUES (1), (2), (3);
+
+-- Insertion des utilisateurs dans les discussions
+
+-- Discussion 1
+
+INSERT INTO discussions_users VALUES (1, 1), (2, 1);
+
+-- Discussion 2
+
+INSERT INTO discussions_users VALUES (3, 2), (4, 2);
+
+-- Discussion 3
+
+INSERT INTO discussions_users VALUES (5, 3);
+
+-- Insertion des messages
+
+-- Discussion 1
+
+INSERT INTO
+    messages (idDiscussion, idUser, content)
+VALUES (
+        1,
+        1,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, '
+    ), (
+        1,
+        2,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+    ), (
+        1,
+        1,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+    ), (
+        1,
+        1,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, '
+    ), (
+        1,
+        2,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+    ), (
+        1,
+        1,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+    ), (
+        1,
+        1,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, '
+    ), (
+        1,
+        2,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+    ), (
+        1,
+        1,
+        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+    ), (1, 2, 'De rien !'), (1, 1, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !');
+
+-- Discussion 2
+
+INSERT INTO
+    messages (idDiscussion, idUser, content)
+VALUES (
+        2,
+        3,
+        'Bonjour, je suis nouveau ici !'
+    ), (2, 4, 'Bienvenue !'), (2, 3, 'Merci !');
+
+-- Discussion 3
+
+INSERT INTO
+    messages (idDiscussion, idUser, content)
+VALUES (
+        3,
+        5,
+        'Bonjour, je suis nouveau ici !'
+    ), (3, 5, 'Merci !');

@@ -11,3 +11,20 @@ body {
     background-position-y: center;
     background-size: contain;
 }
+
+/* scrollbar */
+.messagesDiv::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.messagesDiv::-webkit-scrollbar-track {
+    background: none;
+}
+
+.messagesDiv::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.messagesDiv::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
