@@ -1,8 +1,7 @@
 <?php
-// session_start();
-// require_once("controller/config_bdd.php");
-// require_once("controller/controleur.class.php");
-// $unControleur = new Controleur($serveur, $bdd, $user, $mdp);
+require_once("Controller/config_bdd.php");
+require_once("Controller/controller.class.php");
+$unControleur = new Controleur($serveur, $bdd, $user, $mdp);
 ?>
 <!DOCTYPE html>
 <html lang="en">

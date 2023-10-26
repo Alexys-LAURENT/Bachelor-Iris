@@ -49,9 +49,11 @@ function handleShowFilter() {
     if (popUp.classList.contains('max-h-0')) {
         popUp.classList.add('py-1');
         popUp.classList.add('px-2');
+        popUp.classList.add('border');
         popUp.classList.remove('max-h-0');
         popUp.classList.add('max-h-[1000px]');
     } else {
+        popUp.classList.remove('border');
         popUp.classList.remove('py-1');
         popUp.classList.remove('px-2');
         popUp.classList.add('max-h-0');

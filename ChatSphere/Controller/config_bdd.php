@@ -1,5 +1,5 @@
 <?php
 $serveur = "localhost";
-$bdd = "";
-$user = "";
+$bdd = "syncpro";
+$user = "root";
 $mdp = "";
