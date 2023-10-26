@@ -15,9 +15,9 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
     </div>
 
     <!-- content -->
-    <div class="flex flex-col items-center gap-4 relative">
-        <div class="flex w-full mt-3 justify-center ">
-            <div class="flex w-11/12 max-h-[50px] justify-between">
+    <div class="flex flex-col items-center gap-4 relative min-h-[calc(100%-50px)] max-h-[calc(100%-50px)] overflow-hidden">
+        <div class="flex w-full mt-3 max-h-[50px] justify-center ">
+            <div class="flex w-11/12  justify-between">
                 <input onkeyup="showColleaguesFiltered()" id="nameInput" type="text" placeholder="Rechercher" class="rounded-md bg-gray-100 px-2 py-1 w-10/12 focus:outline-border cursor-text text-gray-600">
                 <button onclick='handleShowFilter()' class="bg-secondary mx-2 rounded-md w-2/12 max-w-[50px] aspect-square flex justify-center items-center">
                     <svg class="relative z-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
@@ -41,7 +41,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
         </div>
 
         <!-- Members -->
-        <div id="membersWrapper" class="w-full flex flex-col gap-2">
+        <div id="membersWrapper" class="w-full flex flex-col gap-2 overflow-y-auto pb-2">
             <!-- Contact row -->
             <?php
             for ($i = 0; $i < count($colleagues); $i++) {
@@ -56,88 +56,88 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             ?>
 
         </div>
-
-        <script>
-            membersWrapper = document.getElementById('membersWrapper');
-            nameInput = document.getElementById('nameInput');
-            var users = <?php echo json_encode($colleagues); ?>;
+</aside>
 
 
-            function verifCheckbox() {
-                const checkboxes = document.querySelectorAll('.checkbox-metier');
+<script>
+    membersWrapper = document.getElementById('membersWrapper');
+    nameInput = document.getElementById('nameInput');
+    var users = <?php echo json_encode($colleagues); ?>;
 
-                // Initialisez une variable (aucune case cochée)
-                let casesCochées = [];
 
-                // Parcourez les cases à cocher pour voir si elles sont cochées
-                for (const checkbox of checkboxes) {
-                    if (checkbox.checked) {
-                        casesCochées.push(checkbox.name);
-                    }
-                }
+    function verifCheckbox() {
+        const checkboxes = document.querySelectorAll('.checkbox-metier');
 
-                return casesCochées.length > 0 ? casesCochées : false;
+        // Initialisez une variable (aucune case cochée)
+        let casesCochées = [];
+
+        // Parcourez les cases à cocher pour voir si elles sont cochées
+        for (const checkbox of checkboxes) {
+            if (checkbox.checked) {
+                casesCochées.push(checkbox.name);
             }
+        }
 
-            function showColleaguesFiltered() {
-                const casesCochées = verifCheckbox();
-                if (casesCochées === false) {
+        return casesCochées.length > 0 ? casesCochées : false;
+    }
 
-                    if (nameInput.value.length > 0) {
-                        membersWrapper.innerHTML = '';
-                        for (let i = 0; i < users.length; i++) {
-                            if (users[i]['nom'].toLowerCase().includes(nameInput.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInput.value.toLowerCase())) {
-                                membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
+    function showColleaguesFiltered() {
+        const casesCochées = verifCheckbox();
+        if (casesCochées === false) {
+
+            if (nameInput.value.length > 0) {
+                membersWrapper.innerHTML = '';
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i]['nom'].toLowerCase().includes(nameInput.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInput.value.toLowerCase())) {
+                        membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
                                 <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
                                 <div class='flex flex-col'>
                                 <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['nom']} ${users[i]['prenom']}</p>
                                 <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
                                 </div>
                                 </div>`;
-                            }
-                        }
-                    } else {
-                        membersWrapper.innerHTML = '';
-                        for (let i = 0; i < users.length; i++) {
-                            membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
+                    }
+                }
+            } else {
+                membersWrapper.innerHTML = '';
+                for (let i = 0; i < users.length; i++) {
+                    membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
                             <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
                             <div class='flex flex-col'>
                             <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['nom']} ${users[i]['prenom']}</p>
                             <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
                             </div>
                             </div>`;
-                        }
+                }
+            }
+        } else {
+            if (nameInput.value.length > 0) {
+                membersWrapper.innerHTML = '';
+                for (let i = 0; i < users.length; i++) {
+                    if ((users[i]['nom'].toLowerCase().includes(nameInput.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInput.value.toLowerCase())) && casesCochées.includes(users[i]['metier'])) {
+                        membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
+                                <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
+                                <div class='flex flex-col'>
+                                <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['nom']} ${users[i]['prenom']}</p>
+                                <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
+                                </div>
+                                </div>`;
                     }
-                } else {
-                    if (nameInput.value.length > 0) {
-                        membersWrapper.innerHTML = '';
-                        for (let i = 0; i < users.length; i++) {
-                            if ((users[i]['nom'].toLowerCase().includes(nameInput.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInput.value.toLowerCase())) && casesCochées.includes(users[i]['metier'])) {
-                                membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
+                }
+            } else {
+                membersWrapper.innerHTML = '';
+                for (let i = 0; i < users.length; i++) {
+                    if (casesCochées.includes(users[i]['metier'])) {
+                        membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
                                 <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
                                 <div class='flex flex-col'>
                                 <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['nom']} ${users[i]['prenom']}</p>
                                 <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
                                 </div>
                                 </div>`;
-                            }
-                        }
-                    } else {
-                        membersWrapper.innerHTML = '';
-                        for (let i = 0; i < users.length; i++) {
-                            if (casesCochées.includes(users[i]['metier'])) {
-                                membersWrapper.innerHTML += `<div class='flex max-w-full mx-4 gap-2'>
-                                <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
-                                <div class='flex flex-col'>
-                                <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['nom']} ${users[i]['prenom']}</p>
-                                <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
-                                </div>
-                                </div>`;
-                            }
-                        }
                     }
                 }
             }
-        </script>
-    </div>
-</aside>
+        }
+    }
+</script>
