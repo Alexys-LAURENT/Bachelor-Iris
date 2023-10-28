@@ -2,6 +2,13 @@
 require_once("Controller/config_bdd.php");
 require_once("Controller/controller.class.php");
 $unControleur = new Controleur($serveur, $bdd, $user, $mdp);
+
+$token = $_GET['token'];
+$user = $unControleur->checkToken($token);
+if ($user == false) {
+    header("Location: login.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +16,7 @@ $unControleur = new Controleur($serveur, $bdd, $user, $mdp);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ChatSphere</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
