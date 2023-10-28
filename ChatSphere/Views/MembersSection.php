@@ -1,5 +1,5 @@
 <?php
-$colleagues = $unControleur->getAllColleagues('1');
+$colleagues = $unControleur->getAllColleagues($user['idUser']);
 $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
 ?>
 <aside id="membersSection" class="lg:w-[20%] w-0 max-w-[100%] right-0 h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-s-2">

@@ -19,4 +19,19 @@ class Controleur
     {
         return $this->unModele->getAllMessages($idDiscussion);
     }
+
+    public function checkToken($token)
+    {
+        return $this->unModele->checkToken($token);
+    }
+
+    public function getConversationName($idUser, $idDiscussion)
+    {
+        return $this->unModele->getConversationName($idUser, $idDiscussion);
+    }
+
+    public function sendMessage($idDiscussion, $idUser, $message)
+    {
+        return $this->unModele->sendMessage($idDiscussion, $idUser, $message);
+    }
 }

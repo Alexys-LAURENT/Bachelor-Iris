@@ -61,6 +61,19 @@ CREATE TABLE
     ) engine = innodb,
     charset = utf8;
 
+CREATE TABLE
+    token (
+        idToken INT NOT NULL AUTO_INCREMENT,
+        idUser INT NOT NULL,
+        token VARCHAR(255) NOT NULL,
+        expireAt TIMESTAMP DEFAULT (
+            CURRENT_TIMESTAMP + INTERVAL 1 DAY
+        ) not null,
+        CONSTRAINT PK_TOKEN PRIMARY KEY (idToken),
+        CONSTRAINT FK_TOKEN_USER FOREIGN KEY (idUser) REFERENCES users(idUser)
+    ) ENGINE = InnoDB,
+    CHARSET = utf8;
+
 -- Insertion des entreprises
 
 INSERT INTO
