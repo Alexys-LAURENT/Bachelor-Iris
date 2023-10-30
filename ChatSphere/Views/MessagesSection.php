@@ -1,5 +1,8 @@
 <?php
-$messagesDiscussion = $unControleur->getAllMessages(1);
+$idDiscussion = $_GET['discussion'];
+if ($idDiscussion != null) {
+    $usersConv = $unControleur->getConversationName($user['idUser'], $idDiscussion);
+}
 ?>
 <div class="lg:w-[57%] w-full overflow-hidden">
     <nav class="w-full flex h-[50px]  border-b-2">
@@ -16,7 +19,14 @@ $messagesDiscussion = $unControleur->getAllMessages(1);
         <div class="flex w-full items-center ps-4 ">
             <div class="defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md"></div>
             <div class="flex flex-col ms-3">
-                <p class=" w-full text-elipsis line-clamp-1">Marc Antoine</p>
+                <p class=" w-full text-elipsis line-clamp-1"><?php if ($usersConv != null) {
+                                                                    foreach ($usersConv as $userConv) {
+                                                                        if ($userConv['idUser'] != $usersConv[count($usersConv) - 1]['idUser'])
+                                                                            echo $userConv['nom'] . " " . $userConv['prenom'] . ", ";
+                                                                        else
+                                                                            echo $userConv['nom'] . " " . $userConv['prenom'];
+                                                                    }
+                                                                } ?></p>
                 <span class="text-2xs">En ligne</span>
             </div>
         </div>
@@ -33,70 +43,12 @@ $messagesDiscussion = $unControleur->getAllMessages(1);
     <!-- content -->
     <div class="flex flex-col h-[calc(100%-150px)] py-4 relative">
 
-        <div class="messagesDiv overflow-y-auto">
-            <?php
-            $previousUser = null;
-            foreach ($messagesDiscussion as $message) {
-                if ($message['idUser'] == 1) {
-                    if ($previousUser == null || $previousUser != $message['idUser']) {
-                        echo "
-                        <div class='msgMe flex justify-end " . ($previousUser == null ? "mt-0" : "mt-8") . "'>
-                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>" . $message['content'] . "</div>
-                                <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>" . substr($message['timestamp'], 11, 5) . "</span>
-                                </div>
-                            </div>
-                            <div class='defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0'></div>
-                        </div>
-                        ";
-                    } else {
-                        echo "
-                        <div class='msgMe flex justify-end mt-1'>
-                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>" . $message['content'] . "</div>
-                                <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>" . substr($message['timestamp'], 11, 5) . "</span>
-                                </div>
-                            </div>
-                            <div class='w-[40px] h-[40px] m-2 ms-0'></div>
-                        </div>
-                        ";
-                    }
-                } else {
-                    if ($previousUser == null || $previousUser != $message['idUser']) {
-                        echo "
-                        <div class='msgOthers flex justify-start " . ($previousUser == null ? "mt-0" : "mt-8") . "'>
-                            <div class='defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0'></div>
-                            <div class='flex flex-col bg-gray-200 text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>" . $message['content'] . "</div>
-                                <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>" . substr($message['timestamp'], 11, 5) . "</span>
-                                </div>
-                            </div>
-                        </div>
-                        ";
-                    } else {
-                        echo "
-                        <div class='msgOthers flex justify-start mt-1'>
-                            <div class='w-[40px] h-[40px] m-2 ms-0'></div>
-                            <div class='flex flex-col bg-gray-200 text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>" . $message['content'] . "</div>
-                                <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>" . substr($message['timestamp'], 11, 5) . "</span>
-                                </div>
-                            </div>
-                        </div>
-                        ";
-                    }
-                }
-                $previousUser = $message['idUser'];
-            }
-            ?>
+        <div id="messagesDiv" class="messagesDiv overflow-y-auto">
+
         </div>
 
         <!-- button scroll to bottom -->
-        <div onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-gray-300 rounded-full absolute bottom-0 right-0 mb-4 mr-4 flex justify-center items-center cursor-pointer select-none">
+        <div onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 mr-4 flex justify-center items-center cursor-pointer select-none">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v6.793l2.146-2.147a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 10.293V4a.5.5 0 0 1 .5-.5Z" />
@@ -107,12 +59,15 @@ $messagesDiscussion = $unControleur->getAllMessages(1);
 
     <!-- message textarea -->
     <div class="flex h-[100px] justify-center bg-white">
-        <div class="w-[90%] h-[50px] flex rounded-md border-2 border-gray-200 items-center relative">
-            <input name="" id="messageInput" class="w-full h-full p-2 resize-none outline-none" placeholder="Ecrivez votre message ici..." maxlength="255"></input>
-            <img src="../Assets/sendMessageButton.png" alt="" class="cursor-pointer h-[50px] w-[50px]">
-
-            <!-- character counter -->
-            <div class="absolute -bottom-6 right-0 mr-2 text-2xs text-gray-400"><span id="characterCounter">0</span>/255</div>
+        <div class="w-[90%] h-[50px] flex items-center relative">
+            <form id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md ">
+                <input name="" id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
+                <button type="submit">
+                    <img src="../Assets/sendMessageButton.png" alt="" class="cursor-pointer h-[50px] w-[50px]">
+                </button>
+                <!-- character counter -->
+                <div class="absolute -bottom-6 right-0 mr-2 text-2xs text-gray-400"><span id="characterCounter">0</span>/255</div>
+            </form>
         </div>
     </div>
 </div>
@@ -122,7 +77,12 @@ $messagesDiscussion = $unControleur->getAllMessages(1);
     // scroll to bottom
 
     // scroll to bottom on load
-    document.getElementsByClassName("messagesDiv")[0].lastElementChild.scrollIntoView();
+    setTimeout(function() {
+        document.getElementsByClassName("messagesDiv")[0].lastElementChild.scrollIntoView({
+            behavior: "smooth"
+        });
+    }, 1500);
+    // document.getElementsByClassName("messagesDiv")[0].lastElementChild.scrollIntoView();
 
     function scrollToBottom() {
         var objDiv = document.getElementsByClassName("messagesDiv")[0];
@@ -158,5 +118,128 @@ $messagesDiscussion = $unControleur->getAllMessages(1);
 
     textarea.addEventListener("input", function() {
         counter.innerHTML = textarea.value.length;
+    });
+
+    // AJAX //////////////////////////////////////////////////////
+
+    function displayMessages(messages) {
+        var previousUser = null;
+        var messagesDiv = document.getElementById("messagesDiv");
+        messagesDiv.innerHTML = "";
+        messages.forEach(message => {
+            if (message['idUser'] == <?php echo $user['idUser']; ?>) {
+                if (previousUser == null || previousUser != message['idUser']) {
+                    messagesDiv.innerHTML += `
+                        <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-8"}'>
+                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
+                                <div>${ message['content'] }</div>
+                                <div class='w-full flex justify-end items-center'>
+                                    <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
+                                </div>
+                            </div>
+                            <div class='defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0'></div>
+                        </div>
+                        `;
+                } else {
+                    // messages après la photo de profil
+                    messagesDiv.innerHTML += `
+                        <div class='msgMe flex justify-end mt-1'>
+                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
+                                <div>${message['content'] }</div>
+                                <div class='w-full flex justify-end items-center'>
+                                    <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
+                                </div>
+                            </div>
+                            <div class='w-[40px] h-[40px] m-2 ms-0'></div>
+                        </div>
+                        `;
+                }
+            } else {
+                if (previousUser == null || previousUser != message['idUser']) {
+                    messagesDiv.innerHTML += `
+                        <div class='msgOthers flex justify-start ${previousUser == null ? "mt-0" : "mt-8"}'>
+                            <div class='defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0'></div>
+                            <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
+                                <div>${message['content'] }</div>
+                                <div class='w-full flex justify-end items-center'>
+                                    <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                } else {
+                    // messages après la photo de profil
+                    messagesDiv.innerHTML += `
+                        <div class='msgOthers flex justify-start mt-1'>
+                            <div class='w-[40px] h-[40px] m-2 ms-0'></div>
+                            <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
+                                <div>${message['content'] }</div>
+                                <div class='w-full flex justify-end items-center'>
+                                    <span class='text-2xs'>${message['timestamp'].substring(16,5)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                }
+            }
+            previousUser = message['idUser'];
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fonction pour récupérer les messages d'une discussion spécifique
+        function getMessages(idDiscussion) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "get_messages.php?idDiscussion=" + idDiscussion, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    // Mettre à jour la vue avec les nouveaux messages
+                    // data contient les messages récupérés depuis le serveur
+                    displayMessages(data);
+                }
+            };
+            xhr.send();
+        }
+
+
+        // Appeler la fonction getMessages avec l'ID de discussion spécifique
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        var idDiscussion = urlParams.get('discussion');
+        setInterval(function() {
+            if (idDiscussion != null) {
+                getMessages(idDiscussion);
+            }
+        }, 1000); // toutes les 1 seconde
+
+        // Gérer l'envoi de messages avec l'ID de discussion
+        var messageForm = document.getElementById("message-form");
+        messageForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            var messageInput = document.getElementById("messageInput");
+            var message = messageInput.value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "send_message.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var isSend = JSON.parse(xhr.responseText);
+                    if (isSend === false) {
+                        alert("Erreur lors de l'envoi du message");
+                    } else {
+                        setTimeout(function() {
+                            document.getElementsByClassName("messagesDiv")[0].lastElementChild.scrollIntoView({
+                                behavior: "smooth"
+                            });
+                        }, 1000);
+                    }
+                    // Effacer le champ de saisie ou effectuer d'autres actions
+                    messageInput.value = "";
+                }
+            };
+            xhr.send("message=" + encodeURIComponent(message) + "&idDiscussion=" + idDiscussion + "&idUser=" + <?php echo $user['idUser']; ?>);
+        });
     });
 </script>
