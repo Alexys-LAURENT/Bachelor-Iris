@@ -133,9 +133,10 @@
 
 .conversation-member:hover {
         background-color: #EFF1FF; 
+}
 </style>
 
-            <script>
+<script>
     // Fonction pour filtrer les messages
     function filterMessages() {
         // Récupérer la valeur de l'entrée de recherche
