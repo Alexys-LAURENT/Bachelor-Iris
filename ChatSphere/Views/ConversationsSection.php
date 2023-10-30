@@ -114,7 +114,7 @@ if (isset($_POST['createDiscussion'])) {
                                     </div>
                                 </div>
                                 <input type="text" id="nameInputCreateDiscussion" placeholder="Rechercher un membre" oninput="showColleaguesFilteredCreateDiscussion()" class="border border-gray-300 rounded-md px-2 py-1">
-                                <div id="membersWrapper" class="flex flex-col gap-2 my-2 select-none">
+                                <div id="membersWrapperNewDiscussion" class="flex flex-col gap-2 my-2 select-none">
 
                                 </div>
                             </div>
@@ -202,7 +202,7 @@ if (isset($_POST['createDiscussion'])) {
                             checkbox.checked = false;
                         });
                         document.getElementById('nameInputCreateDiscussion').value = '';
-                        document.getElementById('membersWrapper').innerHTML = '';
+                        document.getElementById('membersWrapperNewDiscussion').innerHTML = '';
                         document.getElementById('NewDiscussionName').value = '';
                         popup.style.display = "none";
                     }
@@ -221,10 +221,10 @@ if (isset($_POST['createDiscussion'])) {
                         var nameInputCreateDiscussion = document.getElementById('nameInputCreateDiscussion');
 
                         if (nameInputCreateDiscussion.value.length > 0) {
-                            membersWrapper.innerHTML = '';
+                            membersWrapperNewDiscussion.innerHTML = '';
                             for (let i = 0; i < users.length; i++) {
                                 if (users[i]['nom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase())) {
-                                    membersWrapper.innerHTML += `
+                                    membersWrapperNewDiscussion.innerHTML += `
                                         <div class='flex max-w-full mx-4 gap-2 hover:bg-hover cursor-pointer' onclick='checkCheckbox(${users[i]['idUser']})'>
                                         <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
                                             <div class='flex flex-col'>
@@ -236,9 +236,9 @@ if (isset($_POST['createDiscussion'])) {
                                 }
                             }
                         } else {
-                            membersWrapper.innerHTML = '';
+                            membersWrapperNewDiscussion.innerHTML = '';
                             for (let i = 0; i < users.length; i++) {
-                                membersWrapper.innerHTML = ``;
+                                membersWrapperNewDiscussion.innerHTML = ``;
                             }
                         }
                     }
@@ -251,7 +251,7 @@ if (isset($_POST['createDiscussion'])) {
 
                 <style>
                     /* if checkbox unchecked hide label */
-                    input[type="checkbox"]:not(:checked)+label {
+                    input[type="checkbox"].checkboxesNewDiscussion:not(:checked)+label {
                         display: none;
                     }
                 </style>
