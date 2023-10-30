@@ -87,12 +87,11 @@ class Modele
     public function sendMessage($idDiscussion, $idUser, $message)
     {
         try {
-            $sql = "insert into messages values (null, :idDiscussion, :idUser, :content, :timestamp);";
+            $sql = "insert into messages (idDiscussion,idUser,content) values (:idDiscussion, :idUser, :content);";
             $donnees = array(
                 ":idDiscussion" => $idDiscussion,
                 ":idUser" => $idUser,
-                ":content" => $message,
-                ":timestamp" => date("Y-m-d H:i:s")
+                ":content" => $message
             );
             $insert = $this->unPDO->prepare($sql);
             $insert->execute($donnees);

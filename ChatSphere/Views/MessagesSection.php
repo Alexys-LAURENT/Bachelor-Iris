@@ -63,7 +63,7 @@ if ($idDiscussion != null) {
             <form id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md ">
                 <input name="" id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
                 <button type="submit">
-                    <img src="../Assets/sendMessageButton.png" alt="" class="cursor-pointer h-[50px] w-[50px]">
+                    <img src="./Assets/sendMessageButton.png" alt="" class="cursor-pointer h-[50px] w-[50px]">
                 </button>
                 <!-- character counter -->
                 <div class="absolute -bottom-6 right-0 mr-2 text-2xs text-gray-400"><span id="characterCounter">0</span>/255</div>
