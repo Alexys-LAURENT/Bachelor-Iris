@@ -22,9 +22,9 @@ if ($idDiscussion != null) {
                 <p class=" w-full text-elipsis line-clamp-1"><?php if ($usersConv != null) {
                                                                     foreach ($usersConv as $userConv) {
                                                                         if ($userConv['idUser'] != $usersConv[count($usersConv) - 1]['idUser'])
-                                                                            echo $userConv['nom'] . " " . $userConv['prenom'] . ", ";
+                                                                            echo $userConv['prenom'] . " " . $userConv['nom'] . ", ";
                                                                         else
-                                                                            echo $userConv['nom'] . " " . $userConv['prenom'];
+                                                                            echo $userConv['prenom'] . " " . $userConv['nom'];
                                                                     }
                                                                 } ?></p>
                 <span class="text-2xs">En ligne</span>

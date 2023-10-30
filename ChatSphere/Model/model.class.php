@@ -87,7 +87,7 @@ class Modele
     public function sendMessage($idDiscussion, $idUser, $message)
     {
         try {
-            $sql = "insert into messages (idDiscussion,idUser,content) values (:idDiscussion, :idUser, :content);";
+            $sql = "into messages (idDiscussion,idUser,content) values (:idDiscussion, :idUser, :content);";
             $donnees = array(
                 ":idDiscussion" => $idDiscussion,
                 ":idUser" => $idUser,
@@ -100,5 +100,29 @@ class Modele
             echo $e->getMessage();
             return false;
         }
+    }
+
+    public function getDiscussionsDetails($idUser)
+    {
+        $sql = "SELECT d.idDiscussion,
+        GROUP_CONCAT(DISTINCT CASE WHEN u.idUser != :idUser THEN u.prenom ELSE NULL END ORDER BY m.timestamp ASC) AS participants,
+        SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message
+        FROM discussions d
+        INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
+        INNER JOIN users u ON du.idUser = u.idUser
+        LEFT JOIN messages m ON d.idDiscussion = m.idDiscussion
+        WHERE d.idDiscussion IN (
+            SELECT idDiscussion
+            FROM discussions_users
+            WHERE idUser = :idUser
+        )
+        GROUP BY d.idDiscussion LIMIT 0,100";
+
+        $donnees = array(
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        return $select->fetchAll();
     }
 }

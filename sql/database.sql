@@ -111,8 +111,8 @@ VALUES (
 INSERT INTO
     users (
         idEntreprise,
-        nom,
         prenom,
+        nom,
         email,
         hashedPass,
         metier
@@ -138,8 +138,8 @@ VALUES (
 INSERT INTO
     users (
         idEntreprise,
-        nom,
         prenom,
+        nom,
         email,
         hashedPass,
         metier
@@ -165,8 +165,8 @@ VALUES (
 INSERT INTO
     users (
         idEntreprise,
-        nom,
         prenom,
+        nom,
         email,
         hashedPass,
         metier

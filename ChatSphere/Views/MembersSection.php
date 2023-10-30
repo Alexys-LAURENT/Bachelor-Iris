@@ -48,7 +48,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
                 echo "<div class='flex max-w-full mx-4 gap-2'>
                             <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
                             <div class='flex flex-col'>
-                                <p class='font-semibold w-full text-elipsis line-clamp-1'>" . $colleagues[$i]['nom'] . " " . $colleagues[$i]['prenom'] . "</p>
+                                <p class='font-semibold w-full text-elipsis line-clamp-1'>" . $colleagues[$i]['prenom'] . " " . $colleagues[$i]['nom'] . "</p>
                                 <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>" . $colleagues[$i]['metier'] . "</span>
                             </div>
                         </div>";

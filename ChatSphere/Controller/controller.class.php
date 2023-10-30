@@ -34,4 +34,9 @@ class Controleur
     {
         return $this->unModele->sendMessage($idDiscussion, $idUser, $message);
     }
+
+    public function getDiscussionsDetails($idUser)
+    {
+        return $this->unModele->getDiscussionsDetails($idUser);
+    }
 }
