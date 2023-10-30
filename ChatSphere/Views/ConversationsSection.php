@@ -1,3 +1,7 @@
+<?php
+echo "test";
+?>
+
 <aside id="convSection" class="lg:w-[23%] w-0 left-0 max-w-[100%]  h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-e-2">
     <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
              
