@@ -78,11 +78,8 @@ if ($idDiscussion != null) {
 
     // scroll to bottom on load
     setTimeout(function() {
-        document.getElementsByClassName("messagesDiv")[0].lastElementChild.scrollIntoView({
-            behavior: "smooth"
-        });
+        scrollToBottom();
     }, 1500);
-    // document.getElementsByClassName("messagesDiv")[0].lastElementChild.scrollIntoView();
 
     function scrollToBottom() {
         var objDiv = document.getElementsByClassName("messagesDiv")[0];
@@ -184,6 +181,9 @@ if ($idDiscussion != null) {
             }
             previousUser = message['idUser'];
         });
+        setTimeout(function() {
+            scrollToBottom();
+        }, 1500);
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -211,7 +211,7 @@ if ($idDiscussion != null) {
             if (idDiscussion != null) {
                 getMessages(idDiscussion);
             }
-        }, 1000); // toutes les 1 seconde
+        }, 500); // toutes les 500ms
 
         // Gérer l'envoi de messages avec l'ID de discussion
         var messageForm = document.getElementById("message-form");
