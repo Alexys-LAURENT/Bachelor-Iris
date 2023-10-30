@@ -34,6 +34,7 @@ create table
 create table
     discussions(
         idDiscussion int not null auto_increment,
+        nom varchar(255) not null,
         constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion)
     ) engine = innodb,
     charset = utf8;
@@ -132,6 +133,20 @@ VALUES (
         'alicesmith@email.com',
         '123',
         'Administrateur Systèmes'
+    ), (
+        1,
+        'Jane',
+        'Doe',
+        'janedoe@email.com',
+        '123',
+        'Développeur Full Stack'
+    ), (
+        1,
+        'Bob',
+        'Smith',
+        'bobsmith@email.com',
+        '123',
+        'Développeur Front-End'
     );
 
 -- Entreprise 2 (Data Systems)
@@ -183,7 +198,7 @@ VALUES (
 
 -- Insertion des discussions
 
-INSERT INTO discussions VALUES (1), (2), (3);
+INSERT INTO discussions VALUES (1,1), (2,2), (3,3);
 
 -- Insertion des utilisateurs dans les discussions
 

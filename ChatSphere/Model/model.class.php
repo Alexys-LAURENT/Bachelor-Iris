@@ -125,4 +125,31 @@ class Modele
         $select->execute($donnees);
         return $select->fetchAll();
     }
+
+    public function createDiscussion($nom, $members)
+    {
+        try {
+            $sql = "insert into discussions (nom) values (:nom);";
+            $donnees = array(
+                ":nom" => $nom
+            );
+            $insert = $this->unPDO->prepare($sql);
+            $insert->execute($donnees);
+            $idDiscussion = $this->unPDO->lastInsertId();
+
+            foreach ($members as $member) {
+                $sql = "insert into discussions_users (idDiscussion, idUser) values (:idDiscussion, :idUser);";
+                $donnees = array(
+                    ":idDiscussion" => $idDiscussion,
+                    ":idUser" => $member
+                );
+                $insert = $this->unPDO->prepare($sql);
+                $insert->execute($donnees);
+            }
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 }
