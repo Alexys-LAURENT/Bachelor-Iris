@@ -1,5 +1,6 @@
 <?php
 $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
+$colleagues = $unControleur->getAllColleagues($user['idUser']);
 ?>
 <aside id="convSection" class="lg:w-[23%] w-0 left-0 max-w-[100%]  h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-e-2">
     <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
@@ -79,28 +80,25 @@ $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
                     <div id="popup" class="popup">
                         <div class="popup-content">
                             <!-- Contenu de la popup -->
-                            <h2>Ajouter un membre</h2>
-                            <div class="flex max-w-full mx-4 gap-2">
-                                <div class="aspect-square rounded-md bg-gray-500 w-[35px] h-[35px]"></div>
-                                <div class="flex flex-col">
-                                    <p class="font-semibold w-full text-elipsis line-clamp-1">Markos Lus</p>
+                            <h2>Créer une discussion</h2>
+
+                            <form action="" method="post" class="flex flex-col gap-2">
+                                <label for="discussionName">Nom de la discussion</label>
+                                <input type="text" name="discussionName" id="discussionName" required class="border border-gray-300 rounded-md px-2 py-1">
+
+                                <!-- input that filters colleagues and displays them with click to add -->
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex gap-2">
+                                        <label for="colleagues">Ajouter des membres</label>
+                                        <div id="membersSelected" class="flex gap-2"></div>
+                                    </div>
+                                    <input type="text" id="nameInputCreateDiscussion" placeholder="Rechercher un membre" oninput="showColleaguesFilteredCreateDiscussion()" class="border border-gray-300 rounded-md px-2 py-1">
+                                    <div id="membersWrapper" class="flex flex-col gap-2 my-2 cursor-pointer select-none hover:bg-hover">
+
+                                    </div>
                                 </div>
-                            </div>
-                            </br>
-                            <div class="flex max-w-full mx-4 gap-2">
-                                <div class="aspect-square rounded-md bg-gray-500 w-[35px] h-[35px]"></div>
-                                <div class="flex flex-col">
-                                    <p class="font-semibold w-full text-elipsis line-clamp-1">Sandrine Marlin </p>
-                                </div>
-                            </div>
-                            </br>
-                            <div class="flex max-w-full mx-4 gap-2">
-                                <div class="aspect-square rounded-md bg-gray-500 w-[35px] h-[35px]"></div>
-                                <div class="flex flex-col">
-                                    <p class="font-semibold w-full text-elipsis line-clamp-1">Yan Albert </p>
-                                </div>
-                            </div>
-                            </br>
+
+                            </form>
 
                             <button id="closePopup" class="close-button">Fermer</button>
                         </div>
@@ -186,5 +184,33 @@ $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
                         // Associez la fonction closePopup au clic sur le bouton "Fermer"
                         const closeButton = document.querySelector("#closePopup");
                         closeButton.addEventListener("click", closePopup);
+
+
+                        function showColleaguesFilteredCreateDiscussion() {
+
+                            var nameInputCreateDiscussion = document.getElementById('nameInputCreateDiscussion');
+
+                            if (nameInputCreateDiscussion.value.length > 0) {
+                                membersWrapper.innerHTML = '';
+                                for (let i = 0; i < users.length; i++) {
+                                    if (users[i]['nom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase())) {
+                                        membersWrapper.innerHTML += `
+                                        <div class='flex max-w-full mx-4 gap-2'>
+                                        <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
+                                            <div class='flex flex-col'>
+                                                <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['prenom']} ${users[i]['nom']}</p>
+                                                <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
+                                            </div>
+                                        </div>
+                                        `;
+                                    }
+                                }
+                            } else {
+                                membersWrapper.innerHTML = '';
+                                for (let i = 0; i < users.length; i++) {
+                                    membersWrapper.innerHTML = ``;
+                                }
+                            }
+                        }
                     </script>
 </aside>
