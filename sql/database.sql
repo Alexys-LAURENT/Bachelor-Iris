@@ -25,6 +25,7 @@ create table
         email varchar(50) not null,
         hashedPass VARCHAR(50) NOT NULL,
         metier VARCHAR(50) NOT NULL,
+        pp VARCHAR(255) DEFAULT 'default.png',
         constraint PK_USER PRIMARY KEY(idUser),
         constraint FK_USER_ENTREPRISE FOREIGN KEY(idEntreprise) REFERENCES entreprises(idEntreprise)
     ) engine = innodb,

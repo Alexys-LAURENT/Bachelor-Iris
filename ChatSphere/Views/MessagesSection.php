@@ -17,7 +17,7 @@ if ($idDiscussion != null) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md"></div>
+            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md" style="background-image: url('../../usersImages/<?php echo $usersConv != null ? $usersConv[0]['pp'] : "default.png"; ?>');"></div>
             <div class="flex flex-col ms-3">
                 <p class=" w-full text-elipsis line-clamp-1"><?php if ($usersConv != null) {
                                                                     foreach ($usersConv as $userConv) {
@@ -118,10 +118,12 @@ if ($idDiscussion != null) {
     });
 
     // AJAX //////////////////////////////////////////////////////
+    var totalMess = 0;
 
     function displayMessages(messages) {
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
+        // get profile picture with javascript message['idUser']
         messagesDiv.innerHTML = "";
         messages.forEach(message => {
             if (message['idUser'] == <?php echo $user['idUser']; ?>) {
@@ -134,14 +136,15 @@ if ($idDiscussion != null) {
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
                                 </div>
                             </div>
-                            <div class='defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0'></div>
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("../../usersImages/${message['pp']}");'
+                            ></div>
                         </div>
                         `;
                 } else {
                     // messages après la photo de profil
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end mt-1'>
-                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
+                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]' >
                                 <div>${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
@@ -155,7 +158,7 @@ if ($idDiscussion != null) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                         <div class='msgOthers flex justify-start ${previousUser == null ? "mt-0" : "mt-8"}'>
-                            <div class='defaultAvatar bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0'></div>
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("../../usersImages/${message['pp']}");'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div>${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
@@ -181,9 +184,12 @@ if ($idDiscussion != null) {
             }
             previousUser = message['idUser'];
         });
-        setTimeout(function() {
-            scrollToBottom();
-        }, 1500);
+        if (totalMess != messages.length) {
+            setTimeout(function() {
+                scrollToBottom();
+            }, 1500);
+        }
+        totalMess = messages.length;
     }
 
     document.addEventListener("DOMContentLoaded", function() {

@@ -46,7 +46,8 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             <?php
             for ($i = 0; $i < count($colleagues); $i++) {
                 echo "<div class='flex max-w-full mx-4 gap-2'>
-                            <div class='defaultAvatar aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]'></div>
+                            <div class='bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='background-image: url(../usersImages/" . $colleagues[$i]['pp'] . ")'
+                            ></div>
                             <div class='flex flex-col'>
                                 <p class='font-semibold w-full text-elipsis line-clamp-1'>" . $colleagues[$i]['prenom'] . " " . $colleagues[$i]['nom'] . "</p>
                                 <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>" . $colleagues[$i]['metier'] . "</span>
