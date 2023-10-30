@@ -87,7 +87,7 @@ class Modele
     public function sendMessage($idDiscussion, $idUser, $message)
     {
         try {
-            $sql = "into messages (idDiscussion,idUser,content) values (:idDiscussion, :idUser, :content);";
+            $sql = "insert into messages (idDiscussion,idUser,content) values (:idDiscussion, :idUser, :content);";
             $donnees = array(
                 ":idDiscussion" => $idDiscussion,
                 ":idUser" => $idUser,
