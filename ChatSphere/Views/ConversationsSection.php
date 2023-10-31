@@ -3,7 +3,8 @@ $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
 
 if (isset($_POST['createDiscussion'])) {
-    $unControleur->createDiscussion($_POST['NewDiscussionName'], $_POST['members']);
+    // post members + $user['idUser'] in single array
+    $unControleur->createDiscussion($_POST['NewDiscussionName'], array_merge($_POST['members'], array($user['idUser'])));
     header("Refresh:0");
 }
 ?>
