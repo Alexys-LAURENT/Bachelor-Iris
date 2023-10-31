@@ -39,4 +39,9 @@ class Controleur
     {
         return $this->unModele->getDiscussionsDetails($idUser);
     }
+
+    public function createDiscussion($nom, $members)
+    {
+        $this->unModele->createDiscussion($nom, $members);
+    }
 }
