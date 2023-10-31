@@ -18,6 +18,7 @@ if (isset($_POST['createDiscussion'])) {
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
             </svg>
+        </button>
             <!-- close drawer btn -->
             <div class="block lg:hidden  ">
                 <svg onclick="toggleConv()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -37,7 +38,7 @@ if (isset($_POST['createDiscussion'])) {
                 </div>
 
 
-                <div class="w-full flex flex-col gap-2 conversation-member">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-lg mx-4 ">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
@@ -48,20 +49,17 @@ if (isset($_POST['createDiscussion'])) {
                     </div>
                 </div>
 
-
-
-
-                <div class="w-full flex flex-col gap-2 conversation-member">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover  hover:cursor-pointer bg-hover rounded-lg mx-4 ">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
-                        <div class="flex flex-col bg-hover w-100">
+                        <div class="flex flex-col" >
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Marc Antoine </p>
                             <span class="w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Je viens de t'envoyer le rapport sur ta boite mail</span>
                         </div>
                     </div>
                 </div>
-                <div class="w-full flex flex-col gap-2 conversation-member">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-lg mx-4">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
@@ -72,7 +70,7 @@ if (isset($_POST['createDiscussion'])) {
                     </div>
                 </div>
 
-                <div class="w-full flex flex-col gap-2 conversation-member">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-lg mx-4">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
