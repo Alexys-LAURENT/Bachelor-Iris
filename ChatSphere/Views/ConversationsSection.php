@@ -31,52 +31,52 @@ if (isset($_POST['createDiscussion'])) {
         <!-- content -->
         <div>
 
-            <div class="flex flex-col items-center gap-4 relative">
+            <div class="flex flex-col items-center gap-1 relative px-4">
                 <div class="flex w-14/14 mt-3 justify-between">
-                    <input id="searchInput" type="text" placeholder="Rechercher un message" class="rounded-md bg-userMessage px-2 py-1 w-14/14 focus:outline-primary cursor-text text-gray-600">
+                    <input id="searchInput" type="text" placeholder="Rechercher un message" class="rounded-md bg-userMessage px-2 py-1 w-full focus:outline-primary cursor-text text-gray-600">
 
                 </div>
 
 
-                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-lg mx-4 ">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col ">
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Louise Martine </p>
-                            <span class="w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Bonjour comment ça va ?</span>
+                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Bonjour comment ça va ?</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full flex flex-col gap-2 hover:bg-hover  hover:cursor-pointer bg-hover rounded-lg mx-4 ">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover  hover:cursor-pointer bg-hover rounded-md py-2">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col" >
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Marc Antoine </p>
-                            <span class="w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Je viens de t'envoyer le rapport sur ta boite mail</span>
+                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Je viens de t'envoyer le rapport sur ta boite mail</span>
                         </div>
                     </div>
                 </div>
-                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-lg mx-4">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col">
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Julien Pon </p>
-                            <span class="w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Hello dispo pour un meets?</span>
+                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Hello dispo pour un meets?</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-lg mx-4">
+                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col">
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Groupe A </p>
-                            <span class="w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Oui bien vu</span>
+                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Oui bien vu</span>
                         </div>
                     </div>
                 </div>
@@ -92,15 +92,15 @@ if (isset($_POST['createDiscussion'])) {
                         const searchText = searchInput.value.toLowerCase();
 
                         // Sélectionner tous les messages à filtrer (les spans contenant les messages)
-                        const messageSpans = document.querySelectorAll(".text-elipsis");
+                        const messageSpans = document.querySelectorAll(".conversationRow");
 
                         // Parcourir tous les messages et les afficher ou les masquer en fonction de la recherche
                         messageSpans.forEach(span => {
                             const messageText = span.textContent.toLowerCase();
                             if (messageText.includes(searchText)) {
-                                span.parentElement.parentElement.style.display = "block"; // Afficher le message
+                                span.parentElement.parentElement.parentElement.style.display = "flex"; // Afficher le message
                             } else {
-                                span.parentElement.parentElement.style.display = "none"; // Masquer le message
+                                span.parentElement.parentElement.parentElement.style.display = "none"; // Masquer le message
                             }
                         });
                     }
