@@ -28,10 +28,10 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             <div id="filterPopUp" class="max-h-0 transition-all overflow-hidden top-[70px] right-6  absolute rounded-md bg-white shadow-xl z-10">
                 <ul class="flex flex-col">
                     <?php
-                    for ($i = 0; $i < count($metiers); $i++) {
+                    foreach ($metiers as $i => $metier) {
                         echo "<li class='flex items-center'>
-                                    <input onclick='showColleaguesFiltered()' class='checkbox-metier me-1 cursor-pointer' type='checkbox' name='" . $metiers[$i] . "' id='checkbox-$i'>
-                                    <label class='select-none cursor-pointer' for='checkbox-$i'>" . $metiers[$i] . "</label>
+                                    <input onclick='showColleaguesFiltered()' class='checkbox-metier me-1 cursor-pointer' type='checkbox' name='" . $metier . "' id='checkbox-$i'>
+                                    <label class='select-none cursor-pointer' for='checkbox-$i'>" . $metier . "</label>
                                 </li>";
                     }
                     ?>
