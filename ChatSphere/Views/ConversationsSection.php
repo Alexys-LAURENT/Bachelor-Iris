@@ -32,7 +32,7 @@ if (isset($_POST['createDiscussion'])) {
         <div>
 
             <div class="flex flex-col items-center gap-1 relative px-4">
-                <div class="flex w-14/14 mt-3 justify-between">
+                <div class="flex w-14/14 mt-3 justify-between w-full">
                     <input id="searchInput" type="text" placeholder="Rechercher un message" class="rounded-md bg-userMessage px-2 py-1 w-full focus:outline-primary cursor-text text-gray-600">
 
                 </div>
