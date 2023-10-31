@@ -152,4 +152,21 @@ class Modele
             return false;
         }
     }
+
+    public function checkIdDiscussion($idDiscussion, $idUser)
+    {
+        $sql = "select * from discussions_users where idDiscussion = :idDiscussion and idUser = :idUser;";
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion,
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $discussion = $select->fetch();
+        if ($select->rowCount() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
