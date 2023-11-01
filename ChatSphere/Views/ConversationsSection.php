@@ -39,14 +39,14 @@ if (isset($_POST['createDiscussion'])) {
                     <input id="searchInput" type="text" placeholder="Rechercher un message" class="rounded-md bg-userMessage px-2 py-1 w-full focus:outline-primary cursor-text text-gray-600">
 
                 </div>
-
+        
 
            
 
 <?php
 foreach ($discussions as $discussion) {
     echo '
-    <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
+    <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2 mx-16">
         <!-- Contact row -->
         <div class="flex max-w-full mx-4 gap-2">
             <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
@@ -61,48 +61,6 @@ foreach ($discussions as $discussion) {
 
 
 
-                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
-                    <!-- Contact row -->
-                    <div class="flex max-w-full mx-4 gap-2">
-                        <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
-                        <div class="flex flex-col ">
-                            <p class="font-semibold w-full text-elipsis line-clamp-1">Louise Martine </p>
-                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Bonjour comment ça va ?</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!--div class="w-full flex flex-col gap-2 hover:bg-hover  hover:cursor-pointer bg-hover rounded-md py-2">
-                    <!-- Contact row -->
-                    <!--div class="flex max-w-full mx-4 gap-2">
-                        <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
-                        <div class="flex flex-col" >
-                            <p class="font-semibold w-full text-elipsis line-clamp-1">Marc Antoine </p>
-                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Je viens de t'envoyer le rapport sur ta boite mail</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
-                    <!-- Contact row -->
-                    <!--div class="flex max-w-full mx-4 gap-2">
-                        <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
-                        <div class="flex flex-col">
-                            <p class="font-semibold w-full text-elipsis line-clamp-1">Julien Pon </p>
-                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Hello dispo pour un meets?</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
-                    <!-- Contact row -->
-                    <!--div class="flex max-w-full mx-4 gap-2">
-                        <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
-                        <div class="flex flex-col">
-                            <p class="font-semibold w-full text-elipsis line-clamp-1">Groupe A </p>
-                            <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Oui bien vu</span>
-                        </div>
-                    </div>
-                </div-->
 
                 <?php require_once('popUpCreateDiscussion.php'); ?>
 
