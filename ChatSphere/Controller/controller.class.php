@@ -44,4 +44,9 @@ class Controleur
     {
         $this->unModele->createDiscussion($nom, $members);
     }
+
+    public function checkIdDiscussion($idDiscussion, $idUser)
+    {
+        return $this->unModele->checkIdDiscussion($idDiscussion, $idUser);
+    }
 }

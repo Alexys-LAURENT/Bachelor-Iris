@@ -1,8 +1,4 @@
 <?php
-if (isset($_GET['discussion'])) {
-    $idDiscussion = $_GET['discussion'];
-}
-
 if (isset($idDiscussion)) {
     $usersConv = $unControleur->getConversationName($user['idUser'], $idDiscussion);
 }
@@ -216,8 +212,10 @@ if (isset($idDiscussion)) {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         var idDiscussion = urlParams.get('discussion');
+        var isValidIdDiscussion = <?php if (isset($idDiscussion)) echo "true";
+                                    else echo "false"; ?>;
         setInterval(function() {
-            if (idDiscussion != null) {
+            if (idDiscussion != null && isValidIdDiscussion == true) {
                 getMessages(idDiscussion);
             }
         }, 500); // toutes les 500ms

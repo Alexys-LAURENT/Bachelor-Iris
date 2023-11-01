@@ -1,5 +1,5 @@
 <div id="popup" class="popup">
-    <div id="popup-content" class="w-full mx-4 md:mx-0 md:w-6/12 p-[20px] shadow-md bg-white rounded-sm">
+    <div id="popup-content" class="hidden w-full mx-4 md:mx-0 md:w-6/12 p-[20px] shadow-md bg-white rounded-sm">
         <!-- Contenu de la popup -->
         <h2 class="text-center font-bold text-2xl">Créer une discussion</h2>
 
@@ -84,6 +84,7 @@
     function openPopup() {
         const popup = document.getElementById("popup");
         popup.style.display = "flex";
+        document.getElementById('popup-content').classList.remove('hidden');
     }
 
     // Fonction pour fermer la popup
@@ -97,6 +98,7 @@
         document.getElementById('membersWrapperNewDiscussion').innerHTML = '';
         document.getElementById('NewDiscussionName').value = '';
         popup.style.display = "none";
+        document.getElementById('popup-content').classList.add('hidden');
     }
 
     // Associez la fonction openPopup au clic sur le bouton "Ajouter membre"

@@ -9,6 +9,9 @@ if ($user == false) {
     header("Location: login.php");
 }
 
+if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discussion'], $user['idUser']) == true) {
+    $idDiscussion = $_GET['discussion'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
