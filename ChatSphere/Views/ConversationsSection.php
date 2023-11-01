@@ -1,9 +1,12 @@
 <?php
+
 $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
+//var_dump($discussions);
 
 if (isset($_POST['createDiscussion'])) {
-    // post members + $user['idUser'] in single array
+    
+    //post members + $user['idUser'] in single array
     $unControleur->createDiscussion($_POST['NewDiscussionName'], array_merge($_POST['members'], array($user['idUser'])));
     header("Refresh:0");
 }
@@ -38,6 +41,26 @@ if (isset($_POST['createDiscussion'])) {
                 </div>
 
 
+           
+
+<?php
+foreach ($discussions as $discussion) {
+    echo '
+    <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
+        <!-- Contact row -->
+        <div class="flex max-w-full mx-4 gap-2">
+            <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
+            <div class="flex flex-col ">
+                <p class="font-semibold w-full text-elipsis line-clamp-1">' . $discussion['participants'] . '</p>
+                <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">' . $discussion['dernier_message'] . '</span>
+            </div>
+        </div>
+    </div>';
+}
+?>
+
+
+
                 <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
                     <!-- Contact row -->
                     <div class="flex max-w-full mx-4 gap-2">
@@ -49,9 +72,9 @@ if (isset($_POST['createDiscussion'])) {
                     </div>
                 </div>
 
-                <div class="w-full flex flex-col gap-2 hover:bg-hover  hover:cursor-pointer bg-hover rounded-md py-2">
+                <!--div class="w-full flex flex-col gap-2 hover:bg-hover  hover:cursor-pointer bg-hover rounded-md py-2">
                     <!-- Contact row -->
-                    <div class="flex max-w-full mx-4 gap-2">
+                    <!--div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col" >
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Marc Antoine </p>
@@ -61,7 +84,7 @@ if (isset($_POST['createDiscussion'])) {
                 </div>
                 <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
                     <!-- Contact row -->
-                    <div class="flex max-w-full mx-4 gap-2">
+                    <!--div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col">
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Julien Pon </p>
@@ -72,14 +95,14 @@ if (isset($_POST['createDiscussion'])) {
 
                 <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2">
                     <!-- Contact row -->
-                    <div class="flex max-w-full mx-4 gap-2">
+                    <!--div class="flex max-w-full mx-4 gap-2">
                         <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
                         <div class="flex flex-col">
                             <p class="font-semibold w-full text-elipsis line-clamp-1">Groupe A </p>
                             <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">Oui bien vu</span>
                         </div>
                     </div>
-                </div>
+                </div-->
 
                 <?php require_once('popUpCreateDiscussion.php'); ?>
 
