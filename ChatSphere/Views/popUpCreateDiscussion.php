@@ -1,22 +1,24 @@
 <div id="popup" class="popup">
     <div id="popup-content" class="hidden w-full mx-4 md:mx-0 md:w-6/12 p-[20px] shadow-md bg-white rounded-sm">
         <!-- Contenu de la popup -->
-        <h2 class="text-center font-bold text-2xl">Créer une discussion</h2>
+        <h2 class="text-center font-bold text-2xl mb-4">Créer une discussion</h2>
 
-        <form action="" method="post" class="flex flex-col gap-2">
-            <label for="NewDiscussionName">Nom de la discussion</label>
-            <input type="text" name="NewDiscussionName" id="NewDiscussionName" required class="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:drop-shadow focus:drop-shadow-secondary">
+        <form action="" method="post" class="flex flex-col gap-4">
+            <div id="groupNameWrapper" class="w-full flex flex-col gap-2 hidden">
+                <label for="NewDiscussionName">Nom de la discussion</label>
+                <input type="text" name="NewDiscussionName" id="NewDiscussionName" class="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:drop-shadow focus:drop-shadow-secondary">
+            </div>
 
             <!-- input that filters colleagues and displays them with click to add -->
             <div class="flex flex-col gap-2">
-                <div class="flex flex-col items-start gap-2">
-                    <label for="colleagues">Ajouter des membres</label>
+                <div class="flex flex-col items-start">
+                    <label for="colleagues">Ajouter un ou plusieurs membres</label>
                     <div id="membersSelected" class="flex gap-2 w-full flex-wrap max-h-[100px] overflow-y-auto">
                         <!-- checkboxes for each colleague -->
                         <?php
                         foreach ($colleagues as $colleague) {
                             echo '                  
-                                                    <input type="checkbox" name="members[]" value="' . $colleague['idUser'] . '" id="colleague-' . $colleague['idUser'] . '" class="checkboxesNewDiscussion hidden">
+                                                    <input onclick="checkIsGroup()" type="checkbox" name="members[]" value="' . $colleague['idUser'] . '" id="colleague-' . $colleague['idUser'] . '" class="checkboxesNewDiscussion hidden">
                                                     <label class=" flex items-center gap-1 cursor-pointer border border-gray-300 rounded-md px-2 py-1 hover:bg-red-500 hover:text-white transition-all duration-300 text-xs" for="colleague-' . $colleague['idUser'] . '">
                                                     
                                                         <div class="bg-cover bg-center aspect-square rounded-full bg-gray-500 w-[20px] h-[20px]" style="background-image: url(../../usersImages/' . $colleague['pp'] . ')"></div>
@@ -46,6 +48,28 @@
 </div>
 
 <script>
+    function checkIsGroup() {
+        var checkboxes = document.querySelectorAll('.checkboxesNewDiscussion');
+        var groupNameWrapper = document.getElementById('groupNameWrapper');
+        var NewDiscussionName = document.getElementById('NewDiscussionName');
+
+        var checkedNumber = 0;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                checkedNumber++;
+            }
+        });
+
+        if (checkedNumber > 1) {
+            groupNameWrapper.classList.remove('hidden');
+            NewDiscussionName.required = true;
+        } else {
+            groupNameWrapper.classList.add('hidden');
+            NewDiscussionName.required = false;
+            NewDiscussionName.value = '';
+        }
+    }
+
     function showColleaguesFilteredCreateDiscussion() {
 
         var nameInputCreateDiscussion = document.getElementById('nameInputCreateDiscussion');
@@ -77,6 +101,7 @@
     function checkCheckbox(id) {
         var checkbox = document.getElementById('colleague-' + id);
         checkbox.checked = true;
+        checkIsGroup();
     }
 
 

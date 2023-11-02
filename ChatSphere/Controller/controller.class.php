@@ -25,9 +25,14 @@ class Controleur
         return $this->unModele->checkToken($token);
     }
 
-    public function getConversationName($idUser, $idDiscussion)
+    public function getDiscussionInfo($idUser, $idDiscussion)
     {
-        return $this->unModele->getConversationName($idUser, $idDiscussion);
+        $name = $this->unModele->getDiscussionName($idDiscussion, $idUser);
+        $pp = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
+        return array(
+            "nom" => $name['nom'],
+            "pp" => $pp['pp']
+        );
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)

@@ -37,6 +37,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
         }
     </script>
     <script src="./js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="./css/index.css">
 </head>
 
@@ -49,5 +50,13 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
         ?>
     </div>
 </body>
+
+<script>
+    if (!Notification) {
+        alert('Le navigateur ne supporte pas les notifications.');
+    }
+    Notification.requestPermission();
+    var notification = new Notification('Bonjour !');
+</script>
 
 </html>
