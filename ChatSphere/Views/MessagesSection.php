@@ -1,6 +1,6 @@
 <?php
 if (isset($idDiscussion)) {
-    $usersConv = $unControleur->getConversationName($user['idUser'], $idDiscussion);
+    $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 ?>
 <div class="lg:w-[57%] w-full overflow-hidden">
@@ -16,17 +16,10 @@ if (isset($idDiscussion)) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($usersConv)) echo 'hidden' ?> " style="background-image: url('../../usersImages/<?php if (isset($usersConv)) echo $usersConv != null ? $usersConv[0]['pp'] : "default.png"; ?>');"></div>
+            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('../../usersImages/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
             <div class="flex flex-col ms-3">
-                <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($usersConv)) {
-                                                                    foreach ($usersConv as $userConv) {
-                                                                        if ($userConv['idUser'] != $usersConv[count($usersConv) - 1]['idUser'])
-                                                                            echo $userConv['prenom'] . " " . $userConv['nom'] . ", ";
-                                                                        else
-                                                                            echo $userConv['prenom'] . " " . $userConv['nom'];
-                                                                    }
-                                                                } ?></p>
-                <span class="text-2xs <?php if (!isset($usersConv)) echo 'hidden' ?>">En ligne</span>
+                <p class=" w-full text-elipsis line-clamp-1"><?php echo $discussionInfo['nom']; ?></p>
+                <span class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?>">En ligne</span>
             </div>
         </div>
 
@@ -57,7 +50,7 @@ if (isset($idDiscussion)) {
     </div>
 
     <!-- message textarea -->
-    <div class="flex h-[100px] justify-center bg-white <?php if (!isset($userConv)) echo 'hidden' ?>">
+    <div class="flex h-[100px] justify-center bg-white <?php if (!isset($discussionInfo)) echo 'hidden' ?>">
         <div class="w-[90%] h-[50px] flex items-center relative">
             <form id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md ">
                 <input name="" id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">

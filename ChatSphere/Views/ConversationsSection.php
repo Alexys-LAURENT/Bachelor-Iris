@@ -2,12 +2,11 @@
 
 $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
-// var_dump($discussions);
 
 if (isset($_POST['createDiscussion'])) {
-
     //post members + $user['idUser'] in single array
-    $unControleur->createDiscussion($_POST['NewDiscussionName'], array_merge($_POST['members'], array($user['idUser'])));
+    $discussionName = $_POST['NewDiscussionName'] == "" ? null : $_POST['NewDiscussionName'];
+    $unControleur->createDiscussion($discussionName, array_merge($_POST['members'], array($user['idUser'])));
     header("Refresh:0");
 }
 ?>
@@ -15,7 +14,7 @@ if (isset($_POST['createDiscussion'])) {
     <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
 
         <div class="flex items-center">
-            <p class="flex gap-2 items-center">Messages <span class="flex items-center justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200">4</span></p>
+            <p class="flex gap-2 items-center">Messages <span class="flex items-center justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($discussions); ?></span></p>
         </div>
         <button class="bg-secondary w-7 h-7 rounded-full flex justify-center items-center ">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -48,9 +47,10 @@ if (isset($_POST['createDiscussion'])) {
                     <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2 ' . $class . ' ">
                         <!-- Contact row -->
                         <div class="flex max-w-full mx-3 gap-2">
-                            <div class="aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"></div>
+                            <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(../../usersImages/' . $discussion['pp'] . ');"
+                            ></div>
                             <div class="flex flex-col ">
-                                <p class="font-semibold w-full text-elipsis line-clamp-1">' . $discussion['participants'] . '</p>
+                                <p class="font-semibold w-full text-elipsis line-clamp-1">' . $discussion['nom'] . '</p>
                                 <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">' . $discussion['dernier_message'] . '</span>
                             </div>
                         </div>

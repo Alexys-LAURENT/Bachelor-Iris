@@ -25,9 +25,14 @@ class Controleur
         return $this->unModele->checkToken($token);
     }
 
-    public function getConversationName($idUser, $idDiscussion)
+    public function getDiscussionInfo($idUser, $idDiscussion)
     {
-        return $this->unModele->getConversationName($idUser, $idDiscussion);
+        $name = $this->unModele->getDiscussionName($idDiscussion);
+        $pp = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
+        return array(
+            "nom" => $name['nom'],
+            "pp" => $pp['pp']
+        );
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)
@@ -42,6 +47,9 @@ class Controleur
 
     public function createDiscussion($nom, $members)
     {
+        if ($nom == null) {
+            $nom = $this->unModele->getUserNameById($members[0]);
+        }
         $this->unModele->createDiscussion($nom, $members);
     }
 

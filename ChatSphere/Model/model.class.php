@@ -20,6 +20,18 @@ class Modele
         }
     }
 
+    public function getUserNameById($idUser)
+    {
+        $sql = "select nom,prenom from users where idUser = :idUser;";
+        $donnees = array(
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $user = $select->fetch();
+        return $user['prenom'] . ' ' . $user['nom'];
+    }
+
     public function getAllColleagues($idUser)
     {
         $sql = "select * from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser ;";
@@ -71,17 +83,51 @@ class Modele
         }
     }
 
-    public function getConversationName($idUser, $idDiscussion)
+    public function getDiscussionName($idDiscussion)
     {
-        $sql = "select * from users where idUser in (select idUser from discussions_users where idDiscussion = :idDiscussion and idUser != :idUser);";
+        $sql = "select nom from discussions where idDiscussion = :idDiscussion ";
         $donnees = array(
-            ":idDiscussion" => $idDiscussion,
-            ":idUser" => $idUser
+            ":idDiscussion" => $idDiscussion
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $name = $select->fetch();
+        return $name;
+    }
+
+    public function getDiscussionImage($idDiscussion, $idUser)
+    {
+        if ($this->isDiscussionAGroup($idDiscussion) == true) {
+            return array(
+                "pp" => "group.png"
+            );
+        } else {
+            $sql = "select pp from users where idUser = (select idUser from discussions_users where idDiscussion = :idDiscussion and not idUser = :idUser limit 1)";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion,
+                ":idUser" => $idUser
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $image = $select->fetch();
+            return $image;
+        }
+    }
+
+    public function isDiscussionAGroup($idDiscussion)
+    {
+        $sql = "select * from discussions_users where idDiscussion = :idDiscussion";
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion
         );
         $select = $this->unPDO->prepare($sql);
         $select->execute($donnees);
         $users = $select->fetchAll();
-        return $users;
+        if (count($users) > 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)
@@ -105,25 +151,31 @@ class Modele
     public function getDiscussionsDetails($idUser)
     {
         $sql = "SELECT d.idDiscussion,
-        GROUP_CONCAT(DISTINCT CASE WHEN u.idUser != :idUser THEN u.prenom ELSE NULL END ORDER BY m.timestamp ASC) AS participants,
+        d.nom,
         SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message
         FROM discussions d
         INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
-        INNER JOIN users u ON du.idUser = u.idUser
         LEFT JOIN messages m ON d.idDiscussion = m.idDiscussion
         WHERE d.idDiscussion IN (
             SELECT idDiscussion
             FROM discussions_users
             WHERE idUser = :idUser
         )
-        GROUP BY d.idDiscussion LIMIT 0,100";
+        GROUP BY d.idDiscussion";
 
         $donnees = array(
             ":idUser" => $idUser
         );
         $select = $this->unPDO->prepare($sql);
         $select->execute($donnees);
-        return $select->fetchAll();
+        $discussions = $select->fetchAll();
+
+        foreach ($discussions as $i => $discussion) {
+            $image = $this->getDiscussionImage($discussion['idDiscussion'], $idUser);
+            $discussion['pp'] = $image['pp'];
+            $discussions[$i] = $discussion;
+        }
+        return $discussions;
     }
 
     public function createDiscussion($nom, $members)
