@@ -83,16 +83,31 @@ class Modele
         }
     }
 
-    public function getDiscussionName($idDiscussion)
+    public function getDiscussionName($idDiscussion, $idUser)
     {
-        $sql = "select nom from discussions where idDiscussion = :idDiscussion ";
-        $donnees = array(
-            ":idDiscussion" => $idDiscussion
-        );
-        $select = $this->unPDO->prepare($sql);
-        $select->execute($donnees);
-        $name = $select->fetch();
-        return $name;
+        if ($this->isDiscussionAGroup($idDiscussion) == true) {
+            $sql = "select nom from discussions where idDiscussion = :idDiscussion ";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $name = $select->fetch();
+            return $name;
+        } else {
+            $sql = "select prenom, nom from users where idUser = (select idUser from discussions_users where idDiscussion = :idDiscussion and not idUser = :idUser limit 1)";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion,
+                ":idUser" => $idUser
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $name = $select->fetch();
+            $name = $name['prenom'] . ' ' . $name['nom'];
+            return array(
+                "nom" => $name
+            );
+        }
     }
 
     public function getDiscussionImage($idDiscussion, $idUser)
@@ -174,6 +189,31 @@ class Modele
             $image = $this->getDiscussionImage($discussion['idDiscussion'], $idUser);
             $discussion['pp'] = $image['pp'];
             $discussions[$i] = $discussion;
+
+            if ($this->isDiscussionAGroup($discussion['idDiscussion']) == false) {
+                $sql = "SELECT 
+                d.idDiscussion,
+                GROUP_CONCAT(DISTINCT CASE WHEN u.idUser != :idUser THEN CONCAT(u.prenom,' ',u.nom) ELSE NULL END ORDER BY m.timestamp ASC) AS participants,
+                SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message
+            FROM discussions d
+            INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
+            INNER JOIN users u ON du.idUser = u.idUser
+            LEFT JOIN messages m ON d.idDiscussion = m.idDiscussion
+            WHERE d.idDiscussion IN (
+                SELECT idDiscussion
+                FROM discussions_users
+                WHERE idUser = :idUser
+            )
+            GROUP BY d.idDiscussion LIMIT 0,100";
+                $donnees = array(
+                    ":idUser" => $idUser
+                );
+                $select = $this->unPDO->prepare($sql);
+                $select->execute($donnees);
+                $discussionWithPersonName = $select->fetch();
+                $discussion['nom'] = $discussionWithPersonName['participants'];
+                $discussions[$i] = $discussion;
+            }
         }
         return $discussions;
     }

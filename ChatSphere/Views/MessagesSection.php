@@ -18,7 +18,7 @@ if (isset($idDiscussion)) {
         <div class="flex w-full items-center ps-4 ">
             <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('../../usersImages/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
             <div class="flex flex-col ms-3">
-                <p class=" w-full text-elipsis line-clamp-1"><?php echo $discussionInfo['nom']; ?></p>
+                <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
                 <span class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?>">En ligne</span>
             </div>
         </div>

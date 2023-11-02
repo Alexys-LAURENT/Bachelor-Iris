@@ -27,7 +27,7 @@ class Controleur
 
     public function getDiscussionInfo($idUser, $idDiscussion)
     {
-        $name = $this->unModele->getDiscussionName($idDiscussion);
+        $name = $this->unModele->getDiscussionName($idDiscussion, $idUser);
         $pp = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
         return array(
             "nom" => $name['nom'],
@@ -47,9 +47,6 @@ class Controleur
 
     public function createDiscussion($nom, $members)
     {
-        if ($nom == null) {
-            $nom = $this->unModele->getUserNameById($members[0]);
-        }
         $this->unModele->createDiscussion($nom, $members);
     }
 
