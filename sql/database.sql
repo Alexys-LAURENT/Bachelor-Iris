@@ -34,7 +34,7 @@ create table
 create table
     discussions(
         idDiscussion int not null auto_increment,
-        nom varchar(255) not null,
+        nom varchar(255),
         constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion)
     ) engine = innodb,
     charset = utf8;
