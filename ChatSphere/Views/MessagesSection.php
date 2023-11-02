@@ -40,7 +40,7 @@ if (isset($idDiscussion)) {
         </div>
 
         <!-- button scroll to bottom -->
-        <div onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 mr-4 flex justify-center items-center cursor-pointer select-none">
+        <div id="scrollToBottomButton" onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 mr-4 flex justify-center items-center cursor-pointer select-none">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v6.793l2.146-2.147a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 10.293V4a.5.5 0 0 1 .5-.5Z" />
@@ -52,8 +52,8 @@ if (isset($idDiscussion)) {
     <!-- message textarea -->
     <div class="flex h-[100px] justify-center bg-white <?php if (!isset($discussionInfo)) echo 'hidden' ?>">
         <div class="w-[90%] h-[50px] flex items-center relative">
-            <form id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md ">
-                <input name="" id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
+            <form autocomplete="off" id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md ">
+                <input id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
                 <button type="submit">
                     <img src="./Assets/sendMessageButton.png" alt="" class="cursor-pointer h-[50px] w-[50px]">
                 </button>
@@ -110,9 +110,10 @@ if (isset($idDiscussion)) {
     });
 
     // AJAX //////////////////////////////////////////////////////
-    var totalMess = 0;
+    var totalMess = [];
 
     function displayMessages(messages) {
+        console.log(messages.length + " " + totalMess.length);
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
         // get profile picture with javascript message['idUser']
@@ -176,12 +177,10 @@ if (isset($idDiscussion)) {
             }
             previousUser = message['idUser'];
         });
-        if (totalMess != messages.length) {
-            setTimeout(function() {
-                scrollToBottom();
-            }, 1500);
+        if (totalMess.length != messages.length) {
+            document.getElementById('scrollToBottomButton').style.display = "flex";
         }
-        totalMess = messages.length;
+        totalMess = messages;
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -194,7 +193,9 @@ if (isset($idDiscussion)) {
                     var data = JSON.parse(xhr.responseText);
                     // Mettre à jour la vue avec les nouveaux messages
                     // data contient les messages récupérés depuis le serveur
-                    displayMessages(data);
+                    if (data.length != totalMess.length) {
+                        displayMessages(data);
+                    }
                 }
             };
             xhr.send();
@@ -220,12 +221,14 @@ if (isset($idDiscussion)) {
             var messageInput = document.getElementById("messageInput");
             var message = messageInput.value;
 
+            if (message.length == 0) return;
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "send_message.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var isSend = JSON.parse(xhr.responseText);
+                    document.getElementById("characterCounter").innerHTML = "0";
                     if (isSend === false) {
                         alert("Erreur lors de l'envoi du message");
                     } else {
