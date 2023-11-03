@@ -14,7 +14,7 @@ if (isset($_POST['createDiscussion'])) {
     <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
 
         <div class="flex items-center">
-            <p class="flex gap-2 items-center">Messages <span class="flex items-center justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($discussions); ?></span></p>
+            <p class="flex gap-2 items-center">Discussions <span class="flex items-center justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($discussions); ?></span></p>
         </div>
         <button class="bg-secondary w-7 h-7 rounded-full flex justify-center items-center ">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
