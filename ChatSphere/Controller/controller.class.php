@@ -47,7 +47,7 @@ class Controleur
 
     public function createDiscussion($nom, $members)
     {
-        $this->unModele->createDiscussion($nom, $members);
+        return $this->unModele->createDiscussion($nom, $members);
     }
 
     public function checkIdDiscussion($idDiscussion, $idUser)

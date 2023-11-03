@@ -192,19 +192,12 @@ class Modele
 
             if ($this->isDiscussionAGroup($discussion['idDiscussion']) == false) {
                 $sql = "SELECT 
-                d.idDiscussion,
-                GROUP_CONCAT(DISTINCT CASE WHEN u.idUser != :idUser THEN CONCAT(u.prenom,' ',u.nom) ELSE NULL END ORDER BY m.timestamp ASC) AS participants,
-                SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message
+                GROUP_CONCAT(DISTINCT CASE WHEN u.idUser != :idUser THEN CONCAT(u.prenom,' ',u.nom) ELSE NULL END) AS participants
             FROM discussions d
             INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
             INNER JOIN users u ON du.idUser = u.idUser
-            LEFT JOIN messages m ON d.idDiscussion = m.idDiscussion
-            WHERE d.idDiscussion IN (
-                SELECT idDiscussion
-                FROM discussions_users
-                WHERE idUser = :idUser
-            )
-            GROUP BY d.idDiscussion LIMIT 0,100";
+            WHERE d.idDiscussion = $discussion[idDiscussion]
+            GROUP BY d.idDiscussion";
                 $donnees = array(
                     ":idUser" => $idUser
                 );
@@ -220,29 +213,51 @@ class Modele
 
     public function createDiscussion($nom, $members)
     {
-        try {
-            $sql = "insert into discussions (nom) values (:nom);";
+        //check if 1 to 1 discussion already exist
+        if (count($members) == 2) {
+            $sqlCheck = "SELECT idDiscussion
+            FROM discussions_users
+            WHERE idDiscussion IN (
+                SELECT idDiscussion
+                FROM discussions_users
+                WHERE idUser = :idUser1
+                OR idUser = :idUser2
+                GROUP BY idDiscussion
+                HAVING COUNT(DISTINCT idUser) = 2
+            )
+            GROUP BY idDiscussion
+            HAVING COUNT(*) = 2;";
             $donnees = array(
-                ":nom" => $nom
+                ":idUser1" => $members[0],
+                ":idUser2" => $members[1]
+            );
+            $select = $this->unPDO->prepare($sqlCheck);
+            $select->execute($donnees);
+            $discussion = $select->fetch();
+            if ($select->rowCount() == 1) {
+                return $discussion['idDiscussion'];
+            }
+        }
+
+
+        $sql = "insert into discussions (nom) values (:nom);";
+        $donnees = array(
+            ":nom" => $nom
+        );
+        $insert = $this->unPDO->prepare($sql);
+        $insert->execute($donnees);
+        $idDiscussion = $this->unPDO->lastInsertId();
+
+        foreach ($members as $member) {
+            $sql = "insert into discussions_users (idDiscussion, idUser) values (:idDiscussion, :idUser);";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion,
+                ":idUser" => $member
             );
             $insert = $this->unPDO->prepare($sql);
             $insert->execute($donnees);
-            $idDiscussion = $this->unPDO->lastInsertId();
-
-            foreach ($members as $member) {
-                $sql = "insert into discussions_users (idDiscussion, idUser) values (:idDiscussion, :idUser);";
-                $donnees = array(
-                    ":idDiscussion" => $idDiscussion,
-                    ":idUser" => $member
-                );
-                $insert = $this->unPDO->prepare($sql);
-                $insert->execute($donnees);
-            }
-            return true;
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            return false;
         }
+        return $idDiscussion;
     }
 
     public function checkIdDiscussion($idDiscussion, $idUser)

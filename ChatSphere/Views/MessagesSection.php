@@ -267,7 +267,7 @@ if (isset($idDiscussion)) {
         data: {
             labels: <?php echo json_encode($allUsersFromTotalMessStats); ?>,
             datasets: [{
-                label: '# of Votes',
+                label: 'Nombre de messages total',
                 data: <?php echo json_encode($allTotalsFromTotalMessStats); ?>,
                 borderWidth: 1
             }]
@@ -295,7 +295,8 @@ if (isset($idDiscussion)) {
                 y: {
                     beginAtZero: true
                 }
-            }
+            },
+            maintainAspectRatio: false,
         }
     });
 
