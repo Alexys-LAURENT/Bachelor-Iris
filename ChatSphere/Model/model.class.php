@@ -213,9 +213,12 @@ class Modele
 
     public function createDiscussion($nom, $members)
     {
-        //check if 1 to 1 discussion already exist
-        if (count($members) == 2) {
-            $sqlCheck = "SELECT idDiscussion
+
+        try {
+
+            //check if 1 to 1 discussion already exist
+            if (count($members) == 2) {
+                $sqlCheck = "SELECT idDiscussion
             FROM discussions_users
             WHERE idDiscussion IN (
                 SELECT idDiscussion
@@ -227,37 +230,41 @@ class Modele
             )
             GROUP BY idDiscussion
             HAVING COUNT(*) = 2;";
-            $donnees = array(
-                ":idUser1" => $members[0],
-                ":idUser2" => $members[1]
-            );
-            $select = $this->unPDO->prepare($sqlCheck);
-            $select->execute($donnees);
-            $discussion = $select->fetch();
-            if ($select->rowCount() == 1) {
-                return $discussion['idDiscussion'];
+                $donnees = array(
+                    ":idUser1" => $members[0],
+                    ":idUser2" => $members[1]
+                );
+                $select = $this->unPDO->prepare($sqlCheck);
+                $select->execute($donnees);
+                $discussion = $select->fetch();
+                if ($select->rowCount() == 1) {
+                    return $discussion['idDiscussion'];
+                }
             }
-        }
 
 
-        $sql = "insert into discussions (nom) values (:nom);";
-        $donnees = array(
-            ":nom" => $nom
-        );
-        $insert = $this->unPDO->prepare($sql);
-        $insert->execute($donnees);
-        $idDiscussion = $this->unPDO->lastInsertId();
-
-        foreach ($members as $member) {
-            $sql = "insert into discussions_users (idDiscussion, idUser) values (:idDiscussion, :idUser);";
+            $sql = "insert into discussions (nom) values (:nom);";
             $donnees = array(
-                ":idDiscussion" => $idDiscussion,
-                ":idUser" => $member
+                ":nom" => $nom
             );
             $insert = $this->unPDO->prepare($sql);
             $insert->execute($donnees);
+            $idDiscussion = $this->unPDO->lastInsertId();
+
+            foreach ($members as $member) {
+                $sql = "insert into discussions_users (idDiscussion, idUser) values (:idDiscussion, :idUser);";
+                $donnees = array(
+                    ":idDiscussion" => $idDiscussion,
+                    ":idUser" => $member
+                );
+                $insert = $this->unPDO->prepare($sql);
+                $insert->execute($donnees);
+            }
+            return $idDiscussion;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return;
         }
-        return $idDiscussion;
     }
 
     public function checkIdDiscussion($idDiscussion, $idUser)

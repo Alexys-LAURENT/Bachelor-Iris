@@ -1,61 +1,63 @@
 <?php
 
+if (isset($_GET['discussion'])) {
 
-$totalMessStats = $unControleur->getTotalMessStats($_GET['discussion']);
-$allUsersFromTotalMessStats = array_column($totalMessStats, 'nom');
-$allTotalsFromTotalMessStats = array_column($totalMessStats, 'totalMess');
+    $totalMessStats = $unControleur->getTotalMessStats($_GET['discussion']);
+    $allUsersFromTotalMessStats = array_column($totalMessStats, 'nom');
+    $allTotalsFromTotalMessStats = array_column($totalMessStats, 'totalMess');
 
-$totalMessByMonthByUsers = $unControleur->getTotalMessByMonthByUsersStats($_GET['discussion']);
-
-
+    $totalMessByMonthByUsers = $unControleur->getTotalMessByMonthByUsersStats($_GET['discussion']);
 
 
-$tableau1 = $totalMessByMonthByUsers;
 
-$months = [];
-$userCharts = [];
-$messageCounts = [];
 
-foreach ($tableau1 as $tableau2) {
-    foreach ($tableau2 as $tableau3) {
-        $mois = $tableau3['mois'];
-        $prenom = $tableau3['prenom'];
-        $nom = $tableau3['nom'];
-        $nombre_messages = $tableau3['nombre_total_de_messages'];
+    $tableau1 = $totalMessByMonthByUsers;
 
-        if (!in_array($mois, $months)) {
-            $months[] = $mois;
+    $months = [];
+    $userCharts = [];
+    $messageCounts = [];
+
+    foreach ($tableau1 as $tableau2) {
+        foreach ($tableau2 as $tableau3) {
+            $mois = $tableau3['mois'];
+            $prenom = $tableau3['prenom'];
+            $nom = $tableau3['nom'];
+            $nombre_messages = $tableau3['nombre_total_de_messages'];
+
+            if (!in_array($mois, $months)) {
+                $months[] = $mois;
+            }
+
+            $userChart = "$prenom $nom";
+
+            if (!in_array($userChart, $userCharts)) {
+                $userCharts[] = $userChart;
+            }
+
+            if (!isset($messageCounts[$userChart])) {
+                $messageCounts[$userChart] = [];
+            }
+
+            $messageCounts[$userChart][$mois] = $nombre_messages;
         }
-
-        $userChart = "$prenom $nom";
-
-        if (!in_array($userChart, $userCharts)) {
-            $userCharts[] = $userChart;
-        }
-
-        if (!isset($messageCounts[$userChart])) {
-            $messageCounts[$userChart] = [];
-        }
-
-        $messageCounts[$userChart][$mois] = $nombre_messages;
-    }
-}
-
-$chartData = [
-    "labels" => $months, // Les mois seront sur l'axe x
-    "datasets" => []
-];
-
-foreach ($userCharts as $userChart) {
-    $userChartMessages = [];
-    foreach ($months as $month) {
-        $userChartMessages[] = $messageCounts[$userChart][$month] ?? 0;
     }
 
-    $chartData["datasets"][] = [
-        "label" => $userChart,
-        "data" => $userChartMessages,
+    $chartData = [
+        "labels" => $months, // Les mois seront sur l'axe x
+        "datasets" => []
     ];
+
+    foreach ($userCharts as $userChart) {
+        $userChartMessages = [];
+        foreach ($months as $month) {
+            $userChartMessages[] = $messageCounts[$userChart][$month] ?? 0;
+        }
+
+        $chartData["datasets"][] = [
+            "label" => $userChart,
+            "data" => $userChartMessages,
+        ];
+    }
 }
 ?>
 
