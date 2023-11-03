@@ -41,7 +41,8 @@ if (isset($_POST['createDiscussion'])) {
 
             <?php
             foreach ($discussions as $discussion) {
-                $class = $_GET['discussion'] == $discussion['idDiscussion'] ? 'bg-hover' : '';
+                isset($_GET['discussion']) ? $getDiscussion = $_GET['discussion'] : $getDiscussion = null;
+                $class = $getDiscussion == $discussion['idDiscussion'] ? 'bg-hover' : '';
                 echo '
                 <a class="m-0 p-0 w-full" href="?token=' . $_GET['token'] . '&discussion=' . $discussion['idDiscussion'] . '">
                     <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2 ' . $class . ' ">
@@ -51,7 +52,7 @@ if (isset($_POST['createDiscussion'])) {
                             ></div>
                             <div class="flex flex-col ">
                                 <p class="font-semibold w-full text-elipsis line-clamp-1">' . $discussion['nom'] . '</p>
-                                <span class="conversationRow w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]">' . $discussion['dernier_message'] . '</span>
+                                <span class="conversationRow w-full max-w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px] text-elipsis line-clamp-1">' . $discussion['dernier_message'] . '</span>
                             </div>
                         </div>
                     </div>

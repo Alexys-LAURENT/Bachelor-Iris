@@ -54,4 +54,16 @@ class Controleur
     {
         return $this->unModele->checkIdDiscussion($idDiscussion, $idUser);
     }
+
+    // STATISTIQUES ///////////////////////////////
+
+    public function getTotalMessStats($idDiscussion)
+    {
+        return $this->unModele->getTotalMessStats($idDiscussion);
+    }
+
+    public function getTotalMessByMonthByUsersStats($idDiscussion)
+    {
+        return $this->unModele->getTotalMessByMonthByUsersStats($idDiscussion);
+    }
 }

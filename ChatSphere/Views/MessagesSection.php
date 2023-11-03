@@ -3,6 +3,7 @@ if (isset($idDiscussion)) {
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 ?>
+
 <div class="lg:w-[57%] w-full overflow-hidden">
     <nav class="w-full flex h-[50px]  border-b-2">
 
@@ -23,6 +24,14 @@ if (isset($idDiscussion)) {
             </div>
         </div>
 
+        <div onclick="toggleStats()" class="w-[50px] flex">
+            <button class="w-full flex  justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
+                    <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z" />
+                </svg>
+            </button>
+        </div>
+
         <div onclick="toggleMembers()" class="w-[50px] flex block lg:hidden border-s-2">
             <button class="w-full flex  justify-center items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
@@ -32,8 +41,12 @@ if (isset($idDiscussion)) {
         </div>
     </nav>
 
-    <!-- content -->
-    <div class="flex flex-col h-[calc(100%-150px)] py-4 relative">
+    <?php
+    require_once("./Views/Statistiques.php");
+    ?>
+
+    <!-- content Messages -->
+    <div class="flex flex-col h-[calc(100%-150px)] py-4 relative" id="MessagesWrapper">
 
         <div id="messagesDiv" class="messagesDiv overflow-y-auto">
 
@@ -50,7 +63,7 @@ if (isset($idDiscussion)) {
     </div>
 
     <!-- message textarea -->
-    <div class="flex h-[100px] justify-center bg-white <?php if (!isset($discussionInfo)) echo 'hidden' ?>">
+    <div class="flex h-[100px] justify-center bg-white <?php if (!isset($discussionInfo)) echo 'hidden' ?>" id="MessageInputWrapper">
         <div class="w-[90%] h-[50px] flex items-center relative">
             <form autocomplete="off" id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md ">
                 <input id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
@@ -124,7 +137,7 @@ if (isset($idDiscussion)) {
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-8"}'>
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>${ message['content'] }</div>
+                                <div class="break-words">${ message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
                                 </div>
@@ -138,7 +151,7 @@ if (isset($idDiscussion)) {
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end mt-1'>
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]' >
-                                <div>${message['content'] }</div>
+                                <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
                                 </div>
@@ -153,7 +166,7 @@ if (isset($idDiscussion)) {
                         <div class='msgOthers flex justify-start ${previousUser == null ? "mt-0" : "mt-8"}'>
                             <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("../../usersImages/${message['pp']}");'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>${message['content'] }</div>
+                                <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
                                 </div>
@@ -166,7 +179,7 @@ if (isset($idDiscussion)) {
                         <div class='msgOthers flex justify-start mt-1'>
                             <div class='w-[40px] h-[40px] m-2 ms-0'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div>${message['content'] }</div>
+                                <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5)}</span>
                                 </div>
@@ -212,7 +225,7 @@ if (isset($idDiscussion)) {
             if (idDiscussion != null && isValidIdDiscussion == true) {
                 getMessages(idDiscussion);
             }
-        }, 500); // toutes les 500ms
+        }, 1000); // toutes les secondes
 
         // Gérer l'envoi de messages avec l'ID de discussion
         var messageForm = document.getElementById("message-form");
@@ -245,4 +258,64 @@ if (isset($idDiscussion)) {
             xhr.send("message=" + encodeURIComponent(message) + "&idDiscussion=" + idDiscussion + "&idUser=" + <?php echo $user['idUser']; ?>);
         });
     });
+
+    // Charts
+    const totalMessChart = document.getElementById('totalMessChart');
+
+    new Chart(totalMessChart, {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode($allUsersFromTotalMessStats); ?>,
+            datasets: [{
+                label: '# of Votes',
+                data: <?php echo json_encode($allTotalsFromTotalMessStats); ?>,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            maintainAspectRatio: false,
+        }
+    });
+
+    const totalMessByMonthByUsersChart = document.getElementById('messByMonthsChart');
+
+    new Chart(totalMessByMonthByUsersChart, {
+        type: 'line',
+        data: <?php echo json_encode($chartData, JSON_NUMERIC_CHECK); ?>,
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // toggle sections
+    function toggleStats() {
+        var statsWrapper = document.getElementById("StatsWrapper");
+        var messagesWrapper = document.getElementById("MessagesWrapper");
+        var messageInputWrapper = document.getElementById("MessageInputWrapper");
+
+        if (statsWrapper.classList.contains("hidden")) {
+            statsWrapper.classList.remove("hidden");
+            statsWrapper.classList.add("flex");
+            messagesWrapper.classList.add("hidden");
+            messageInputWrapper.classList.add("hidden");
+        } else {
+            statsWrapper.classList.add("hidden");
+            messagesWrapper.classList.remove("hidden");
+            messageInputWrapper.classList.remove("hidden");
+            messagesWrapper.classList.add("flex");
+            messageInputWrapper.classList.add("flex");
+        }
+    }
 </script>
