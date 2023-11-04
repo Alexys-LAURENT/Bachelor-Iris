@@ -4,7 +4,7 @@ if (isset($idDiscussion)) {
 }
 ?>
 
-<div class="lg:w-[57%] w-full overflow-hidden dark:bg-dark">
+<div class="lg:w-[57%] w-full overflow-hidden dark:bg-dark transition-all duration-500">
     <nav class="w-full flex h-[50px] border-b-2 dark:text-white">
 
         <div onclick="toggleConv()" class="min-w-[50px] flex block lg:hidden border-e-2">
@@ -17,7 +17,7 @@ if (isset($idDiscussion)) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('../../usersImages/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
+            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('http://images.foda4953.odns.fr/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
             <div class="flex flex-col ms-3">
                 <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
                 <span class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?>">En ligne</span>
@@ -53,8 +53,7 @@ if (isset($idDiscussion)) {
         </div>
 
         <!-- button scroll to bottom -->
-        <div id="scrollToBottomButton" onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 mr-4 flex justify-center items-center cursor-pointer select-none">
-
+        <div id="scrollToBottomButton" onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 me-2 flex justify-center items-center cursor-pointer select-none hidden">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-arrow-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v6.793l2.146-2.147a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 10.293V4a.5.5 0 0 1 .5-.5Z" />
             </svg>
@@ -63,7 +62,7 @@ if (isset($idDiscussion)) {
     </div>
 
     <!-- message textarea -->
-    <div class="flex h-[100px] justify-center bg-white dark:bg-dark <?php if (!isset($discussionInfo)) echo 'hidden' ?>" id="MessageInputWrapper">
+    <div class="flex h-[100px] justify-center bg-white dark:bg-dark transition-all duration-500 <?php if (!isset($discussionInfo)) echo 'hidden' ?>" id="MessageInputWrapper">
         <div class="w-[90%] h-[50px] flex items-center relative">
             <form autocomplete="off" id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md bg-white">
                 <input id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
@@ -95,17 +94,14 @@ if (isset($idDiscussion)) {
 
     function toggleScrollToBottomButton() {
         var messagesDiv = document.getElementsByClassName("messagesDiv")[0];
-        var scrollToBottomButton = document.getElementsByClassName("scrollToBottomButton")[0];
+        var scrollToBottomButton = document.getElementById("scrollToBottomButton");
+        console.log(messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight);
         if (messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight > 750) {
-            scrollToBottomButton.style.display = "flex";
+            scrollToBottomButton.classList.remove("hidden");
         } else {
-            scrollToBottomButton.style.display = "none";
+            scrollToBottomButton.classList.add("hidden");
         }
     }
-
-    window.onload = function() {
-        toggleScrollToBottomButton();
-    };
 
     document.getElementsByClassName("messagesDiv")[0].addEventListener("scroll", function() {
         toggleScrollToBottomButton();
@@ -126,10 +122,10 @@ if (isset($idDiscussion)) {
     var totalMess = [];
 
     function displayMessages(messages) {
-        console.log(messages.length + " " + totalMess.length);
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
-        // get profile picture with javascript message['idUser']
+        // isGroup = if distinct idUser in messages is > 2
+        var isGroup = new Set(messages.map(message => message.idUser)).size > 2;
         messagesDiv.innerHTML = "";
         messages.forEach(message => {
             if (message['idUser'] == <?php echo $user['idUser']; ?>) {
@@ -142,7 +138,7 @@ if (isset($idDiscussion)) {
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
                                 </div>
                             </div>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("../../usersImages/${message['pp']}");'
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'
                             ></div>
                         </div>
                         `;
@@ -163,8 +159,11 @@ if (isset($idDiscussion)) {
             } else {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
-                        <div class='msgOthers flex justify-start ${previousUser == null ? "mt-0" : "mt-8"}'>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("../../usersImages/${message['pp']}");'></div>
+                    ${isGroup ? `
+                    <div class='dark:text-white text-start ms-14 ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
+                    ` : ``}
+                        <div class='msgOthers flex justify-start'>
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
@@ -190,8 +189,8 @@ if (isset($idDiscussion)) {
             }
             previousUser = message['idUser'];
         });
-        if (totalMess.length != messages.length) {
-            document.getElementById('scrollToBottomButton').style.display = "flex";
+        if (totalMess.length != messages.length && (messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight > 750)) {
+            document.getElementById('scrollToBottomButton').classList.remove("hidden");
         }
         totalMess = messages;
     }

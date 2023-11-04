@@ -1,5 +1,5 @@
 <div id="popup" class="popup">
-    <div id="popup-content" class="hidden w-full mx-4 md:mx-0 md:w-6/12 p-[20px] shadow-md bg-white rounded-sm dark:bg-dark">
+    <div id="popup-content" class="hidden w-full mx-4 md:mx-0 md:w-6/12 p-[20px] shadow-md bg-white rounded-sm dark:bg-dark z-50">
         <!-- Contenu de la popup -->
         <h2 class="text-center font-bold text-2xl mb-4">Créer une discussion</h2>
 
@@ -41,7 +41,7 @@
 
             <div class="flex gap-1">
                 <button type="submit" name="createDiscussion" class="bg-secondary text-white rounded-md text-sm py-1 px-2 hover:scale-105 transition-all">Créer</button>
-                <button id="closePopup" class="text-white rounded-md text-sm py-1 px-2 bg-red-500 hover:scale-105 transition-all">Annuler</button>
+                <input type="button" id="closePopup" class="text-white rounded-md text-sm py-1 px-2 bg-red-500 hover:scale-105 transition-all" value="Annuler">
             </div>
         </form>
     </div>
@@ -122,6 +122,7 @@
         document.getElementById('nameInputCreateDiscussion').value = '';
         document.getElementById('membersWrapperNewDiscussion').innerHTML = '';
         document.getElementById('NewDiscussionName').value = '';
+        document.getElementById('groupNameWrapper').classList.add('hidden');
         popup.style.display = "none";
         document.getElementById('popup-content').classList.add('hidden');
     }
@@ -133,6 +134,19 @@
     // Associez la fonction closePopup au clic sur le bouton "Fermer"
     const closeButton = document.querySelector("#closePopup");
     closeButton.addEventListener("click", closePopup);
+
+    // Fonction pour vérifier si le clic a eu lieu en dehors de popup-content
+    function handleClickOutside(event) {
+        const popupContent = document.getElementById('popup-content');
+        // Vérifier si le clic a eu lieu en dehors de popup-content
+        if (!popupContent.contains(event.target)) {
+            closePopup();
+        }
+    }
+
+    // Ajouter l'écouteur d'événements au conteneur de la popup
+    const popup = document.getElementById('popup');
+    popup.addEventListener('click', handleClickOutside);
 </script>
 
 
