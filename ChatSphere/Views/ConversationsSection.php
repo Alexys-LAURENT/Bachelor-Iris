@@ -78,31 +78,31 @@ if (isset($_POST['createDiscussion'])) {
                         <div class="flex relative">
                             <!-- popup statut -->
                             <div id="statutPopup" class="hidden absolute bottom-[25px] w-[150px] border border-gray-200 rounded-md shadow-md z-10 bg-white dark:bg-dark text-gray-500 dark:text-gray-300">
-                                <div class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
-                                    <div onclick="ChangeStatut('En ligne')" class="w-2 h-2 rounded-full bg-green-500">
+                                <div onclick="ChangeStatut('En ligne')" class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
+                                    <div class="w-2 h-2 rounded-full bg-green-500">
                                     </div>
                                     <p class="text-xs">En ligne</p>
                                 </div>
-                                <div class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
-                                    <div onclick="ChangeStatut('Absent')" class="w-2 h-2 rounded-full bg-yellow-500">
+                                <div onclick="ChangeStatut('Absent')" class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-500">
                                     </div>
                                     <p class="text-xs">Absent</p>
                                 </div>
-                                <div class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
-                                    <div onclick="ChangeStatut('Occupé')" class="w-2 h-2 rounded-full bg-red-500">
+                                <div onclick="ChangeStatut('Occupé')" class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
+                                    <div class="w-2 h-2 rounded-full bg-red-500">
                                     </div>
                                     <p class="text-xs">Occupé</p>
                                 </div>
-                                <div class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
-                                    <div onclick="ChangeStatut('Hors ligne')" class="w-2 h-2 rounded-full bg-gray-500">
+                                <div onclick="ChangeStatut('Hors ligne')" class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 dark:hover:text-black">
+                                    <div class="w-2 h-2 rounded-full bg-gray-500">
                                     </div>
                                     <p class="text-xs">Hors ligne</p>
                                 </div>
                             </div>
 
                             <div onclick="toggleStatut()" class="flex items-center gap-1 hover:cursor-pointer hover:bg-gray-200 rounded-md px-2 py-1 text-gray-500 dark:text-gray-300 dark:hover:text-black">
-                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                <p class="text-xs">En ligne</p>
+                                <div id="userLogedStatusColor" class="w-2 h-2 rounded-full bg-green-500"></div>
+                                <p id="userLogedStatusText" class="text-xs">En ligne</p>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="mt-[0.15rem] bi bi-chevron-up" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z" />
                                 </svg>
@@ -152,6 +152,67 @@ if (isset($_POST['createDiscussion'])) {
     function toggleStatut() {
         document.getElementById('statutPopup').classList.toggle('hidden');
     }
+
+
+    function displayUserLogedStatus(data) {
+        document.getElementById('userLogedStatusColor').classList.remove('bg-green-500');
+        document.getElementById('userLogedStatusColor').classList.remove('bg-yellow-500');
+        document.getElementById('userLogedStatusColor').classList.remove('bg-red-500');
+        document.getElementById('userLogedStatusColor').classList.remove('bg-gray-500');
+        switch (data.statut) {
+            case "En ligne":
+                document.getElementById('userLogedStatusColor').classList.add('bg-green-500');
+                document.getElementById('userLogedStatusText').innerHTML = "En ligne";
+                break;
+            case "Absent":
+                document.getElementById('userLogedStatusColor').classList.add('bg-yellow-500');
+                document.getElementById('userLogedStatusText').innerHTML = "Absent";
+                break;
+            case "Occupé":
+                document.getElementById('userLogedStatusColor').classList.add('bg-red-500');
+                document.getElementById('userLogedStatusText').innerHTML = "Occupé";
+                break;
+            case "Hors ligne":
+                document.getElementById('userLogedStatusColor').classList.add('bg-gray-500');
+                document.getElementById('userLogedStatusText').innerHTML = "Hors ligne";
+                break;
+        }
+    }
+
+    function ChangeStatut(newStatus) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "update_userLogedStatus.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            document.getElementById('statutPopup').classList.toggle('hidden');
+        };
+        xhr.send("status=" + newStatus + "&idUser=" + <?php echo $user['idUser']; ?>);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fonction pour récupérer les messages d'une discussion spécifique
+        function getUserLogedStatus(idUser) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "get_userStatus.php?idUser=" + idUser, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    displayUserLogedStatus(data);
+                }
+            };
+            xhr.send();
+        }
+
+
+        // Appeler la fonction getMessages avec l'ID de discussion spécifique
+        const idUser = <?php echo $user['idUser']; ?>;
+
+        setInterval(function() {
+            if (idUser != null) {
+                getUserLogedStatus(idUser);
+            }
+        }, 1000); // toutes les secondes
+    });
 </script>
 
 </aside>

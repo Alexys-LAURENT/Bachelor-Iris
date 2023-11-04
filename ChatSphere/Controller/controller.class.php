@@ -28,11 +28,19 @@ class Controleur
     public function getDiscussionInfo($idUser, $idDiscussion)
     {
         $name = $this->unModele->getDiscussionName($idDiscussion, $idUser);
-        $pp = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
-        return array(
-            "nom" => $name['nom'],
-            "pp" => $pp['pp']
-        );
+        $usersConv = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
+        if (isset($usersConv['idUser'])) {
+            return array(
+                "idUser" => $usersConv['idUser'],
+                "nom" => $name['nom'],
+                "pp" => $usersConv['pp']
+            );
+        } else {
+            return array(
+                "nom" => $name['nom'],
+                "pp" => $usersConv['pp']
+            );
+        }
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)
@@ -53,6 +61,16 @@ class Controleur
     public function checkIdDiscussion($idDiscussion, $idUser)
     {
         return $this->unModele->checkIdDiscussion($idDiscussion, $idUser);
+    }
+
+    public function getUserStatus($idUser)
+    {
+        return $this->unModele->getUserstatus($idUser);
+    }
+
+    public function updateUserStatus($newStatus, $idUser)
+    {
+        $this->unModele->updateUserStatus($newStatus, $idUser);
     }
 
     // STATISTIQUES ///////////////////////////////

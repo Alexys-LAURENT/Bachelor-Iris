@@ -20,7 +20,10 @@ if (isset($idDiscussion)) {
             <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('../../usersImages/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
             <div class="flex flex-col ms-3">
                 <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
-                <span class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?>">En ligne</span>
+                <div class="flex items-center gap-2">
+                    <div id="userConvStatusColor" class="w-2 h-2 rounded-full <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?> "></div>
+                    <span id="userConvStatusText" class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
+                </div>
             </div>
         </div>
 
@@ -126,7 +129,6 @@ if (isset($idDiscussion)) {
     var totalMess = [];
 
     function displayMessages(messages) {
-        console.log(messages.length + " " + totalMess.length);
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
         // get profile picture with javascript message['idUser']
@@ -196,6 +198,31 @@ if (isset($idDiscussion)) {
         totalMess = messages;
     }
 
+    function displayUserConvStatus(data) {
+        document.getElementById('userConvStatusColor').classList.remove('bg-green-500');
+        document.getElementById('userConvStatusColor').classList.remove('bg-yellow-500');
+        document.getElementById('userConvStatusColor').classList.remove('bg-red-500');
+        document.getElementById('userConvStatusColor').classList.remove('bg-gray-500');
+        switch (data.statut) {
+            case "En ligne":
+                document.getElementById('userConvStatusColor').classList.add('bg-green-500');
+                document.getElementById('userConvStatusText').innerHTML = "En ligne";
+                break;
+            case "Absent":
+                document.getElementById('userConvStatusColor').classList.add('bg-yellow-500');
+                document.getElementById('userConvStatusText').innerHTML = "Absent";
+                break;
+            case "Occupé":
+                document.getElementById('userConvStatusColor').classList.add('bg-red-500');
+                document.getElementById('userConvStatusText').innerHTML = "Occupé";
+                break;
+            case "Hors ligne":
+                document.getElementById('userConvStatusColor').classList.add('bg-gray-500');
+                document.getElementById('userConvStatusText').innerHTML = "Hors ligne";
+                break;
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         // Fonction pour récupérer les messages d'une discussion spécifique
         function getMessages(idDiscussion) {
@@ -214,6 +241,20 @@ if (isset($idDiscussion)) {
             xhr.send();
         }
 
+        function getDiscussionUserStatus(idUser) {
+            if (idUser != undefined) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "get_userStatus.php?idUser=" + idUser, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        displayUserConvStatus(data);
+                    }
+                };
+                xhr.send();
+            }
+        }
+
 
         // Appeler la fonction getMessages avec l'ID de discussion spécifique
         const queryString = window.location.search;
@@ -224,6 +265,7 @@ if (isset($idDiscussion)) {
         setInterval(function() {
             if (idDiscussion != null && isValidIdDiscussion == true) {
                 getMessages(idDiscussion);
+                getDiscussionUserStatus(<?php if (isset($discussionInfo['idUser'])) echo $discussionInfo['idUser']; ?>);
             }
         }, 1000); // toutes les secondes
 
