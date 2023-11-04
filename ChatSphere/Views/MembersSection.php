@@ -25,7 +25,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
                     </svg>
                 </button>
             </div>
-            <div id="filterPopUp" class="max-h-0 transition-all overflow-hidden top-[70px] right-6  absolute rounded-md shadow-xl z-10">
+            <div id="filterPopUp" class="max-h-0 overflow-hidden top-[70px] right-6 absolute rounded-md shadow-xl z-10 bg-white dark:bg-dark">
                 <ul class="flex flex-col">
                     <?php
                     foreach ($metiers as $i => $metier) {

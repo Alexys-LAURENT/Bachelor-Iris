@@ -98,7 +98,6 @@ if (isset($idDiscussion)) {
     function toggleScrollToBottomButton() {
         var messagesDiv = document.getElementsByClassName("messagesDiv")[0];
         var scrollToBottomButton = document.getElementById("scrollToBottomButton");
-        console.log(messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight);
         if (messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight > 750) {
             scrollToBottomButton.classList.remove("hidden");
         } else {
