@@ -14,7 +14,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="<?php echo $user['theme'] ?>">
+<html lang="en" class="<?php echo $user['theme'] ?> select-none">
 
 <head>
     <meta charset="UTF-8">

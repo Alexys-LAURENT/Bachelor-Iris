@@ -26,6 +26,13 @@ create table
         hashedPass VARCHAR(50) NOT NULL,
         metier VARCHAR(50) NOT NULL,
         pp VARCHAR(255) DEFAULT 'default.png',
+        theme VARCHAR(5) NOT NULL DEFAULT 'light',
+        statut enum(
+            'Absent',
+            'En ligne',
+            'Occupé',
+            'Hors ligne'
+        ) NOT NULL DEFAULT 'Hors ligne',
         constraint PK_USER PRIMARY KEY(idUser),
         constraint FK_USER_ENTREPRISE FOREIGN KEY(idEntreprise) REFERENCES entreprises(idEntreprise)
     ) engine = innodb,

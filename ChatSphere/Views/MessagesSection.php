@@ -51,7 +51,7 @@ if (isset($idDiscussion)) {
     <!-- content Messages -->
     <div class="flex flex-col h-[calc(100%-150px)] py-4 relative" id="MessagesWrapper">
 
-        <div id="messagesDiv" class="messagesDiv overflow-y-auto">
+        <div id="messagesDiv" class="messagesDiv overflow-y-auto select-text">
 
         </div>
 
