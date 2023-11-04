@@ -4,7 +4,7 @@ if (isset($idDiscussion)) {
 }
 ?>
 
-<div class="lg:w-[57%] w-full overflow-hidden dark:bg-dark">
+<div class="lg:w-[57%] w-full overflow-hidden dark:bg-dark transition-all duration-500">
     <nav class="w-full flex h-[50px] border-b-2 dark:text-white">
 
         <div onclick="toggleConv()" class="min-w-[50px] flex block lg:hidden border-e-2">
@@ -17,7 +17,7 @@ if (isset($idDiscussion)) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('../../usersImages/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
+            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('http://images.foda4953.odns.fr/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
             <div class="flex flex-col ms-3">
                 <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
                 <span class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?>">En ligne</span>
@@ -63,7 +63,7 @@ if (isset($idDiscussion)) {
     </div>
 
     <!-- message textarea -->
-    <div class="flex h-[100px] justify-center bg-white dark:bg-dark <?php if (!isset($discussionInfo)) echo 'hidden' ?>" id="MessageInputWrapper">
+    <div class="flex h-[100px] justify-center bg-white dark:bg-dark transition-all duration-500 <?php if (!isset($discussionInfo)) echo 'hidden' ?>" id="MessageInputWrapper">
         <div class="w-[90%] h-[50px] flex items-center relative">
             <form autocomplete="off" id="message-form" class="flex w-full items-center h-[44px] border-2 border-gray-200 rounded-md bg-white">
                 <input id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none" placeholder="Ecrivez votre message ici..." maxlength="255">
@@ -142,7 +142,7 @@ if (isset($idDiscussion)) {
                                     <span class='text-2xs'>${message['timestamp'].substring(16,5) }</span>
                                 </div>
                             </div>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("../../usersImages/${message['pp']}");'
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'
                             ></div>
                         </div>
                         `;
@@ -164,7 +164,7 @@ if (isset($idDiscussion)) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                         <div class='msgOthers flex justify-start ${previousUser == null ? "mt-0" : "mt-8"}'>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("../../usersImages/${message['pp']}");'></div>
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
