@@ -2,8 +2,8 @@
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
 $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
 ?>
-<div id="membersSection" class="lg:w-[20%] w-0 max-w-[100%] right-0 h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-s-2 dark:bg-dark dark:text-white">
-    <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
+<div id="membersSection" class="lg:w-[20%] w-0 max-w-[100%] right-0 h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-s-2 dark:border-gray-800 dark:bg-dark dark:text-white">
+    <div class="h-[50px] flex justify-between items-center p-4 border-b-2 dark:border-gray-800">
         <p class="flex gap-2 items-center">Membres <span class="flex items-center text-black justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($colleagues); ?></span></p>
 
         <!-- close drawer btn -->
@@ -18,7 +18,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
     <div class="flex flex-col items-center gap-4 relative min-h-[calc(100%-50px)] max-h-[calc(100%-50px)] overflow-hidden">
         <div class="flex w-full mt-3 max-h-[50px] justify-center ">
             <div class="flex w-11/12  justify-between">
-                <input onkeyup="showColleaguesFiltered()" id="nameInput" type="text" placeholder="Rechercher" class="rounded-md bg-gray-100 px-2 py-1 w-10/12 focus:outline-border cursor-text text-gray-600">
+                <input onkeyup="showColleaguesFiltered()" id="nameInput" type="text" placeholder="Rechercher" class="rounded-md bg-gray-100 px-2 py-1 w-10/12 focus:outline-border cursor-text text-gray-600 dark:bg-darkHover dark:text-white dark:focus:outline-black">
                 <button onclick='handleShowFilter()' class="bg-secondary mx-2 rounded-md w-2/12 max-w-[50px] aspect-square flex justify-center items-center">
                     <svg class="relative z-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />

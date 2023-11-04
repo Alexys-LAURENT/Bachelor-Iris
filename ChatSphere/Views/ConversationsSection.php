@@ -10,8 +10,8 @@ if (isset($_POST['createDiscussion'])) {
     header('Location: ?token=' . $_GET['token'] . '&discussion=' . $createDiscussion);
 }
 ?>
-<div id="convSection" class="lg:w-[23%] w-0 left-0 max-w-[100%]  h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-e-2 z-10 dark:bg-dark dark:text-white">
-    <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
+<div id="convSection" class="lg:w-[23%] w-0 left-0 max-w-[100%]  h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-e-2 dark:border-gray-800 z-10 dark:bg-dark dark:text-white">
+    <div class="h-[50px] flex justify-between items-center p-4 border-b-2 dark:border-gray-800">
 
         <div class="flex items-center">
             <p class="flex gap-2 items-center">Discussions <span class="flex items-center text-black justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($discussions); ?></span></p>
@@ -42,7 +42,7 @@ if (isset($_POST['createDiscussion'])) {
 
         <div class="flex flex-col items-center gap-1 relative w-full">
             <div class="flex w-full justify-between w-full my-3 h-[30px] px-4">
-                <input id="searchInput" type="text" placeholder="Rechercher" class="rounded-md bg-userMessage px-2 py-1 w-full focus:outline-primary cursor-text text-gray-600">
+                <input id="searchInput" type="text" placeholder="Rechercher" class="rounded-md bg-userMessage dark:bg-darkHover px-2 py-1 w-full focus:outline-primary dark:focus:outline-black cursor-text text-gray-600 dark:text-gray-400">
 
             </div>
 
@@ -51,10 +51,10 @@ if (isset($_POST['createDiscussion'])) {
                 <?php
                 foreach ($discussions as $discussion) {
                     isset($_GET['discussion']) ? $getDiscussion = $_GET['discussion'] : $getDiscussion = null;
-                    $class = $getDiscussion == $discussion['idDiscussion'] ? 'bg-hover dark:text-black' : '';
+                    $class = $getDiscussion == $discussion['idDiscussion'] ? 'bg-hover dark:bg-darkHover' : '';
                     echo '
-                <a href="?token=' . $_GET['token'] . '&discussion=' . $discussion['idDiscussion'] . '" class="px-2 p-0 w-full dark:hover:text-black">
-                    <div class="w-full flex flex-col gap-2 hover:bg-hover hover:cursor-pointer rounded-md py-2 ' . $class . ' ">
+                <a href="?token=' . $_GET['token'] . '&discussion=' . $discussion['idDiscussion'] . '" class="px-2 p-0 w-full">
+                    <div class="w-full flex flex-col gap-2 hover:bg-hover dark:hover:bg-darkHover hover:cursor-pointer rounded-md py-2 ' . $class . ' ">
                         <!-- Contact row -->
                         <div class="flex max-w-full mx-3 gap-2">
                             <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(http://images.foda4953.odns.fr/' . $discussion['pp'] . ');"
@@ -70,7 +70,7 @@ if (isset($_POST['createDiscussion'])) {
                 ?>
             </div>
 
-            <div class="flex gap-2 w-full h-[68px] border-t-2 items-center px-3 justify-between">
+            <div class="flex gap-2 w-full h-[68px] border-t-2 dark:border-gray-800 items-center px-3 justify-between">
                 <div class="flex gap-2">
                     <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(http://images.foda4953.odns.fr/<?php echo $user['pp']; ?>);"></div>
                     <div class="flex flex-col w-full">
