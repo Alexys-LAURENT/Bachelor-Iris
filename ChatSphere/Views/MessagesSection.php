@@ -53,8 +53,7 @@ if (isset($idDiscussion)) {
         </div>
 
         <!-- button scroll to bottom -->
-        <div id="scrollToBottomButton" onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 mr-4 flex justify-center items-center cursor-pointer select-none">
-
+        <div id="scrollToBottomButton" onclick="scrollToBottom()" class="scrollToBottomButton w-[50px] h-[50px] bg-white border shadow rounded-full absolute bottom-0 right-0 mb-4 me-2 flex justify-center items-center cursor-pointer select-none hidden">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-arrow-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v6.793l2.146-2.147a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 10.293V4a.5.5 0 0 1 .5-.5Z" />
             </svg>
@@ -95,17 +94,14 @@ if (isset($idDiscussion)) {
 
     function toggleScrollToBottomButton() {
         var messagesDiv = document.getElementsByClassName("messagesDiv")[0];
-        var scrollToBottomButton = document.getElementsByClassName("scrollToBottomButton")[0];
+        var scrollToBottomButton = document.getElementById("scrollToBottomButton");
+        console.log(messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight);
         if (messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight > 750) {
-            scrollToBottomButton.style.display = "flex";
+            scrollToBottomButton.classList.remove("hidden");
         } else {
-            scrollToBottomButton.style.display = "none";
+            scrollToBottomButton.classList.add("hidden");
         }
     }
-
-    window.onload = function() {
-        toggleScrollToBottomButton();
-    };
 
     document.getElementsByClassName("messagesDiv")[0].addEventListener("scroll", function() {
         toggleScrollToBottomButton();
@@ -193,8 +189,8 @@ if (isset($idDiscussion)) {
             }
             previousUser = message['idUser'];
         });
-        if (totalMess.length != messages.length) {
-            document.getElementById('scrollToBottomButton').style.display = "flex";
+        if (totalMess.length != messages.length && (messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight > 750)) {
+            document.getElementById('scrollToBottomButton').classList.remove("hidden");
         }
         totalMess = messages;
     }
