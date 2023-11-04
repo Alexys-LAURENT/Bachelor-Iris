@@ -25,6 +25,7 @@ create table
         email varchar(50) not null,
         hashedPass VARCHAR(50) NOT NULL,
         metier VARCHAR(50) NOT NULL,
+        pp VARCHAR(255) DEFAULT 'default.png',
         constraint PK_USER PRIMARY KEY(idUser),
         constraint FK_USER_ENTREPRISE FOREIGN KEY(idEntreprise) REFERENCES entreprises(idEntreprise)
     ) engine = innodb,
@@ -33,6 +34,7 @@ create table
 create table
     discussions(
         idDiscussion int not null auto_increment,
+        nom varchar(255),
         constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion)
     ) engine = innodb,
     charset = utf8;
@@ -111,11 +113,12 @@ VALUES (
 INSERT INTO
     users (
         idEntreprise,
-        nom,
         prenom,
+        nom,
         email,
         hashedPass,
-        metier
+        metier,
+        pp
     )
 VALUES (
         1,
@@ -123,14 +126,64 @@ VALUES (
         'Doe',
         'johndoe@email.com',
         '123',
-        'Développeur Web'
+        'Développeur Web',
+        'John-Doe.jpg'
     ), (
         1,
         'Alice',
         'Smith',
         'alicesmith@email.com',
         '123',
-        'Administrateur Systèmes'
+        'Administrateur Systèmes',
+        'Alice-Smith.jpg'
+    ), (
+        1,
+        'Jane',
+        'Doe',
+        'janedoe@email.com',
+        '123',
+        'Développeur Full-Stack',
+        'default.png'
+    ), (
+        1,
+        'Bob',
+        'Smith',
+        'bobsmith@email.com',
+        '123',
+        'Développeur Front-End',
+        'default.png'
+    ), (
+        1,
+        'Michael',
+        'Clark',
+        'michaelclark@email.com',
+        '123',
+        'Développeur Back-End',
+        'Michael-Clark.jpg'
+    ), (
+        1,
+        'Ella',
+        'Davis',
+        'elladavis@email.com',
+        '123',
+        'Développeur Full-Stack',
+        'Ella-Davis.jpg'
+    ), (
+        1,
+        'Robert',
+        'Johnson',
+        'robertjohnson@email.com',
+        '123',
+        'Développeur Front-End',
+        'Robert-Jonhson.jpg'
+    ), (
+        1,
+        'Alexys',
+        'Laurent',
+        'alexyslaurent@email.com',
+        '123',
+        'Chef de projet',
+        'Alexys-Laurent.jpg'
     );
 
 -- Entreprise 2 (Data Systems)
@@ -138,8 +191,8 @@ VALUES (
 INSERT INTO
     users (
         idEntreprise,
-        nom,
         prenom,
+        nom,
         email,
         hashedPass,
         metier
@@ -165,8 +218,8 @@ VALUES (
 INSERT INTO
     users (
         idEntreprise,
-        nom,
         prenom,
+        nom,
         email,
         hashedPass,
         metier
@@ -180,9 +233,19 @@ VALUES (
         'Développeur Full-Stack'
     );
 
+-- Insert d'un token test
+
+INSERT INTO
+    token (idUser, token, expireAt)
+VALUES (
+        1,
+        'test',
+        '2031-01-01 00:00:00'
+    );
+
 -- Insertion des discussions
 
-INSERT INTO discussions VALUES (1), (2), (3);
+INSERT INTO discussions VALUES (1,1), (2,2), (3,3);
 
 -- Insertion des utilisateurs dans les discussions
 

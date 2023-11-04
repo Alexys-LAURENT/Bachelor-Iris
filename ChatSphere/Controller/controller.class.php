@@ -25,13 +25,45 @@ class Controleur
         return $this->unModele->checkToken($token);
     }
 
-    public function getConversationName($idUser, $idDiscussion)
+    public function getDiscussionInfo($idUser, $idDiscussion)
     {
-        return $this->unModele->getConversationName($idUser, $idDiscussion);
+        $name = $this->unModele->getDiscussionName($idDiscussion, $idUser);
+        $pp = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
+        return array(
+            "nom" => $name['nom'],
+            "pp" => $pp['pp']
+        );
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)
     {
         return $this->unModele->sendMessage($idDiscussion, $idUser, $message);
+    }
+
+    public function getDiscussionsDetails($idUser)
+    {
+        return $this->unModele->getDiscussionsDetails($idUser);
+    }
+
+    public function createDiscussion($nom, $members)
+    {
+        return $this->unModele->createDiscussion($nom, $members);
+    }
+
+    public function checkIdDiscussion($idDiscussion, $idUser)
+    {
+        return $this->unModele->checkIdDiscussion($idDiscussion, $idUser);
+    }
+
+    // STATISTIQUES ///////////////////////////////
+
+    public function getTotalMessStats($idDiscussion)
+    {
+        return $this->unModele->getTotalMessStats($idDiscussion);
+    }
+
+    public function getTotalMessByMonthByUsersStats($idDiscussion)
+    {
+        return $this->unModele->getTotalMessByMonthByUsersStats($idDiscussion);
     }
 }

@@ -9,6 +9,9 @@ if ($user == false) {
     header("Location: login.php");
 }
 
+if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discussion'], $user['idUser']) == true) {
+    $idDiscussion = $_GET['discussion'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +37,9 @@ if ($user == false) {
         }
     </script>
     <script src="./js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="shortcut icon" href="./images/Message-icon.svg" type="image/x-icon">
 </head>
 
 <body class="overflow-hidden">
@@ -46,5 +51,13 @@ if ($user == false) {
         ?>
     </div>
 </body>
+
+<script>
+    if (!Notification) {
+        alert('Le navigateur ne supporte pas les notifications.');
+    }
+    Notification.requestPermission();
+    var notification = new Notification('Bonjour !');
+</script>
 
 </html>

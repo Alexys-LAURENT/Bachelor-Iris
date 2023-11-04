@@ -20,6 +20,18 @@ class Modele
         }
     }
 
+    public function getUserNameById($idUser)
+    {
+        $sql = "select nom,prenom from users where idUser = :idUser;";
+        $donnees = array(
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $user = $select->fetch();
+        return $user['prenom'] . ' ' . $user['nom'];
+    }
+
     public function getAllColleagues($idUser)
     {
         $sql = "select * from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser ;";
@@ -33,7 +45,7 @@ class Modele
 
     public function getAllMessages($idDiscussion)
     {
-        $sql = "select * from messages where idDiscussion = :idDiscussion order by timestamp asc;";
+        $sql = "select messages.*, u.pp from messages inner join users u on u.idUser = messages.idUser where idDiscussion = :idDiscussion order by timestamp asc;";
         $donnees = array(
             ":idDiscussion" => $idDiscussion
         );
@@ -71,28 +83,76 @@ class Modele
         }
     }
 
-    public function getConversationName($idUser, $idDiscussion)
+    public function getDiscussionName($idDiscussion, $idUser)
     {
-        $sql = "select * from users where idUser in (select idUser from discussions_users where idDiscussion = :idDiscussion and idUser != :idUser);";
+        if ($this->isDiscussionAGroup($idDiscussion) == true) {
+            $sql = "select nom from discussions where idDiscussion = :idDiscussion ";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $name = $select->fetch();
+            return $name;
+        } else {
+            $sql = "select prenom, nom from users where idUser = (select idUser from discussions_users where idDiscussion = :idDiscussion and not idUser = :idUser limit 1)";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion,
+                ":idUser" => $idUser
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $name = $select->fetch();
+            $name = $name['prenom'] . ' ' . $name['nom'];
+            return array(
+                "nom" => $name
+            );
+        }
+    }
+
+    public function getDiscussionImage($idDiscussion, $idUser)
+    {
+        if ($this->isDiscussionAGroup($idDiscussion) == true) {
+            return array(
+                "pp" => "group.png"
+            );
+        } else {
+            $sql = "select pp from users where idUser = (select idUser from discussions_users where idDiscussion = :idDiscussion and not idUser = :idUser limit 1)";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion,
+                ":idUser" => $idUser
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $image = $select->fetch();
+            return $image;
+        }
+    }
+
+    public function isDiscussionAGroup($idDiscussion)
+    {
+        $sql = "select * from discussions_users where idDiscussion = :idDiscussion";
         $donnees = array(
-            ":idDiscussion" => $idDiscussion,
-            ":idUser" => $idUser
+            ":idDiscussion" => $idDiscussion
         );
         $select = $this->unPDO->prepare($sql);
         $select->execute($donnees);
         $users = $select->fetchAll();
-        return $users;
+        if (count($users) > 2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)
     {
         try {
-            $sql = "insert into messages values (null, :idDiscussion, :idUser, :content, :timestamp);";
+            $sql = "insert into messages (idDiscussion,idUser,content) values (:idDiscussion, :idUser, :content);";
             $donnees = array(
                 ":idDiscussion" => $idDiscussion,
                 ":idUser" => $idUser,
-                ":content" => $message,
-                ":timestamp" => date("Y-m-d H:i:s")
+                ":content" => $message
             );
             $insert = $this->unPDO->prepare($sql);
             $insert->execute($donnees);
@@ -101,5 +161,191 @@ class Modele
             echo $e->getMessage();
             return false;
         }
+    }
+
+    public function getDiscussionsDetails($idUser)
+    {
+        $sql = "SELECT d.idDiscussion,
+        d.nom,
+        SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message
+        FROM discussions d
+        INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
+        LEFT JOIN messages m ON d.idDiscussion = m.idDiscussion
+        WHERE d.idDiscussion IN (
+            SELECT idDiscussion
+            FROM discussions_users
+            WHERE idUser = :idUser
+        )
+        GROUP BY d.idDiscussion";
+
+        $donnees = array(
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $discussions = $select->fetchAll();
+
+        foreach ($discussions as $i => $discussion) {
+            $image = $this->getDiscussionImage($discussion['idDiscussion'], $idUser);
+            $discussion['pp'] = $image['pp'];
+            $discussions[$i] = $discussion;
+
+            if ($this->isDiscussionAGroup($discussion['idDiscussion']) == false) {
+                $sql = "SELECT 
+                GROUP_CONCAT(DISTINCT CASE WHEN u.idUser != :idUser THEN CONCAT(u.prenom,' ',u.nom) ELSE NULL END) AS participants
+            FROM discussions d
+            INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
+            INNER JOIN users u ON du.idUser = u.idUser
+            WHERE d.idDiscussion = $discussion[idDiscussion]
+            GROUP BY d.idDiscussion";
+                $donnees = array(
+                    ":idUser" => $idUser
+                );
+                $select = $this->unPDO->prepare($sql);
+                $select->execute($donnees);
+                $discussionWithPersonName = $select->fetch();
+                $discussion['nom'] = $discussionWithPersonName['participants'];
+                $discussions[$i] = $discussion;
+            }
+        }
+        return $discussions;
+    }
+
+    public function createDiscussion($nom, $members)
+    {
+
+        try {
+
+            //check if 1 to 1 discussion already exist
+            if (count($members) == 2) {
+                $sqlCheck = "SELECT idDiscussion
+            FROM discussions_users
+            WHERE idDiscussion IN (
+                SELECT idDiscussion
+                FROM discussions_users
+                WHERE idUser = :idUser1
+                OR idUser = :idUser2
+                GROUP BY idDiscussion
+                HAVING COUNT(DISTINCT idUser) = 2
+            )
+            GROUP BY idDiscussion
+            HAVING COUNT(*) = 2;";
+                $donnees = array(
+                    ":idUser1" => $members[0],
+                    ":idUser2" => $members[1]
+                );
+                $select = $this->unPDO->prepare($sqlCheck);
+                $select->execute($donnees);
+                $discussion = $select->fetch();
+                if ($select->rowCount() == 1) {
+                    return $discussion['idDiscussion'];
+                }
+            }
+
+
+            $sql = "insert into discussions (nom) values (:nom);";
+            $donnees = array(
+                ":nom" => $nom
+            );
+            $insert = $this->unPDO->prepare($sql);
+            $insert->execute($donnees);
+            $idDiscussion = $this->unPDO->lastInsertId();
+
+            foreach ($members as $member) {
+                $sql = "insert into discussions_users (idDiscussion, idUser) values (:idDiscussion, :idUser);";
+                $donnees = array(
+                    ":idDiscussion" => $idDiscussion,
+                    ":idUser" => $member
+                );
+                $insert = $this->unPDO->prepare($sql);
+                $insert->execute($donnees);
+            }
+            return $idDiscussion;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return;
+        }
+    }
+
+    public function checkIdDiscussion($idDiscussion, $idUser)
+    {
+        $sql = "select * from discussions_users where idDiscussion = :idDiscussion and idUser = :idUser;";
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion,
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $discussion = $select->fetch();
+        if ($select->rowCount() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // STATISTIQUES ////////////////////////////////
+
+    public function getTotalMessStats($idDiscussion)
+    {
+        $sql = "SELECT count(m.idMessage) as totalMess, CONCAT(u.nom,' ',u.prenom) as nom from messages m INNER JOIN users u on m.idUser = u.idUser where m.`idDiscussion` = :idDiscussion GROUP BY m.`idUser` ";
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $totalMess = $select->fetchAll();
+        return $totalMess;
+    }
+
+    public function getTotalMessByMonthByUsersStats($idDiscussion)
+    {
+        $totalAllUser = [];
+
+        $sql = 'select idUser from discussions_users where idDiscussion = :idDiscussion';
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $users = $select->fetchAll();
+
+        foreach ($users as $user) {
+            $sql = "SELECT 
+        DATE_FORMAT(DATE_SUB(NOW(), INTERVAL n MONTH), '%Y-%m') AS mois,
+        u.prenom, 
+        u.nom, 
+        IFNULL(COUNT(m.idMessage), 0) AS nombre_total_de_messages
+    FROM
+        (SELECT 0 AS n
+         UNION ALL SELECT 1
+         UNION ALL SELECT 2
+         UNION ALL SELECT 3
+         UNION ALL SELECT 4
+         UNION ALL SELECT 5
+         UNION ALL SELECT 6
+         UNION ALL SELECT 7
+         UNION ALL SELECT 8
+         UNION ALL SELECT 9
+         UNION ALL SELECT 10
+         UNION ALL SELECT 11) AS months
+    LEFT JOIN users u ON u.idUser = :idUser
+    LEFT JOIN discussions d ON d.idDiscussion = :idDiscussion
+    LEFT JOIN messages m ON DATE_FORMAT(DATE_SUB(NOW(), INTERVAL months.n MONTH), '%Y-%m') = DATE_FORMAT(m.timestamp, '%Y-%m')
+                        AND m.idUser = u.idUser
+                        AND m.idDiscussion = d.idDiscussion
+    WHERE DATE_FORMAT(DATE_SUB(NOW(), INTERVAL months.n MONTH), '%Y-%m') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 11 MONTH), '%Y-%m')
+    GROUP BY mois, u.prenom, u.nom
+    ORDER BY mois";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion,
+                ":idUser" => $user['idUser']
+            );
+            $select = $this->unPDO->prepare($sql);
+            $select->execute($donnees);
+            $totalMessByMonthByOneUser = $select->fetchAll();
+            array_push($totalAllUser, $totalMessByMonthByOneUser);
+        }
+        return $totalAllUser;
     }
 }
