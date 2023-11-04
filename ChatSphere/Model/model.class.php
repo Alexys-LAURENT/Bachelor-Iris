@@ -117,7 +117,7 @@ class Modele
                 "pp" => "group.png"
             );
         } else {
-            $sql = "select pp from users where idUser = (select idUser from discussions_users where idDiscussion = :idDiscussion and not idUser = :idUser limit 1)";
+            $sql = "select idUser, pp from users where idUser = (select idUser from discussions_users where idDiscussion = :idDiscussion and not idUser = :idUser limit 1)";
             $donnees = array(
                 ":idDiscussion" => $idDiscussion,
                 ":idUser" => $idUser
@@ -281,6 +281,33 @@ class Modele
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function getUserStatus($idUser)
+    {
+        $sql = "select statut from users where idUser = :idUser;";
+        $donnees = array(
+            ":idUser" => $idUser
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $status = $select->fetch();
+        return $status;
+    }
+
+    public function updateUserStatus($newStatus, $idUser)
+    {
+        try {
+            $sql = "update users set statut = :newStatus where idUser = :idUser;";
+            $donnees = array(
+                ":newStatus" => $newStatus,
+                ":idUser" => $idUser
+            );
+            $update = $this->unPDO->prepare($sql);
+            $update->execute($donnees);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
     }
 
