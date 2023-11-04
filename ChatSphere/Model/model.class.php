@@ -288,7 +288,17 @@ class Modele
 
     public function getTotalMessStats($idDiscussion)
     {
-        $sql = "SELECT count(m.idMessage) as totalMess, CONCAT(u.nom,' ',u.prenom) as nom from messages m INNER JOIN users u on m.idUser = u.idUser where m.`idDiscussion` = :idDiscussion GROUP BY m.`idUser` ";
+        $sql = "SELECT 
+        IFNULL(COUNT(m.idMessage), 0) as totalMess, 
+        CONCAT(u.prenom, ' ', u.nom) as nom
+            FROM 
+                users u
+            LEFT JOIN 
+                messages m ON u.idUser = m.idUser AND m.idDiscussion = :idDiscussion
+            WHERE 
+                u.idUser IN (SELECT idUser FROM discussions_users WHERE idDiscussion = :idDiscussion)
+            GROUP BY 
+        u.idUser";
         $donnees = array(
             ":idDiscussion" => $idDiscussion
         );

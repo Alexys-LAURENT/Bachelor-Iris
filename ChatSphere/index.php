@@ -14,7 +14,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="<?php echo $user['theme'] ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -31,9 +31,11 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
                         hover: "#EFF1FF",
                         userMessage: "#F1F1F1",
                         border: "#E2E8F0",
+                        dark: "#0d1117"
                     },
                 },
             },
+            darkMode: "class",
         }
     </script>
     <script src="./js/index.js"></script>

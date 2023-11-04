@@ -2,9 +2,9 @@
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
 $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
 ?>
-<aside id="membersSection" class="lg:w-[20%] w-0 max-w-[100%] right-0 h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-s-2">
+<div id="membersSection" class="lg:w-[20%] w-0 max-w-[100%] right-0 h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-s-2 dark:bg-dark dark:text-white">
     <div class="h-[50px] flex justify-between items-center p-4 border-b-2">
-        <p class="flex gap-2 items-center">Membres <span class="flex items-center justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($colleagues); ?></span></p>
+        <p class="flex gap-2 items-center">Membres <span class="flex items-center text-black justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($colleagues); ?></span></p>
 
         <!-- close drawer btn -->
         <div class="block lg:hidden">
@@ -25,7 +25,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
                     </svg>
                 </button>
             </div>
-            <div id="filterPopUp" class="max-h-0 transition-all overflow-hidden top-[70px] right-6  absolute rounded-md bg-white shadow-xl z-10">
+            <div id="filterPopUp" class="max-h-0 transition-all overflow-hidden top-[70px] right-6  absolute rounded-md shadow-xl z-10">
                 <ul class="flex flex-col">
                     <?php
                     foreach ($metiers as $i => $metier) {
@@ -57,7 +57,8 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             ?>
 
         </div>
-</aside>
+    </div>
+</div>
 
 
 <script>
