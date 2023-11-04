@@ -45,7 +45,7 @@ class Modele
 
     public function getAllMessages($idDiscussion)
     {
-        $sql = "select messages.*, u.pp from messages inner join users u on u.idUser = messages.idUser where idDiscussion = :idDiscussion order by timestamp asc;";
+        $sql = "select messages.*, u.pp, u.nom, u.prenom from messages inner join users u on u.idUser = messages.idUser where idDiscussion = :idDiscussion order by timestamp asc;";
         $donnees = array(
             ":idDiscussion" => $idDiscussion
         );

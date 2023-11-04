@@ -126,10 +126,10 @@ if (isset($idDiscussion)) {
     var totalMess = [];
 
     function displayMessages(messages) {
-        console.log(messages.length + " " + totalMess.length);
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
-        // get profile picture with javascript message['idUser']
+        // isGroup = if distinct idUser in messages is > 2
+        var isGroup = new Set(messages.map(message => message.idUser)).size > 2;
         messagesDiv.innerHTML = "";
         messages.forEach(message => {
             if (message['idUser'] == <?php echo $user['idUser']; ?>) {
@@ -163,7 +163,10 @@ if (isset($idDiscussion)) {
             } else {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
-                        <div class='msgOthers flex justify-start ${previousUser == null ? "mt-0" : "mt-8"}'>
+                    ${isGroup ? `
+                    <div class='dark:text-white text-start ms-14 ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
+                    ` : ``}
+                        <div class='msgOthers flex justify-start'>
                             <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words">${message['content'] }</div>
