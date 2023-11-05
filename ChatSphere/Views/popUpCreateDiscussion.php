@@ -20,7 +20,7 @@
                             echo '                  
                                 <input onclick="checkIsGroup()" type="checkbox" name="members[]" value="' . $colleague['idUser'] . '" id="colleague-' . $colleague['idUser'] . '" class="checkboxesNewDiscussion hidden">
                                 <label class=" flex items-center gap-1 cursor-pointer border border-gray-300 rounded-md px-2 py-1 hover:bg-red-500 hover:text-white transition-all duration-300 text-xs" for="colleague-' . $colleague['idUser'] . '">
-                                <div class="z-0 bg-cover bg-center aspect-square rounded-full bg-gray-500 w-[20px] h-[20px]" style="' . ($colleague['pp'] != 'default.webp' ? "background-image: url(http://images.foda4953.odns.fr/" . $colleague['pp'] . ")" : "background-color: #" . substr(md5(utf8_encode($colleague['idUser'])), 0, 6)) . '">
+                                <div class="z-0 bg-cover bg-center aspect-square rounded-full bg-gray-500 w-[20px] h-[20px]" style="' . ($colleague['pp'] != 'default.webp' ? "background-image: url(https://images.chatsphere.alexyslaurent.com/" . $colleague['pp'] . ")" : "background-color: #" . substr(md5(utf8_encode($colleague['idUser'])), 0, 6)) . '">
                                 <span class="flex text-2xs w-full text-white h-full justify-center items-center ' . ($colleague['pp'] != 'default.webp' ? 'hidden' : '') . '">' . mb_substr($colleague['prenom'], 0, 1, 'UTF-8') . mb_substr($colleague['nom'], 0, 1, 'UTF-8') . '</span>
                                 </div>
                                     ' . $colleague['prenom'] . ' ' . $colleague['nom'] . '

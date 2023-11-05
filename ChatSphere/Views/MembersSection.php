@@ -48,7 +48,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             <?php
             for ($i = 0; $i < count($colleagues); $i++) {
                 echo "<div class='flex max-w-full mx-4 gap-2'>
-                            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($colleagues[$i]['pp'] != 'default.webp' ? "background-image: url(http://images.foda4953.odns.fr/" . $colleagues[$i]['pp'] . ")" : 'background-color: #' . substr(md5(utf8_encode($colleagues[$i]['idUser'])), 0, 6)) . "'>
+                            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($colleagues[$i]['pp'] != 'default.webp' ? "background-image: url(https://images.chatsphere.alexyslaurent.com/" . $colleagues[$i]['pp'] . ")" : 'background-color: #' . substr(md5(utf8_encode($colleagues[$i]['idUser'])), 0, 6)) . "'>
                             <span class='flex text-2xl w-full text-white h-full justify-center items-center " . ($colleagues[$i]['pp'] != 'default.webp' ? 'hidden' : '') . "'>" . mb_substr($colleagues[$i]['prenom'], 0, 1, 'UTF-8') . mb_substr($colleagues[$i]['nom'], 0, 1, 'UTF-8') . "</span>
                             </div>
                             <div class='flex flex-col'>

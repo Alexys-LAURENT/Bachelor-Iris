@@ -49,8 +49,6 @@ if (isset($_POST['createDiscussion'])) {
             <div class="w-full flex flex-col gap-2 overflow-y-auto h-[calc(100vh-180px)]
             ">
                 <?php
-                // <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($colleagues[$i]['pp'] != 'default.webp' ? "background-image: url(http://images.foda4953.odns.fr/" . $colleagues[$i]['pp'] . ")" : 'background-color: #' . substr(md5(utf8_encode($colleagues[$i]['idUser'])), 0, 6)) . "'>
-                // <span class='flex text-2xl w-full text-white h-full justify-center items-center " . ($colleagues[$i]['pp'] != 'default.webp' ? 'hidden' : '') . "'>" . mb_substr($colleagues[$i]['prenom'], 0, 1, 'UTF-8') . mb_substr($colleagues[$i]['nom'], 0, 1, 'UTF-8') . "</span>
                 foreach ($discussions as $discussion) {
                     isset($_GET['discussion']) ? $getDiscussion = $_GET['discussion'] : $getDiscussion = null;
                     $class = $getDiscussion == $discussion['idDiscussion'] ? 'bg-hover dark:bg-darkHover transition-all duration-500' : '';
@@ -59,7 +57,7 @@ if (isset($_POST['createDiscussion'])) {
                     <div class='w-full flex flex-col gap-2 hover:bg-hover dark:hover:bg-darkHover hover:cursor-pointer rounded-md py-2 " . $class . "'>
                         <!-- Contact row -->
                         <div class='flex max-w-full mx-3 gap-2'>
-                            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($discussion['pp'] != 'default.webp' ? "background-image: url(http://images.foda4953.odns.fr/" . $discussion['pp'] . ")" : "background-color: #" . substr(md5(utf8_encode($discussion['idOtherUser'])), 0, 6)) . "'>
+                            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($discussion['pp'] != 'default.webp' ? "background-image: url(https://images.chatsphere.alexyslaurent.com/" . $discussion['pp'] . ")" : "background-color: #" . substr(md5(utf8_encode($discussion['idOtherUser'])), 0, 6)) . "'>
                             <span class='flex text-2xl w-full text-white h-full justify-center items-center " . ($discussion['pp'] != 'default.webp' ? 'hidden' : '') . "'>" . mb_substr($discussion['nom'], 0, 1, 'UTF-8') . (mb_strpos($discussion['nom'], ' ', 0, 'UTF-8') !== false ? mb_substr($discussion['nom'], mb_strpos($discussion['nom'], ' ', 0, 'UTF-8') + 1, 1, 'UTF-8') : '') . "</span>
                             </div>
                             <div class='flex flex-col transition-all duration-500 text-black dark:text-white'>
