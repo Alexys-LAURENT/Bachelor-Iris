@@ -316,6 +316,21 @@ class Modele
         }
     }
 
+    public function toggleThemeMode($themeMode, $idUser)
+    {
+        try {
+            $sql = "update users set theme = :themeMode where idUser = :idUser;";
+            $donnees = array(
+                ":themeMode" => $themeMode,
+                ":idUser" => $idUser
+            );
+            $update = $this->unPDO->prepare($sql);
+            $update->execute($donnees);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
     // STATISTIQUES ////////////////////////////////
 
     public function getTotalMessStats($idDiscussion)

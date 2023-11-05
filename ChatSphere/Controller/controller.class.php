@@ -73,6 +73,11 @@ class Controleur
         $this->unModele->updateUserStatus($newStatus, $idUser);
     }
 
+    public function toggleThemeMode($themeMode, $idUser)
+    {
+        $this->unModele->toggleThemeMode($themeMode, $idUser);
+    }
+
     // STATISTIQUES ///////////////////////////////
 
     public function getTotalMessStats($idDiscussion)

@@ -99,13 +99,6 @@ if (isset($idDiscussion)) {
 
 
 <script type="text/javascript">
-    // scroll to bottom
-
-    // scroll to bottom on load
-    // setTimeout(function() {
-    //     scrollToBottom();
-    // }, 1500);
-
     function scrollToBottom() {
         var objDiv = document.getElementById("messagesDiv");
         objDiv.lastElementChild.scrollIntoView({
