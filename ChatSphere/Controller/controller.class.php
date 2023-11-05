@@ -1,5 +1,5 @@
 <?php
-require_once("model/model.class.php");
+require_once("Model/model.class.php");
 
 class Controleur
 {
