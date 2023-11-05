@@ -28,6 +28,8 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             <div id="filterPopUp" class="hidden overflow-hidden top-[70px] right-6 absolute rounded-md shadow-xl z-10 bg-white dark:bg-dark transition-all duration-500 text-black dark:text-white">
                 <ul class="flex flex-col max-h-[200px] overflow-y-auto">
                     <?php
+                    // order metiers alphabetically
+                    sort($metiers);
                     foreach ($metiers as $i => $metier) {
                         echo "<li class='flex items-center'>
                                     <input onclick='showColleaguesFiltered()' class='checkbox-metier me-1 cursor-pointer' type='checkbox' name='" . $metier . "' id='checkbox-$i'>
@@ -44,10 +46,12 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
         <div id="membersWrapper" class="w-full flex flex-col gap-2 overflow-y-auto pb-2">
             <!-- Contact row -->
             <?php
+            // if pp is default, show initials with random color based on idUser in js
             for ($i = 0; $i < count($colleagues); $i++) {
                 echo "<div class='flex max-w-full mx-4 gap-2'>
-                            <div class='bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='background-image: url(https://images.chatsphere.alexyslaurent.com/" . $colleagues[$i]['pp'] . ")'
-                            ></div>
+                            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($colleagues[$i]['pp'] != 'default.webp' ? "background-image: url(http://images.foda4953.odns.fr/" . $colleagues[$i]['pp'] . ")" : 'background-color: #' . substr(md5($colleagues[$i]['idUser']), 2, 6)) . "'>
+                            <span class='flex text-2xl w-full text-white h-full justify-center items-center " . ($colleagues[$i]['pp'] != 'default.webp' ? 'hidden' : '') . "'>" . mb_substr($colleagues[$i]['prenom'], 0, 1, 'UTF-8') . mb_substr($colleagues[$i]['nom'], 0, 1, 'UTF-8') . "</span>
+                            </div>
                             <div class='flex flex-col'>
                                 <p class='font-semibold w-full text-elipsis line-clamp-1'>" . $colleagues[$i]['prenom'] . " " . $colleagues[$i]['nom'] . "</p>
                                 <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>" . $colleagues[$i]['metier'] . "</span>
