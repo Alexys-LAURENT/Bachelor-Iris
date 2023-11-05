@@ -41,7 +41,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
     </script>
     <script src="./js/index.js?"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/index.css?">
     <link rel="shortcut icon" href="./images/Message-icon.svg" type="image/x-icon">
 </head>
 

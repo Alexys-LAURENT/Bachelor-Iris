@@ -26,7 +26,7 @@ create table
         hashedPass VARCHAR(50) NOT NULL,
         metier VARCHAR(50) NOT NULL,
         pp VARCHAR(255) DEFAULT 'default.png',
-        theme VARCHAR(5) NOT NULL DEFAULT 'light',
+        theme VARCHAR(5) NOT NULL DEFAULT 'dark',
         statut enum(
             'Absent',
             'En ligne',
@@ -191,6 +191,234 @@ VALUES (
         '123',
         'Chef de projet',
         'Alexys-Laurent.jpg'
+    );
+
+INSERT INTO
+    users (
+        idEntreprise,
+        nom,
+        prenom,
+        email,
+        hashedPass,
+        metier,
+        pp,
+        theme,
+        statut
+    )
+VALUES (
+        1,
+        'Durand',
+        'Sophie',
+        'sophiedurand@email.com',
+        '123',
+        'Responsable RH',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Martin',
+        'Louis',
+        'louismartin@email.com',
+        '123',
+        'Développeur Full-Stack',
+        'default.png',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Bernard',
+        'Emilie',
+        'emiliebernard@email.com',
+        '123',
+        'Développeur Back-End',
+        'default.png',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Petit',
+        'Thomas',
+        'thomaspetit@email.com',
+        '123',
+        'Manager',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Leroy',
+        'Julie',
+        'julieleroy@email.com',
+        '123',
+        'Directeur Technique',
+        'default.png',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Moreau',
+        'Nicolas',
+        'nicolasmoreau@email.com',
+        '123',
+        'Analyste Sécurité',
+        'default.png',
+        'dark',
+        'Hors ligne'
+    ), (
+        1,
+        'Simon',
+        'Laura',
+        'laurasimon@email.com',
+        '123',
+        'Ingénieur Système',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Lefebvre',
+        'Maxime',
+        'maximelefebvre@email.com',
+        '123',
+        'Designer UX/UI',
+        'default.png',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Michel',
+        'Clara',
+        'claramichel@email.com',
+        '123',
+        'Spécialiste SEO',
+        'default.png',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Garcia',
+        'Alexandre',
+        'alexandregarcia@email.com',
+        '123',
+        'Chef de Projet Digital',
+        'default.png',
+        'dark',
+        'Hors ligne'
+    );
+
+INSERT INTO
+    users (
+        idEntreprise,
+        nom,
+        prenom,
+        email,
+        hashedPass,
+        metier,
+        pp,
+        theme,
+        statut
+    )
+VALUES (
+        1,
+        'Dupont',
+        'Marie',
+        'mariedupont@email.com',
+        '123',
+        'Chargée de Recrutement',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Lopez',
+        'David',
+        'davidlopez@email.com',
+        '123',
+        'Analyste Financier',
+        'default.png',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Girard',
+        'Anne',
+        'annegirard@email.com',
+        '123',
+        'Responsable Commercial',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Roux',
+        'Julien',
+        'julienroux@email.com',
+        '123',
+        'Consultant IT',
+        'default.png',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Fournier',
+        'Élise',
+        'elisefournier@email.com',
+        '123',
+        'Responsable Marketing',
+        'default.png',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Morel',
+        'Pierre',
+        'pierremorel@email.com',
+        '123',
+        'Expert Cyber-sécurité',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Laurent',
+        'Stéphanie',
+        'stephanielaurent@email.com',
+        '123',
+        'Directrice Artistique',
+        'default.png',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Simon',
+        'Éric',
+        'ericsimon@email.com',
+        '123',
+        'Responsable de Production',
+        'default.png',
+        'dark',
+        'Hors ligne'
+    ), (
+        1,
+        'Michel',
+        'Patricia',
+        'patriciamichel@email.com',
+        '123',
+        'Coach Agile',
+        'default.png',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Lefevre',
+        'Brice',
+        'bricelefevre@email.com',
+        '123',
+        'Architecte Logiciel',
+        'default.png',
+        'dark',
+        'Absent'
     );
 
 -- Entreprise 2 (Data Systems)

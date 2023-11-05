@@ -17,18 +17,18 @@ body {
 }
 
 /* scrollbar */
-.messagesDiv::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 0.5rem;
 }
 
-.messagesDiv::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background: none;
 }
 
-.messagesDiv::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: #888;
 }
 
-.messagesDiv::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
     background: #555;
 }

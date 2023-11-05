@@ -34,7 +34,7 @@ class Modele
 
     public function getAllColleagues($idUser)
     {
-        $sql = "select * from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser ;";
+        $sql = "select * from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser order by prenom, nom;";
         $donnees = array(
             ":idUser" => $idUser
         );
