@@ -28,7 +28,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
                     colors: {
                         primary: "#FFFFFF",
                         secondary: "#5B6CF9",
-                        hover: "#EFF1FF",
+                        hover: "#E3E7FF",
                         userMessage: "#F1F1F1",
                         border: "#E2E8F0",
                         dark: "#0d1117"
