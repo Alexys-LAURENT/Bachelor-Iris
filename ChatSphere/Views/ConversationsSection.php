@@ -57,7 +57,7 @@ if (isset($_POST['createDiscussion'])) {
                     <div class="w-full flex flex-col gap-2 hover:bg-hover dark:hover:bg-darkHover hover:cursor-pointer rounded-md py-2 ' . $class . '">
                         <!-- Contact row -->
                         <div class="flex max-w-full mx-3 gap-2">
-                            <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(http://images.foda4953.odns.fr/' . $discussion['pp'] . ');"
+                            <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(https://images.chatsphere.alexyslaurent.com/' . $discussion['pp'] . ');"
                             ></div>
                             <div class="flex flex-col transition-all duration-500 text-black dark:text-white">
                                 <p class="font-semibold w-full text-elipsis line-clamp-1">' . $discussion['nom'] . '</p>
@@ -72,7 +72,7 @@ if (isset($_POST['createDiscussion'])) {
 
             <div class="flex gap-2 w-full h-[68px] border-t-2 dark:border-gray-800 items-center px-3 justify-between transition-all duration-500">
                 <div class="flex gap-2">
-                    <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(http://images.foda4953.odns.fr/<?php echo $user['pp']; ?>);"></div>
+                    <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]" style="background-image: url(https://images.chatsphere.alexyslaurent.com/<?php echo $user['pp']; ?>);"></div>
                     <div class="flex flex-col w-full">
                         <p class="font-semibold w-full text-elipsis line-clamp-1 transition-all duration-500 text-black dark:text-white"><?php echo $user['prenom'] . ' ' . $user['nom']; ?></p>
 

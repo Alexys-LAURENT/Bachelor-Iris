@@ -17,7 +17,7 @@ if (isset($idDiscussion)) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('http://images.foda4953.odns.fr/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
+            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('https://images.chatsphere.alexyslaurent.com/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
             <div class="flex flex-col ms-3">
                 <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
                 <div class="flex items-center gap-2">
@@ -149,7 +149,7 @@ if (isset($idDiscussion)) {
                                     <span class='text-2xs'>${date}</span>
                                 </div>
                             </div>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("https://images.chatsphere.alexyslaurent.com/${message['pp']}");'
                             ></div>
                         </div>
                         `;
@@ -174,7 +174,7 @@ if (isset($idDiscussion)) {
                     <div class='dark:text-white text-start ms-14 ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
                     ` : ``}
                         <div class='msgOthers flex justify-start'>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("http://images.foda4953.odns.fr/${message['pp']}");'></div>
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("https://images.chatsphere.alexyslaurent.com/${message['pp']}");'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>

@@ -21,7 +21,7 @@
                                                     <input onclick="checkIsGroup()" type="checkbox" name="members[]" value="' . $colleague['idUser'] . '" id="colleague-' . $colleague['idUser'] . '" class="checkboxesNewDiscussion hidden">
                                                     <label class=" flex items-center gap-1 cursor-pointer border border-gray-300 rounded-md px-2 py-1 hover:bg-red-500 hover:text-white transition-all duration-300 text-xs" for="colleague-' . $colleague['idUser'] . '">
                                                     
-                                                        <div class="bg-cover bg-center aspect-square rounded-full bg-gray-500 w-[20px] h-[20px]" style="background-image: url(http://images.foda4953.odns.fr/' . $colleague['pp'] . ')"></div>
+                                                        <div class="bg-cover bg-center aspect-square rounded-full bg-gray-500 w-[20px] h-[20px]" style="background-image: url(https://images.chatsphere.alexyslaurent.com/' . $colleague['pp'] . ')"></div>
                                                     ' . $colleague['prenom'] . ' ' . $colleague['nom'] . '
 
                                                         <svg  xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,7 +81,7 @@
                 if (users[i]['nom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase())) {
                     membersWrapperNewDiscussion.innerHTML += `
                         <div class='flex max-w-full gap-2 hover:bg-hover px-3 py-2 rounded-md cursor-pointer dark:hover:text-black' onclick='checkCheckbox(${users[i]['idUser']})'>
-                        <div class='bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='background-image: url(http://images.foda4953.odns.fr/${users[i]['pp']})'></div>
+                        <div class='bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='background-image: url(https://images.chatsphere.alexyslaurent.com/${users[i]['pp']})'></div>
                         <div class='flex flex-col'>
                         <p class='font-semibold w-full text-elipsis line-clamp-1'>${users[i]['prenom']} ${users[i]['nom']}</p>
                         <span class='w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px]'>${users[i]['metier']}</span>
