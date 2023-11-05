@@ -28,7 +28,8 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
                     colors: {
                         primary: "#FFFFFF",
                         secondary: "#5B6CF9",
-                        hover: "#E3E7FF",
+                        hover: "#EFF1FF",
+                        darkHover: "#171D27",
                         userMessage: "#F1F1F1",
                         border: "#E2E8F0",
                         dark: "#0d1117"
@@ -38,7 +39,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
             darkMode: "class",
         }
     </script>
-    <script src="./js/index.js"></script>
+    <script src="./js/index.js?"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="./css/index.css">
     <link rel="shortcut icon" href="./images/Message-icon.svg" type="image/x-icon">

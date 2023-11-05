@@ -46,18 +46,16 @@ function toggleMembers() {
 
 function handleShowFilter() {
     const popUp = document.getElementById('filterPopUp');
-    if (popUp.classList.contains('max-h-0')) {
+    if (popUp.classList.contains('hidden')) {
         popUp.classList.add('py-1');
         popUp.classList.add('px-2');
         popUp.classList.add('border');
-        popUp.classList.remove('max-h-0');
-        popUp.classList.add('max-h-[1000px]');
+        popUp.classList.remove('hidden');
     } else {
         popUp.classList.remove('border');
         popUp.classList.remove('py-1');
         popUp.classList.remove('px-2');
-        popUp.classList.add('max-h-0');
-        popUp.classList.remove('max-h-[1000px]');
+        popUp.classList.add('hidden');
     }
 
 }

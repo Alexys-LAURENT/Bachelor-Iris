@@ -5,7 +5,7 @@ if (isset($idDiscussion)) {
 ?>
 
 <div class="lg:w-[57%] w-full overflow-hidden dark:bg-dark transition-all duration-500">
-    <nav class="w-full flex h-[50px] border-b-2 dark:border-gray-800 dark:text-white">
+    <nav class="w-full flex h-[50px] border-b-2 dark:border-gray-800 dark:text-white transition-all duration-500">
 
         <div onclick="toggleConv()" class="min-w-[50px] flex block lg:hidden border-e-2 dark:border-gray-800">
             <button class="w-full flex  justify-center items-center">
@@ -67,8 +67,8 @@ if (isset($idDiscussion)) {
     <!-- message textarea -->
     <div class="flex h-[100px] justify-center bg-white dark:bg-dark transition-all duration-500 <?php if (!isset($discussionInfo)) echo 'hidden' ?>" id="MessageInputWrapper">
         <div class="w-[90%] h-[50px] flex items-center relative">
-            <form autocomplete="off" id="message-form" class="flex w-full items-center h-[44px] border-2 dark:border-gray-700 border-gray-200 dark:bg-darkHover rounded-md bg-white">
-                <input id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none dark:bg-darkHover dark:text-white" placeholder="Ecrivez votre message ici..." maxlength="255">
+            <form autocomplete="off" id="message-form" class="flex w-full items-center h-[44px] border-2 dark:border-gray-700 border-gray-200 dark:bg-darkHover rounded-md bg-white transition-all duration-500">
+                <input id="messageInput" class="w-full h-full p-2 resize-none rounded-md outline-none dark:bg-darkHover dark:text-white transition-all duration-500" placeholder="Ecrivez votre message ici..." maxlength="255">
                 <button type="submit">
                     <img src="./Assets/sendMessageButton.png" alt="" class="cursor-pointer h-[50px] w-[50px]">
                 </button>
