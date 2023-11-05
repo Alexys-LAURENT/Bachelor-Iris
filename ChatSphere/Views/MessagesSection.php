@@ -51,8 +51,26 @@ if (isset($idDiscussion)) {
     <!-- content Messages -->
     <div class="flex flex-col h-[calc(100%-150px)] py-4 relative" id="MessagesWrapper">
 
-        <div id="messagesDiv" class="messagesDiv overflow-y-auto select-text">
-
+        <div id="messagesDiv" class="messagesDiv overflow-y-auto select-text h-full">
+            <!-- if discussion "Loading..." -->
+            <?php if (isset($_GET['discussion'])) : ?>
+                <div class="flex justify-center items-center h-full">
+                    <div class="flex flex-col justify-center items-center">
+                        <svg id="LoadingDivSpin" class="animate-spin -ml-1 h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25 text-black dark:text-white" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p id="LoadingDivText" class="text-xs mt-2 text-black dark:text-white transition-all duration-500">Chargement...</p>
+                    </div>
+                </div>
+            <?php else : ?>
+                <!-- if no discussion selected -->
+                <div class="flex justify-center items-center h-full">
+                    <div class="flex flex-col justify-center items-center">
+                        <p class="text-2xs text-black dark:text-white transition-all duration-500">Aucune discussion sélectionnée</p>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
 
         <!-- button scroll to bottom -->
@@ -84,15 +102,20 @@ if (isset($idDiscussion)) {
     // scroll to bottom
 
     // scroll to bottom on load
-    setTimeout(function() {
-        scrollToBottom();
-    }, 1500);
+    // setTimeout(function() {
+    //     scrollToBottom();
+    // }, 1500);
 
     function scrollToBottom() {
-        var objDiv = document.getElementsByClassName("messagesDiv")[0];
+        var objDiv = document.getElementById("messagesDiv");
         objDiv.lastElementChild.scrollIntoView({
             behavior: "smooth"
         });
+    }
+
+    function scrollToBottomLoad() {
+        var objDiv = document.getElementById("messagesDiv");
+        objDiv.scrollTop = objDiv.scrollHeight;
     }
 
     function toggleScrollToBottomButton() {
@@ -122,10 +145,12 @@ if (isset($idDiscussion)) {
 
     // AJAX //////////////////////////////////////////////////////
     var totalMess = [];
+    var load = true;
 
     function displayMessages(messages) {
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
+        load == true ? messagesDiv.classList.add("hidden") : "";
         // isGroup = if distinct idUser in messages is > 2
         var isGroup = new Set(messages.map(message => message.idUser)).size > 2;
         messagesDiv.innerHTML = "";
@@ -149,8 +174,12 @@ if (isset($idDiscussion)) {
                                     <span class='text-2xs'>${date}</span>
                                 </div>
                             </div>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' style='background-image: url("https://images.chatsphere.alexyslaurent.com/${message['pp']}");'
-                            ></div>
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' 
+                            style='${message['pp'] !== 'default.webp' ? 
+                                `background-image: url(https://images.chatsphere.alexyslaurent.com/${message['pp']})` : 
+                                `background-color: #${CryptoJS.MD5(CryptoJS.enc.Utf8.parse(message['idUser'])).toString().substring(0, 6)}`}'>
+                            ${message['pp'] === 'default.webp' ? `<span class='flex text-2xl w-full text-white h-full justify-center items-center'>${message['prenom'].charAt(0)}${message['nom'].charAt(0)}</span>` : ''}
+                        </div>
                         </div>
                         `;
                 } else {
@@ -171,10 +200,15 @@ if (isset($idDiscussion)) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                     ${isGroup ? `
-                    <div class='dark:text-white text-start ms-14 ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
+                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-14 ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
                     ` : ``}
                         <div class='msgOthers flex justify-start'>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' style='background-image: url("https://images.chatsphere.alexyslaurent.com/${message['pp']}");'></div>
+                        <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' 
+                            style='${message['pp'] !== 'default.webp' ? 
+                                `background-image: url(https://images.chatsphere.alexyslaurent.com/${message['pp']})` : 
+                                `background-color: #${CryptoJS.MD5(CryptoJS.enc.Utf8.parse(message['idUser'])).toString().substring(0, 6)}`}'>
+                            ${message['pp'] === 'default.webp' ? `<span class='flex text-2xl w-full text-white h-full justify-center items-center'>${message['prenom'].charAt(0)}${message['nom'].charAt(0)}</span>` : ''}
+                        </div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
@@ -204,6 +238,13 @@ if (isset($idDiscussion)) {
             document.getElementById('scrollToBottomButton').classList.remove("hidden");
         }
         totalMess = messages;
+        // S'assure que le DOM est mis à jour avant de faire défiler
+        load == true ?
+            setTimeout(function() {
+                messagesDiv.classList.remove("hidden");
+                scrollToBottomLoad();
+            }, 1) : scrollToBottom();
+        load = false;
     }
 
     function displayUserConvStatus(data) {
@@ -243,6 +284,10 @@ if (isset($idDiscussion)) {
                     // data contient les messages récupérés depuis le serveur
                     if (data.length != totalMess.length) {
                         displayMessages(data);
+                    }
+                    if (data.length == 0) {
+                        document.getElementById('LoadingDivSpin').classList.add('hidden');
+                        document.getElementById('LoadingDivText').innerHTML = "Il n'y a pas encore de messages dans cette discussion";
                     }
                 }
             };

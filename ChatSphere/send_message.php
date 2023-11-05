@@ -5,7 +5,7 @@ require_once("Controller/controller.class.php");
 
 $unControleur = new Controleur($serveur, $bdd, $user, $mdp);
 
-$message = $_POST['message'];
+$message = htmlspecialchars($_POST['message']);
 $idDiscussion = $_POST['idDiscussion'];
 $idUser = $_POST['idUser'];
 

@@ -167,7 +167,11 @@ class Modele
     {
         $sql = "SELECT d.idDiscussion,
         d.nom,
-        SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message
+        SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message,
+        (SELECT du_other.idUser
+        FROM discussions_users du_other
+        WHERE du_other.idDiscussion = d.idDiscussion AND du_other.idUser != :idUser
+        LIMIT 1) AS idOtherUser
         FROM discussions d
         INNER JOIN discussions_users du ON d.idDiscussion = du.idDiscussion
         LEFT JOIN messages m ON d.idDiscussion = m.idDiscussion
@@ -176,7 +180,8 @@ class Modele
             FROM discussions_users
             WHERE idUser = :idUser
         )
-        GROUP BY d.idDiscussion";
+        GROUP BY d.idDiscussion
+        ";
 
         $donnees = array(
             ":idUser" => $idUser
