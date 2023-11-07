@@ -78,6 +78,16 @@ class Controleur
         $this->unModele->toggleThemeMode($themeMode, $idUser);
     }
 
+    public function setSeen($idUser, $allIdsMessages)
+    {
+        return $this->unModele->setSeen($idUser, $allIdsMessages);
+    }
+
+    public function isMessageRead($idMessage, $idUser)
+    {
+        return $this->unModele->isMessageRead($idMessage, $idUser);
+    }
+
     // STATISTIQUES ///////////////////////////////
 
     public function getTotalMessStats($idDiscussion)

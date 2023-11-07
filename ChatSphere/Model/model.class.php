@@ -168,6 +168,7 @@ class Modele
         $sql = "SELECT d.idDiscussion,
         d.nom,
         SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message,
+        MAX(m.idMessage) as idDernierMessage,
         (SELECT du_other.idUser
         FROM discussions_users du_other
         WHERE du_other.idDiscussion = d.idDiscussion AND du_other.idUser != :idUser
@@ -328,6 +329,73 @@ class Modele
             $update->execute($donnees);
         } catch (PDOException $e) {
             echo $e->getMessage();
+        }
+    }
+
+    public function setSeen($idUser, $allIdsMessages)
+    {
+        try {
+            foreach ($allIdsMessages as $idMessage) {
+                $sql = "SELECT idMessageRead FROM message_reads WHERE idMessage = :idMessage and idUser = :idUser";
+                $stmt = $this->unPDO->prepare($sql);
+                $donnees = array(
+                    ":idMessage" => $idMessage,
+                    ":idUser" => $idUser
+                );
+                $stmt->execute($donnees);
+                if ($stmt->rowCount() == 0) {
+                    $sql = "select idUser from messages where idMessage = :idMessage";
+                    $stmt = $this->unPDO->prepare($sql);
+                    $donnees = array(
+                        ":idMessage" => $idMessage
+                    );
+                    $stmt->execute($donnees);
+                    $idUserMessage = $stmt->fetch();
+                    $idUserMessage = $idUserMessage['idUser'];
+
+                    if ($idUserMessage != $idUser) {
+                        $sql = "INSERT INTO message_reads ( idMessage,  idUser,  timestamp) VALUES (:idMessage, :idUser, :timestamp)";
+                        $stmt = $this->unPDO->prepare($sql);
+                        $donnees = array(
+                            ":idMessage" => $idMessage,
+                            ":idUser" => $idUser,
+                            ":timestamp" => date("Y-m-d H:i:s")
+                        );
+                        $stmt->execute($donnees);
+                    }
+                }
+            }
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    function isMessageRead($idMessage, $idUser)
+    {
+        $sql = "SELECT idUser FROM messages WHERE idMessage = :idMessage";
+        $stmt = $this->unPDO->prepare($sql);
+        $donnees = array(
+            ":idMessage" => $idMessage
+        );
+        $stmt->execute($donnees);
+        $idUserMessage = $stmt->fetch();
+        $idUserMessage = $idUserMessage['idUser'];
+
+        if ($idUserMessage == $idUser) {
+            return true;
+        }
+
+        $sql = "SELECT idMessageRead FROM message_reads WHERE idMessage = :idMessage and idUser = :idUser";
+        $stmt = $this->unPDO->prepare($sql);
+        $donnees = array(
+            ":idMessage" => $idMessage,
+            ":idUser" => $idUser
+        );
+        $stmt->execute($donnees);
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
         }
     }
 

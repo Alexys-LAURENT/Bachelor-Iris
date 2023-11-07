@@ -83,6 +83,20 @@ CREATE TABLE
     ) ENGINE = InnoDB,
     CHARSET = utf8;
 
+CREATE TABLE
+    message_reads (
+        idMessageRead int(11) NOT NULL AUTO_INCREMENT,
+        idMessage int(11) NOT NULL,
+        idUser int(11) NOT NULL,
+        timestamp timestamp NOT NULL,
+        PRIMARY KEY (idMessageRead),
+        KEY idMessage (idMessage),
+        KEY idUser (`idUser`),
+        CONSTRAINT PK_MESSAGES_READS FOREIGN KEY (idMessage) REFERENCES messages (idMessage),
+        CONSTRAINT FK_MESSAGES_READS FOREIGN KEY (idUser) REFERENCES users (idUser)
+    ) ENGINE = InnoDB,
+    CHARSET = utf8;
+
 -- Insertion des entreprises
 
 INSERT INTO

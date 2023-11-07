@@ -230,6 +230,15 @@ if (isset($idDiscussion)) {
         if (totalMess.length != messages.length && (messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight > 750)) {
             document.getElementById('scrollToBottomButton').classList.remove("hidden");
         }
+
+        // difference between totalMess and messages
+        var diff = messages.filter(x => !totalMess.includes(x));
+        // keep only idMessage 
+        diff = diff.map(x => x.idMessage);
+        if (diff.length > 0) {
+            setSeen(diff);
+        }
+
         totalMess = messages;
         // S'assure que le DOM est mis à jour avant de faire défiler
         load == true ?
@@ -346,6 +355,14 @@ if (isset($idDiscussion)) {
             xhr.send("message=" + encodeURIComponent(message) + "&idDiscussion=" + idDiscussion + "&idUser=" + <?php echo $user['idUser']; ?>);
         });
     });
+
+
+    function setSeen(diff) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "set_seen.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send("&idUser=" + <?php echo $user['idUser']; ?> + "&messages=" + JSON.stringify(diff));
+    }
 
     // Charts
     const totalMessChart = document.getElementById('totalMessChart');

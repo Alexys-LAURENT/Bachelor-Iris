@@ -2,7 +2,6 @@
 
 $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
-
 if (isset($_POST['createDiscussion'])) {
     $discussionName = $_POST['NewDiscussionName'] == "" ? null : $_POST['NewDiscussionName'];
     $createDiscussion = $unControleur->createDiscussion($discussionName, array_merge($_POST['members'], array($user['idUser'])));
@@ -14,7 +13,7 @@ if (isset($_POST['createDiscussion'])) {
     <div class="h-[50px] flex justify-between items-center p-4 border-b-2 dark:border-gray-800 transition-all duration-500">
 
         <div class="flex items-center">
-            <p class="flex transition-all duration-500 text-black dark:text-white gap-2 items-center">Discussions <span class="flex items-center text-black justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($discussions); ?></span></p>
+            <p id="countDiscussions" class="flex transition-all duration-500 text-black dark:text-white gap-2 items-center">Discussions <span class="flex items-center text-black justify-center font-semibold text-sm w-7 h-7 rounded-full bg-gray-200"><?php echo count($discussions); ?></span></p>
         </div>
         <div class="flex gap-2 items-center">
 
@@ -46,29 +45,9 @@ if (isset($_POST['createDiscussion'])) {
 
             </div>
 
-            <div class="w-full flex flex-col gap-2 overflow-y-auto h-[calc(100vh-180px)]
+            <div id="discussionsWrapper" class="w-full flex flex-col gap-2 overflow-y-auto h-[calc(100vh-180px)]
             ">
-                <?php
-                foreach ($discussions as $discussion) {
-                    isset($_GET['discussion']) ? $getDiscussion = $_GET['discussion'] : $getDiscussion = null;
-                    $class = $getDiscussion == $discussion['idDiscussion'] ? 'bg-hover dark:bg-darkHover transition-all duration-500' : '';
-                    echo "
-                <a href='?token=" . $_GET['token'] . '&discussion=' . $discussion['idDiscussion'] . "' class='px-2 p-0 w-full'>
-                    <div class='w-full flex flex-col gap-2 hover:bg-hover dark:hover:bg-darkHover hover:cursor-pointer rounded-md py-2 " . $class . "'>
-                        <!-- Contact row -->
-                        <div class='flex max-w-full mx-3 gap-2'>
-                            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($discussion['pp'] != 'default.webp' ? "background-image: url(https://images.chatsphere.alexyslaurent.com/" . $discussion['pp'] . ")" : "background-color: #" . substr(md5(utf8_encode($discussion['idOtherUser'])), 0, 6)) . "'>
-                            <span class='flex text-2xl w-full text-white h-full justify-center items-center " . ($discussion['pp'] != 'default.webp' ? 'hidden' : '') . "'>" . mb_substr($discussion['nom'], 0, 1, 'UTF-8') . (mb_strpos($discussion['nom'], ' ', 0, 'UTF-8') !== false ? mb_substr($discussion['nom'], mb_strpos($discussion['nom'], ' ', 0, 'UTF-8') + 1, 1, 'UTF-8') : '') . "</span>
-                            </div>
-                            <div class='flex flex-col transition-all duration-500 text-black dark:text-white'>
-                                <p class='font-semibold w-full text-elipsis line-clamp-1'>" . $discussion['nom'] . "</p>
-                                <span class='conversationRow w-full max-w-full line-clamp-1 text-elipsis text-gray-500 text-xs relative top-[-3px] text-elipsis line-clamp-1'>" . $discussion['dernier_message'] . "</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>";
-                }
-                ?>
+
             </div>
 
             <div class="flex gap-2 w-full h-[68px] border-t-2 dark:border-gray-800 items-center px-3 justify-between transition-all duration-500">
@@ -248,6 +227,48 @@ if (isset($_POST['createDiscussion'])) {
             }
         }, 1000); // toutes les secondes
     });
+
+    function getDiscussions() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "get_discussionsDetails.php?idUser=" + <?php echo $user['idUser']; ?>, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                displayDiscussions(data);
+            }
+        };
+        xhr.send();
+    }
+
+    function displayDiscussions(data) {
+        document.getElementById('discussionsWrapper').innerHTML = "";
+        data.forEach(discussion => {
+            var classDiscussion = <?php echo isset($_GET['discussion']) ? $_GET['discussion'] : 'null'; ?>;
+            var classDiscussion = classDiscussion == discussion.idDiscussion ? 'bg-hover dark:bg-darkHover transition-all duration-500' : '';
+            var spanClass = discussion.isMessageRead === false ? "dark:text-white text-black font-bold text-sm" : "text-gray-500 text-xs";
+            document.getElementById('discussionsWrapper').innerHTML += `
+            <a href='?token=<?php echo $_GET['token']; ?>&discussion=${discussion.idDiscussion}' class='px-2 p-0 w-full'>
+            <div class='w-full flex flex-col gap-2 hover:bg-hover dark:hover:bg-darkHover hover:cursor-pointer rounded-md py-2 ${classDiscussion}'>
+            <!-- Contact row -->
+            <div class='flex max-w-full mx-3 gap-2'>
+            <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='${discussion.pp != 'default.webp' ? "background-image: url(https://images.chatsphere.alexyslaurent.com/" + discussion.pp + ")" : "background-color: #" + discussion.color}'>
+            <span class='flex text-2xl w-full text-white h-full justify-center items-center ${discussion.pp != 'default.webp' ? 'hidden' : ''}'>${discussion.nom.substr(0, 1) + (discussion.nom.indexOf(' ') != -1 ? discussion.nom.substr(discussion.nom.indexOf(' ') + 1, 1) : '')}</span>
+            </div>
+            <div class='flex flex-col transition-all duration-500 text-black dark:text-white'>
+            <p class='font-semibold w-full text-elipsis line-clamp-1'>${discussion.nom}</p>
+            <span class=' conversationRow w-full max-w-full line-clamp-1 text-elipsis ${spanClass} relative top-[-3px] text-elipsis line-clamp-1'>${discussion.dernier_message}</span>
+            </div>
+            </div>
+            </div>
+            </a>`;
+        });
+    }
+
+    getDiscussions();
+
+    setInterval(function() {
+        getDiscussions();
+    }, 1000); // toutes les secondes
 </script>
 
 </aside>
