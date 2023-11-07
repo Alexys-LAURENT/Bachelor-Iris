@@ -231,8 +231,13 @@ if (isset($idDiscussion)) {
             document.getElementById('scrollToBottomButton').classList.remove("hidden");
         }
 
-        // difference between totalMess and messages
-        var diff = messages.filter(x => !totalMess.includes(x));
+        // keep only object that are new in messages based on what is in totalMess
+        var diff = messages.reduce(function(acc, x) {
+            if (!totalMess.some(e => e.idMessage === x.idMessage) && x.idUser != <?php echo $user['idUser']; ?>) {
+                acc.push(x);
+            }
+            return acc;
+        }, []);
         // keep only idMessage 
         diff = diff.map(x => x.idMessage);
         if (diff.length > 0) {

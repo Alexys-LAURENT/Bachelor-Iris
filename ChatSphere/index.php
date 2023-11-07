@@ -57,11 +57,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
 </body>
 
 <script>
-    if (!Notification) {
-        alert('Le navigateur ne supporte pas les notifications.');
-    }
     Notification.requestPermission();
-    var notification = new Notification('Bonjour !');
 </script>
 
 </html>

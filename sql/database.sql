@@ -90,9 +90,7 @@ CREATE TABLE
         idUser int(11) NOT NULL,
         timestamp timestamp NOT NULL,
         PRIMARY KEY (idMessageRead),
-        KEY idMessage (idMessage),
-        KEY idUser (`idUser`),
-        CONSTRAINT PK_MESSAGES_READS FOREIGN KEY (idMessage) REFERENCES messages (idMessage),
+        CONSTRAINT FK_MESSAGES_READS FOREIGN KEY (idMessage) REFERENCES messages (idMessage),
         CONSTRAINT FK_MESSAGES_READS FOREIGN KEY (idUser) REFERENCES users (idUser)
     ) ENGINE = InnoDB,
     CHARSET = utf8;

@@ -228,19 +228,21 @@ if (isset($_POST['createDiscussion'])) {
         }, 1000); // toutes les secondes
     });
 
-    function getDiscussions() {
+    var allDiscussions = []
+
+    function getDiscussions(haveToSendNotifications) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "get_discussionsDetails.php?idUser=" + <?php echo $user['idUser']; ?>, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var data = JSON.parse(xhr.responseText);
-                displayDiscussions(data);
+                displayDiscussions(data, haveToSendNotifications);
             }
         };
         xhr.send();
     }
 
-    function displayDiscussions(data) {
+    function displayDiscussions(data, haveToSendNotifications) {
         document.getElementById('discussionsWrapper').innerHTML = "";
         data.forEach(discussion => {
             var classDiscussion = <?php echo isset($_GET['discussion']) ? $_GET['discussion'] : 'null'; ?>;
@@ -262,12 +264,37 @@ if (isset($_POST['createDiscussion'])) {
             </div>
             </a>`;
         });
+
+        if (haveToSendNotifications === true) {
+            // keep only the diff between allDiscussions and data
+
+            var diffDiscussions = data.filter(function(obj) {
+                return !allDiscussions.some(function(obj2) {
+                    return obj.dernier_message == obj2.dernier_message;
+                });
+            });
+            sendNotifications(diffDiscussions);
+        }
+
+        allDiscussions = data;
     }
 
-    getDiscussions();
+    function sendNotifications(messageToNotify) {
+        if (messageToNotify.length == 0) return;
+        messageToNotify.forEach(message => {
+            if (Notification.permission === "granted" && message.isMessageRead === false) {
+                var notification = new Notification('Nouveau message - ' + message.nom, {
+                    body: message.dernier_message,
+                    icon: 'https://images.chatsphere.alexyslaurent.com/' + message.pp + '',
+                });
+            }
+        });
+    }
+
+    getDiscussions(false);
 
     setInterval(function() {
-        getDiscussions();
+        getDiscussions(true);
     }, 1000); // toutes les secondes
 </script>
 
