@@ -166,12 +166,14 @@ if (isset($_POST['createDiscussion'])) {
         document.getElementById('statutPopup').classList.toggle('hidden');
     }
 
+    var userLogedStatus = null;
 
     function displayUserLogedStatus(data) {
         document.getElementById('userLogedStatusColor').classList.remove('bg-green-500');
         document.getElementById('userLogedStatusColor').classList.remove('bg-yellow-500');
         document.getElementById('userLogedStatusColor').classList.remove('bg-red-500');
         document.getElementById('userLogedStatusColor').classList.remove('bg-gray-500');
+        userLogedStatus = data.statut;
         switch (data.statut) {
             case "En ligne":
                 document.getElementById('userLogedStatusColor').classList.add('bg-green-500');
@@ -282,7 +284,7 @@ if (isset($_POST['createDiscussion'])) {
     function sendNotifications(messageToNotify) {
         if (messageToNotify.length == 0) return;
         messageToNotify.forEach(message => {
-            if (Notification.permission === "granted" && message.isMessageRead === false) {
+            if (Notification.permission === "granted" && message.isMessageRead === false && userLogedStatus != "Hors ligne" && userLogedStatus != "Occupé") {
                 var notification = new Notification('Nouveau message - ' + message.nom, {
                     body: message.dernier_message,
                     icon: 'https://images.chatsphere.alexyslaurent.com/' + message.pp + '',

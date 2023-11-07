@@ -34,7 +34,7 @@ class Modele
 
     public function getAllColleagues($idUser)
     {
-        $sql = "select * from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser order by prenom, nom;";
+        $sql = "select idUser,nom,prenom,metier,pp from users where idEntreprise = (select idEntreprise from users where idUser = :idUser ) and not idUser = :idUser order by prenom, nom;";
         $donnees = array(
             ":idUser" => $idUser
         );
@@ -69,7 +69,7 @@ class Modele
             if (strtotime($tokenDate) < strtotime(date("Y-m-d H:i:s"))) {
                 return false;
             } else {
-                $sql = "select * from users where idUser = (select idUser from token where token = :token);";
+                $sql = "select idUser, nom,prenom,metier,pp,email,theme,statut from users where idUser = (select idUser from token where token = :token);";
                 $donnees = array(
                     ":token" => $token['token']
                 );
