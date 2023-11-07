@@ -144,8 +144,8 @@ if (isset($idDiscussion)) {
         var previousUser = null;
         var messagesDiv = document.getElementById("messagesDiv");
         load == true ? messagesDiv.classList.add("hidden") : "";
-        // isGroup = if distinct idUser in messages is > 2
-        var isGroup = new Set(messages.map(message => message.idUser)).size > 2;
+        var isGroup = messages[0]['idDiscussionAGroup']
+        console.log(isGroup);
         messagesDiv.innerHTML = "";
         messages.forEach(message => {
             var date = new Date(message['timestamp']).toLocaleString('fr-FR', {

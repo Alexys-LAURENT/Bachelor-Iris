@@ -88,6 +88,11 @@ class Controleur
         return $this->unModele->isMessageRead($idMessage, $idUser);
     }
 
+    public function isDiscussionAGroup($idDiscussion)
+    {
+        return $this->unModele->isDiscussionAGroup($idDiscussion);
+    }
+
     // STATISTIQUES ///////////////////////////////
 
     public function getTotalMessStats($idDiscussion)
