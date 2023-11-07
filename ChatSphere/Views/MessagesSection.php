@@ -179,7 +179,7 @@ if (isset($idDiscussion)) {
                     // messages après la photo de profil
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end mt-1'>
-                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]' >
+                            <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 lg:mx-2 min-w-[75px]' >
                                 <div class="break-words text-sm lg:text-base">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-3xs'>${date}</span>
@@ -215,7 +215,7 @@ if (isset($idDiscussion)) {
                     messagesDiv.innerHTML += `
                         <div class='msgOthers flex justify-start mt-1'>
                             <div class='w-[40px] h-[40px] m-2 ms-0'></div>
-                            <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
+                            <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 lg:mx-2 min-w-[75px]'>
                                 <div class="break-words text-sm lg:text-base">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
                                     <span class='text-3xs'>${date}</span>
