@@ -164,7 +164,7 @@ if (isset($idDiscussion)) {
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words text-sm lg:text-base">${ message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-3xs lg:text-2xs'>${date}</span>
+                                    <span class='text-3xs'>${date}</span>
                                 </div>
                             </div>
                             <div class='bg-cover bg-center bg-gray-700 aspect-square w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-md mx-2 ms-0' 
@@ -182,7 +182,7 @@ if (isset($idDiscussion)) {
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]' >
                                 <div class="break-words text-sm lg:text-base">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-3xs lg:text-2xs'>${date}</span>
+                                    <span class='text-3xs'>${date}</span>
                                 </div>
                             </div>
                             <div class='w-[40px] h-[40px] m-2 ms-0'></div>
@@ -205,7 +205,7 @@ if (isset($idDiscussion)) {
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words text-sm lg:text-base ">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-3xs lg:text-2xs'>${date}</span>
+                                    <span class='text-3xs'>${date}</span>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +218,7 @@ if (isset($idDiscussion)) {
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words text-sm lg:text-base">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-3xs lg:text-2xs'>${date}</span>
+                                    <span class='text-3xs'>${date}</span>
                                 </div>
                             </div>
                         </div>

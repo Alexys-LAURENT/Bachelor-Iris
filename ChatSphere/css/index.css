@@ -37,3 +37,9 @@ body {
 *::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+@media (min-width: 1024px) {
+    .text-3xs {
+        font-size: 0.7rem;
+    }
+}
