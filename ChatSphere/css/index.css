@@ -6,9 +6,14 @@ body {
     margin: 0;
 }
 
+.text-3xs {
+    font-size: 0.6rem;
+}
+
 .text-2xs {
     font-size: 0.7rem;
 }
+
 
 .defaultAvatar {
     background-image: url("../images/User-Profile.png");

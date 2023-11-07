@@ -162,16 +162,16 @@ if (isset($idDiscussion)) {
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-8"}'>
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div class="break-words">${ message['content'] }</div>
+                                <div class="break-words text-sm lg:text-base">${ message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>${date}</span>
+                                    <span class='text-3xs lg:text-2xs'>${date}</span>
                                 </div>
                             </div>
-                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 ms-0' 
+                            <div class='bg-cover bg-center bg-gray-700 aspect-square w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-md mx-2 ms-0' 
                             style='${message['pp'] !== 'default.webp' ? 
                                 `background-image: url(https://images.chatsphere.alexyslaurent.com/${message['pp']})` : 
                                 `background-color: #${CryptoJS.MD5(CryptoJS.enc.Utf8.parse(message['idUser'])).toString().substring(0, 6)}`}'>
-                            ${message['pp'] === 'default.webp' ? `<span class='flex text-2xl w-full text-white h-full justify-center items-center'>${message['prenom'].charAt(0)}${message['nom'].charAt(0)}</span>` : ''}
+                            ${message['pp'] === 'default.webp' ? `<span class='flex text-sm lg:text-2xl w-full text-white h-full justify-center items-center'>${message['prenom'].charAt(0)}${message['nom'].charAt(0)}</span>` : ''}
                         </div>
                         </div>
                         `;
@@ -180,9 +180,9 @@ if (isset($idDiscussion)) {
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end mt-1'>
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]' >
-                                <div class="break-words">${message['content'] }</div>
+                                <div class="break-words text-sm lg:text-base">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>${date}</span>
+                                    <span class='text-3xs lg:text-2xs'>${date}</span>
                                 </div>
                             </div>
                             <div class='w-[40px] h-[40px] m-2 ms-0'></div>
@@ -193,19 +193,19 @@ if (isset($idDiscussion)) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                     ${isGroup ? `
-                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-14 ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
+                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-11 mb-1 lg:mb-0 lg:ms-14 text-xs lg:text-base ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
                     ` : ``}
                         <div class='msgOthers flex justify-start'>
-                        <div class='bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md mx-2 me-0' 
+                        <div class='bg-cover bg-center bg-gray-700 aspect-square w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-md mx-2 me-0' 
                             style='${message['pp'] !== 'default.webp' ? 
                                 `background-image: url(https://images.chatsphere.alexyslaurent.com/${message['pp']})` : 
                                 `background-color: #${CryptoJS.MD5(CryptoJS.enc.Utf8.parse(message['idUser'])).toString().substring(0, 6)}`}'>
-                            ${message['pp'] === 'default.webp' ? `<span class='flex text-2xl w-full text-white h-full justify-center items-center'>${message['prenom'].charAt(0)}${message['nom'].charAt(0)}</span>` : ''}
+                            ${message['pp'] === 'default.webp' ? `<span class='flex text-sm lg:text-2xl w-full text-white h-full justify-center items-center'>${message['prenom'].charAt(0)}${message['nom'].charAt(0)}</span>` : ''}
                         </div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div class="break-words">${message['content'] }</div>
+                                <div class="break-words text-sm lg:text-base ">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>${date}</span>
+                                    <span class='text-3xs lg:text-2xs'>${date}</span>
                                 </div>
                             </div>
                         </div>
@@ -216,9 +216,9 @@ if (isset($idDiscussion)) {
                         <div class='msgOthers flex justify-start mt-1'>
                             <div class='w-[40px] h-[40px] m-2 ms-0'></div>
                             <div class='flex flex-col bg-userMessage text-black max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
-                                <div class="break-words">${message['content'] }</div>
+                                <div class="break-words text-sm lg:text-base">${message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
-                                    <span class='text-2xs'>${date}</span>
+                                    <span class='text-3xs lg:text-2xs'>${date}</span>
                                 </div>
                             </div>
                         </div>
