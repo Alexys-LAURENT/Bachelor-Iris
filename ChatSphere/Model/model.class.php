@@ -261,12 +261,18 @@ class Modele
                 }
             }
 
-
-            $sql = "insert into discussions (nom, createdBy) values (:nom, :createdBy);";
-            $donnees = array(
-                ":nom" => $nom,
-                ":createdBy" => $idUser
-            );
+            if (count($members) == 2) {
+                $sql = "insert into discussions (nom) values (:nom);";
+                $donnees = array(
+                    ":nom" => $nom
+                );
+            } else {
+                $sql = "insert into discussions (nom, createdBy) values (:nom, :createdBy);";
+                $donnees = array(
+                    ":nom" => $nom,
+                    ":createdBy" => $idUser
+                );
+            }
             $insert = $this->unPDO->prepare($sql);
             $insert->execute($donnees);
             $idDiscussion = $this->unPDO->lastInsertId();

@@ -2,10 +2,15 @@
 $discussions = $unControleur->getDiscussionsDetails($user['idUser']);
 $colleagues = $unControleur->getAllColleagues($user['idUser']);
 if (isset($_POST['createDiscussion'])) {
-    $discussionName = $_POST['NewDiscussionName'] == "" ? null : $_POST['NewDiscussionName'];
-    $createDiscussion = $unControleur->createDiscussion($discussionName, array_merge($_POST['members'], array($user['idUser'])), $user['idUser']);
-    // create or replace get parameter discussion
-    header('Location: ?token=' . $_GET['token'] . '&discussion=' . $createDiscussion);
+    if (!isset($_POST['members'])) {
+        // cancel create discussion
+        header('Location: ?token=' . $_GET['token']);
+    } else {
+        $discussionName = $_POST['NewDiscussionName'] == "" ? null : $_POST['NewDiscussionName'];
+        $createDiscussion = $unControleur->createDiscussion($discussionName, array_merge($_POST['members'], array($user['idUser'])), $user['idUser']);
+        // create or replace get parameter discussion
+        header('Location: ?token=' . $_GET['token'] . '&discussion=' . $createDiscussion);
+    }
 }
 ?>
 <div id="convSection" class="lg:w-[23%] w-0 left-0 max-w-[100%]  h-screen absolute lg:relative lg:block lg:bg-white bg-gray-50 overflow-hidden transition-all duration-500 border-e-2 dark:border-gray-800 z-10 dark:bg-dark dark:text-white">
