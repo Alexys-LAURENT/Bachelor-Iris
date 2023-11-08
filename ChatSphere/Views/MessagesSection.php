@@ -3,7 +3,7 @@ if (isset($idDiscussion)) {
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 if (isset($_POST['renameDiscussion'])) {
-    $unControleur->renameDiscussion($idDiscussion, $_POST['inputRenameDiscussion']);
+    $unControleur->renameDiscussion($idDiscussion, htmlspecialchars($_POST['inputRenameDiscussion']));
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 
@@ -25,7 +25,9 @@ if (isset($_POST['deleteDiscussion'])) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('https://images.chatsphere.alexyslaurent.com/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
+            <div class="z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[40px] h-[40px]  <?php if (!isset($discussionInfo)) echo 'hidden' ?>" style="<?php echo $discussionInfo['pp'] != 'default.webp' ? 'background-image: url(https://images.chatsphere.alexyslaurent.com/' . $discussionInfo['pp'] . ")" : 'background-color: #' . substr(md5(utf8_encode($discussionInfo['idUser'])), 0, 6) ?>  ">
+                <span class='flex text-2xl w-full text-white h-full justify-center items-center <?php echo $discussionInfo['pp'] != 'default.webp' ?  'hidden' : ''; ?>'><?php echo explode(" ", $discussionInfo['nom'])[0][0] . explode(" ", $discussionInfo['nom'])[1][0] ?></span>
+            </div>
             <div class="flex items-center gap-2">
                 <div class="flex flex-col ms-3">
                     <p class="w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>

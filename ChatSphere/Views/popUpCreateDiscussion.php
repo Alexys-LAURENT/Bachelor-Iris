@@ -80,7 +80,7 @@
             for (let i = 0; i < users.length; i++) {
                 if (users[i]['nom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase()) || users[i]['prenom'].toLowerCase().includes(nameInputCreateDiscussion.value.toLowerCase())) {
                     membersWrapperNewDiscussion.innerHTML += `
-                        <div class='flex max-w-full gap-2 hover:bg-hover px-3 py-2 rounded-md cursor-pointer dark:hover:text-black' onclick='checkCheckbox(${users[i]['idUser']})'>
+                        <div class='flex max-w-full gap-2 hover:bg-hover dark:hover:bg-darkHover px-3 py-2 rounded-md cursor-pointer dark:hover:text-white' onclick='checkCheckbox(${users[i]['idUser']})'>
                         <div class='bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' 
                             style='${users[i]['pp'] !== 'default.webp' ? 
                                 `background-image: url(https://images.chatsphere.alexyslaurent.com/${users[i]['pp']})` : 
