@@ -251,7 +251,8 @@ if (isset($_POST['createDiscussion'])) {
     function displayDiscussions(data, haveToSendNotifications) {
         document.getElementById('discussionsWrapper').innerHTML = "";
         data.forEach(discussion => {
-            var classDiscussion = <?php echo isset($_GET['discussion']) ? $_GET['discussion'] : 'null'; ?>;
+            // if $get discussion is set and is not null and is a number
+            var classDiscussion = <?php echo (isset($_GET['discussion']) && $_GET['discussion'] != null && is_numeric($_GET['discussion'])) ? $_GET['discussion'] : 'null'; ?>;
             var classDiscussion = classDiscussion == discussion.idDiscussion ? 'bg-hover dark:bg-darkHover transition-all duration-500' : '';
             var spanClass = discussion.isMessageRead === false ? "dark:text-white text-black font-bold text-sm" : "text-gray-500 text-xs";
             document.getElementById('discussionsWrapper').innerHTML += `
