@@ -42,7 +42,9 @@ create table
     discussions(
         idDiscussion int not null auto_increment,
         nom varchar(255),
-        constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion)
+        createdBy int,
+        constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion),
+        constraint FK_DISCUSSIONS_USER FOREIGN KEY(createdBy) REFERENCES users(idUser)
     ) engine = innodb,
     charset = utf8;
 
@@ -496,7 +498,17 @@ VALUES (
 
 -- Insertion des discussions
 
-INSERT INTO discussions VALUES (1, null), (2, 'équipe 1'), (3, null);
+-- Discussion 1
+
+INSERT INTO discussions VALUES (1, null, null);
+
+-- Discussion 2
+
+INSERT INTO discussions VALUES (2, 'équipe 1', 1);
+
+-- Discussion 3
+
+INSERT INTO discussions VALUES (3, null, null);
 
 -- Insertion des utilisateurs dans les discussions
 

@@ -28,6 +28,7 @@ class Controleur
     public function getDiscussionInfo($idUser, $idDiscussion)
     {
         $name = $this->unModele->getDiscussionName($idDiscussion, $idUser);
+        $createdBy = $this->unModele->getDiscussionCreatedBy($idDiscussion);
         $usersConv = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
         if (isset($usersConv['idUser'])) {
             return array(
@@ -38,6 +39,7 @@ class Controleur
         } else {
             return array(
                 "nom" => $name['nom'],
+                "createdBy" => $createdBy['createdBy'],
                 "pp" => $usersConv['pp']
             );
         }
@@ -53,9 +55,19 @@ class Controleur
         return $this->unModele->getDiscussionsDetails($idUser);
     }
 
-    public function createDiscussion($nom, $members)
+    public function createDiscussion($nom, $members, $idUser)
     {
-        return $this->unModele->createDiscussion($nom, $members);
+        return $this->unModele->createDiscussion($nom, $members, $idUser);
+    }
+
+    public function renameDiscussion($idDiscussion, $nom)
+    {
+        $this->unModele->renameDiscussion($idDiscussion, $nom);
+    }
+
+    public function deleteDiscussion($idDiscussion)
+    {
+        $this->unModele->deleteDiscussion($idDiscussion);
     }
 
     public function checkIdDiscussion($idDiscussion, $idUser)

@@ -129,6 +129,18 @@ class Modele
         }
     }
 
+    public function getDiscussionCreatedBy($idDiscussion)
+    {
+        $sql = "select createdBy from discussions where idDiscussion = :idDiscussion ";
+        $donnees = array(
+            ":idDiscussion" => $idDiscussion
+        );
+        $select = $this->unPDO->prepare($sql);
+        $select->execute($donnees);
+        $createdBy = $select->fetch();
+        return $createdBy;
+    }
+
     public function isDiscussionAGroup($idDiscussion)
     {
         $sql = "select * from discussions_users where idDiscussion = :idDiscussion";
@@ -167,6 +179,7 @@ class Modele
     {
         $sql = "SELECT d.idDiscussion,
         d.nom,
+        d.createdBy,
         SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message,
         MAX(m.idMessage) as idDernierMessage,
         (SELECT du_other.idUser
@@ -217,7 +230,7 @@ class Modele
         return $discussions;
     }
 
-    public function createDiscussion($nom, $members)
+    public function createDiscussion($nom, $members, $idUser)
     {
 
         try {
@@ -249,9 +262,10 @@ class Modele
             }
 
 
-            $sql = "insert into discussions (nom) values (:nom);";
+            $sql = "insert into discussions (nom, createdBy) values (:nom, :createdBy);";
             $donnees = array(
-                ":nom" => $nom
+                ":nom" => $nom,
+                ":createdBy" => $idUser
             );
             $insert = $this->unPDO->prepare($sql);
             $insert->execute($donnees);
@@ -270,6 +284,48 @@ class Modele
         } catch (PDOException $e) {
             echo $e->getMessage();
             return;
+        }
+    }
+
+    public function renameDiscussion($idDiscussion, $nom)
+    {
+        try {
+            $sql = "update discussions set nom = :nom where idDiscussion = :idDiscussion;";
+            $donnees = array(
+                ":nom" => $nom,
+                ":idDiscussion" => $idDiscussion
+            );
+            $update = $this->unPDO->prepare($sql);
+            $update->execute($donnees);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function deleteDiscussion($idDiscussion)
+    {
+        try {
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion
+            );
+
+            $sql = "delete from message_reads where idMessage in (select idMessage from messages where idDiscussion = :idDiscussion);";
+            $delete = $this->unPDO->prepare($sql);
+            $delete->execute($donnees);
+
+            $sql = "delete from messages where idDiscussion = :idDiscussion;";
+            $delete = $this->unPDO->prepare($sql);
+            $delete->execute($donnees);
+
+            $sql = "delete from discussions_users where idDiscussion = :idDiscussion;";
+            $delete = $this->unPDO->prepare($sql);
+            $delete->execute($donnees);
+
+            $sql = "delete from discussions where idDiscussion = :idDiscussion;";
+            $delete = $this->unPDO->prepare($sql);
+            $delete->execute($donnees);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
     }
 

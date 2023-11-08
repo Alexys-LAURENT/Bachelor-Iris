@@ -2,8 +2,16 @@
 if (isset($idDiscussion)) {
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
-?>
+if (isset($_POST['renameDiscussion'])) {
+    $unControleur->renameDiscussion($idDiscussion, $_POST['inputRenameDiscussion']);
+    $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
+}
 
+if (isset($_POST['deleteDiscussion'])) {
+    $_POST['inputDeleteDiscussion'] == $_POST['randomNumberDeleteDiscussion'] ? $unControleur->deleteDiscussion($idDiscussion) : "";
+    unset($discussionInfo);
+}
+?>
 <div class="lg:w-[57%] w-full overflow-hidden dark:bg-dark transition-all duration-500">
     <nav class="w-full flex h-[50px] border-b-2 dark:border-gray-800 dark:text-white transition-all duration-500">
 
@@ -18,12 +26,21 @@ if (isset($idDiscussion)) {
 
         <div class="flex w-full items-center ps-4 ">
             <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('https://images.chatsphere.alexyslaurent.com/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
-            <div class="flex flex-col ms-3">
-                <p class=" w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
-                <div class="flex items-center gap-2">
-                    <div id="userConvStatusColor" class="w-2 h-2 rounded-full <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?> "></div>
-                    <span id="userConvStatusText" class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
+            <div class="flex items-center gap-2">
+                <div class="flex flex-col ms-3">
+                    <p class="w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
+                    <div class="flex items-center gap-2">
+                        <div id="userConvStatusColor" class="w-2 h-2 rounded-full <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?> "></div>
+                        <span id="userConvStatusText" class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
+                    </div>
                 </div>
+
+                <?php if (isset($discussionInfo['createdBy']) && $discussionInfo['createdBy'] == $user['idUser']) : ?>
+                    <svg onclick="openPopupRenameDiscussion()" id="buttonRenameDiscussion" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="cursor-pointer bi bi-pencil-square <?php if (isset($discussionInfo['idUser'])) echo "hidden"; ?> <?php if (!isset($discussionInfo)) echo 'hidden' ?>" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                    </svg>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -44,16 +61,15 @@ if (isset($idDiscussion)) {
         </div>
     </nav>
 
-    <?php
-    require_once("./Views/Statistiques.php");
-    ?>
+    <?php require_once('popUpRenameDiscussion.php'); ?>
+    <?php require_once("./Views/Statistiques.php"); ?>
 
     <!-- content Messages -->
     <div class="flex flex-col h-[calc(100%-150px)] py-4 relative" id="MessagesWrapper">
 
         <div id="messagesDiv" class="messagesDiv overflow-y-auto select-text h-full">
             <!-- if discussion "Loading..." -->
-            <?php if (isset($_GET['discussion'])) : ?>
+            <?php if (isset($_GET['discussion']) && (isset($discussionInfo))) : ?>
                 <div class="flex justify-center items-center h-full">
                     <div class="flex flex-col justify-center items-center">
                         <svg id="LoadingDivSpin" class="animate-spin -ml-1 h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

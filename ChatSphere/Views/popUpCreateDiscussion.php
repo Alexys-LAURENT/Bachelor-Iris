@@ -41,7 +41,7 @@
 
             <div class="flex gap-1">
                 <button type="submit" name="createDiscussion" class="bg-secondary text-white rounded-md text-sm py-1 px-2 hover:scale-105 transition-all">Créer</button>
-                <input type="button" id="closePopup" class="text-white rounded-md text-sm py-1 px-2 bg-red-500 hover:scale-105 transition-all" value="Annuler">
+                <input type="button" id="closePopup" class="text-white rounded-md text-sm py-1 px-2 bg-red-500 hover:scale-105 transition-all cursor-pointer" value="Annuler">
             </div>
         </form>
     </div>
