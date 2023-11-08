@@ -54,7 +54,7 @@ create table
         idDiscussion int not null,
         constraint PK_DISCUSSIONS_USER PRIMARY KEY(idUser, idDiscussion),
         constraint FK_DISCUSSIONS_USER_USER FOREIGN KEY(idUser) REFERENCES users(idUser),
-        constraint FK_DISCUSSIONS_USER_DISCUSSION FOREIGN KEY(idDiscussion) REFERENCES discussions(idDiscussion)
+        constraint FK_DISCUSSIONS_USER_DISCUSSION FOREIGN KEY(idDiscussion) REFERENCES discussions(idDiscussion) ON DELETE CASCADE
     ) engine = innodb,
     charset = utf8;
 
@@ -67,7 +67,7 @@ CREATE TABLE
         content varchar(255) NOT NULL,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         constraint PK_MESSAGES PRIMARY KEY(idMessage),
-        constraint FK_MESSAGES_DISCUSSION FOREIGN KEY(idDiscussion) REFERENCES discussions(idDiscussion),
+        constraint FK_MESSAGES_DISCUSSION FOREIGN KEY(idDiscussion) REFERENCES discussions(idDiscussion) ON DELETE CASCADE,
         constraint FK_MESSAGES_USER FOREIGN KEY(idUser) REFERENCES users(idUser)
     ) engine = innodb,
     charset = utf8;
@@ -92,8 +92,8 @@ CREATE TABLE
         idUser int(11) NOT NULL,
         timestamp timestamp NOT NULL,
         PRIMARY KEY (idMessageRead),
-        CONSTRAINT FK_MESSAGES_READS FOREIGN KEY (idMessage) REFERENCES messages (idMessage),
-        CONSTRAINT FK_MESSAGES_READS2 FOREIGN KEY (idUser) REFERENCES users (idUser)
+        CONSTRAINT FK_MESSAGES_READS FOREIGN KEY (idMessage) REFERENCES messages (idMessage) ON DELETE CASCADE,
+        CONSTRAINT FK_MESSAGES_READS2 FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE
     ) ENGINE = InnoDB,
     CHARSET = utf8;
 

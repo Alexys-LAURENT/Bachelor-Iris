@@ -161,7 +161,6 @@ if (isset($_POST['deleteDiscussion'])) {
         var messagesDiv = document.getElementById("messagesDiv");
         load == true ? messagesDiv.classList.add("hidden") : "";
         var isGroup = messages[0]['idDiscussionAGroup']
-        console.log(isGroup);
         messagesDiv.innerHTML = "";
         messages.forEach(message => {
             var date = new Date(message['timestamp']).toLocaleString('fr-FR', {
