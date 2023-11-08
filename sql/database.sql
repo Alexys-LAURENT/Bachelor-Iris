@@ -25,7 +25,14 @@ create table
         email varchar(50) not null,
         hashedPass VARCHAR(50) NOT NULL,
         metier VARCHAR(50) NOT NULL,
-        pp VARCHAR(255) DEFAULT 'default.png',
+        pp VARCHAR(255) DEFAULT 'default.webp',
+        theme VARCHAR(5) NOT NULL DEFAULT 'dark',
+        statut enum(
+            'Absent',
+            'En ligne',
+            'Occupé',
+            'Hors ligne'
+        ) NOT NULL DEFAULT 'Hors ligne',
         constraint PK_USER PRIMARY KEY(idUser),
         constraint FK_USER_ENTREPRISE FOREIGN KEY(idEntreprise) REFERENCES entreprises(idEntreprise)
     ) engine = innodb,
@@ -35,7 +42,9 @@ create table
     discussions(
         idDiscussion int not null auto_increment,
         nom varchar(255),
-        constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion)
+        createdBy int,
+        constraint PK_DISCUSSIONS PRIMARY KEY(idDiscussion),
+        constraint FK_DISCUSSIONS_USER FOREIGN KEY(createdBy) REFERENCES users(idUser)
     ) engine = innodb,
     charset = utf8;
 
@@ -73,6 +82,18 @@ CREATE TABLE
         ) not null,
         CONSTRAINT PK_TOKEN PRIMARY KEY (idToken),
         CONSTRAINT FK_TOKEN_USER FOREIGN KEY (idUser) REFERENCES users(idUser)
+    ) ENGINE = InnoDB,
+    CHARSET = utf8;
+
+CREATE TABLE
+    message_reads (
+        idMessageRead int(11) NOT NULL AUTO_INCREMENT,
+        idMessage int(11) NOT NULL,
+        idUser int(11) NOT NULL,
+        timestamp timestamp NOT NULL,
+        PRIMARY KEY (idMessageRead),
+        CONSTRAINT FK_MESSAGES_READS FOREIGN KEY (idMessage) REFERENCES messages (idMessage),
+        CONSTRAINT FK_MESSAGES_READS2 FOREIGN KEY (idUser) REFERENCES users (idUser)
     ) ENGINE = InnoDB,
     CHARSET = utf8;
 
@@ -127,7 +148,7 @@ VALUES (
         'johndoe@email.com',
         '123',
         'Développeur Web',
-        'John-Doe.jpg'
+        'John-Doe.webp'
     ), (
         1,
         'Alice',
@@ -135,7 +156,7 @@ VALUES (
         'alicesmith@email.com',
         '123',
         'Administrateur Systèmes',
-        'Alice-Smith.jpg'
+        'Alice-Smith.webp'
     ), (
         1,
         'Jane',
@@ -143,7 +164,7 @@ VALUES (
         'janedoe@email.com',
         '123',
         'Développeur Full-Stack',
-        'default.png'
+        'default.webp'
     ), (
         1,
         'Bob',
@@ -151,7 +172,7 @@ VALUES (
         'bobsmith@email.com',
         '123',
         'Développeur Front-End',
-        'default.png'
+        'default.webp'
     ), (
         1,
         'Michael',
@@ -159,7 +180,7 @@ VALUES (
         'michaelclark@email.com',
         '123',
         'Développeur Back-End',
-        'Michael-Clark.jpg'
+        'Michael-Clark.webp'
     ), (
         1,
         'Ella',
@@ -167,7 +188,7 @@ VALUES (
         'elladavis@email.com',
         '123',
         'Développeur Full-Stack',
-        'Ella-Davis.jpg'
+        'Ella-Davis.webp'
     ), (
         1,
         'Robert',
@@ -175,7 +196,7 @@ VALUES (
         'robertjohnson@email.com',
         '123',
         'Développeur Front-End',
-        'Robert-Jonhson.jpg'
+        'Robert-Jonhson.webp'
     ), (
         1,
         'Alexys',
@@ -183,7 +204,235 @@ VALUES (
         'alexyslaurent@email.com',
         '123',
         'Chef de projet',
-        'Alexys-Laurent.jpg'
+        'Alexys-Laurent.webp'
+    );
+
+INSERT INTO
+    users (
+        idEntreprise,
+        nom,
+        prenom,
+        email,
+        hashedPass,
+        metier,
+        pp,
+        theme,
+        statut
+    )
+VALUES (
+        1,
+        'Durand',
+        'Sophie',
+        'sophiedurand@email.com',
+        '123',
+        'Responsable RH',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Martin',
+        'Louis',
+        'louismartin@email.com',
+        '123',
+        'Développeur Full-Stack',
+        'default.webp',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Bernard',
+        'Emilie',
+        'emiliebernard@email.com',
+        '123',
+        'Développeur Back-End',
+        'default.webp',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Petit',
+        'Thomas',
+        'thomaspetit@email.com',
+        '123',
+        'Manager',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Leroy',
+        'Julie',
+        'julieleroy@email.com',
+        '123',
+        'Directeur Technique',
+        'default.webp',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Moreau',
+        'Nicolas',
+        'nicolasmoreau@email.com',
+        '123',
+        'Analyste Sécurité',
+        'default.webp',
+        'dark',
+        'Hors ligne'
+    ), (
+        1,
+        'Simon',
+        'Laura',
+        'laurasimon@email.com',
+        '123',
+        'Ingénieur Système',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Lefebvre',
+        'Maxime',
+        'maximelefebvre@email.com',
+        '123',
+        'Designer UX/UI',
+        'default.webp',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Michel',
+        'Clara',
+        'claramichel@email.com',
+        '123',
+        'Spécialiste SEO',
+        'default.webp',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Garcia',
+        'Alexandre',
+        'alexandregarcia@email.com',
+        '123',
+        'Chef de Projet Digital',
+        'default.webp',
+        'dark',
+        'Hors ligne'
+    );
+
+INSERT INTO
+    users (
+        idEntreprise,
+        nom,
+        prenom,
+        email,
+        hashedPass,
+        metier,
+        pp,
+        theme,
+        statut
+    )
+VALUES (
+        1,
+        'Dupont',
+        'Marie',
+        'mariedupont@email.com',
+        '123',
+        'Chargée de Recrutement',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Lopez',
+        'David',
+        'davidlopez@email.com',
+        '123',
+        'Analyste Financier',
+        'default.webp',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Girard',
+        'Anne',
+        'annegirard@email.com',
+        '123',
+        'Responsable Commercial',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Roux',
+        'Julien',
+        'julienroux@email.com',
+        '123',
+        'Consultant IT',
+        'default.webp',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Fournier',
+        'Élise',
+        'elisefournier@email.com',
+        '123',
+        'Responsable Marketing',
+        'default.webp',
+        'dark',
+        'Absent'
+    ), (
+        1,
+        'Morel',
+        'Pierre',
+        'pierremorel@email.com',
+        '123',
+        'Expert Cyber-sécurité',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Laurent',
+        'Stéphanie',
+        'stephanielaurent@email.com',
+        '123',
+        'Directrice Artistique',
+        'default.webp',
+        'dark',
+        'Occupé'
+    ), (
+        1,
+        'Simon',
+        'Éric',
+        'ericsimon@email.com',
+        '123',
+        'Responsable de Production',
+        'default.webp',
+        'dark',
+        'Hors ligne'
+    ), (
+        1,
+        'Michel',
+        'Patricia',
+        'patriciamichel@email.com',
+        '123',
+        'Coach Agile',
+        'default.webp',
+        'dark',
+        'En ligne'
+    ), (
+        1,
+        'Lefevre',
+        'Brice',
+        'bricelefevre@email.com',
+        '123',
+        'Architecte Logiciel',
+        'default.webp',
+        'dark',
+        'Absent'
     );
 
 -- Entreprise 2 (Data Systems)
@@ -239,13 +488,27 @@ INSERT INTO
     token (idUser, token, expireAt)
 VALUES (
         1,
-        'test',
+        'H4d58uy484k8ua4da4dsqdiazi1d2a31d5za15da',
+        '2031-01-01 00:00:00'
+    ), (
+        2,
+        'zdaz78d78zacd1za8c74d8917a484s8ax247dza',
         '2031-01-01 00:00:00'
     );
 
 -- Insertion des discussions
 
-INSERT INTO discussions VALUES (1,1), (2,2), (3,3);
+-- Discussion 1
+
+INSERT INTO discussions VALUES (1, null, null);
+
+-- Discussion 2
+
+INSERT INTO discussions VALUES (2, 'équipe 1', 1);
+
+-- Discussion 3
+
+INSERT INTO discussions VALUES (3, null, null);
 
 -- Insertion des utilisateurs dans les discussions
 
@@ -255,11 +518,11 @@ INSERT INTO discussions_users VALUES (1, 1), (2, 1);
 
 -- Discussion 2
 
-INSERT INTO discussions_users VALUES (3, 2), (4, 2);
+INSERT INTO discussions_users VALUES (3, 2), (4, 2), (5, 2),(1,2);
 
 -- Discussion 3
 
-INSERT INTO discussions_users VALUES (5, 3);
+INSERT INTO discussions_users VALUES (5, 3), (1, 3);
 
 -- Insertion des messages
 
@@ -270,40 +533,20 @@ INSERT INTO
 VALUES (
         1,
         1,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, '
+        'Bonjour, comment ça va ?'
+    ), (1, 2, "Salut, ça va et toi ?"), (1, 1, 'Ça va bien merci !'), (1, 2, 'Super !'), (
+        1,
+        1,
+        'Tu as vu le nouveau projet ?'
     ), (
         1,
         2,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
+        'Oui, il a l\'air super !'
     ), (
         1,
         1,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
-    ), (
-        1,
-        1,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, '
-    ), (
-        1,
-        2,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
-    ), (
-        1,
-        1,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
-    ), (
-        1,
-        1,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, '
-    ), (
-        1,
-        2,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
-    ), (
-        1,
-        1,
-        'Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici !  Bonjour, je suis nouveau ici ! Bonjour, je suis nouveau ici ! Bonjour,  !'
-    ), (1, 2, 'De rien !'), (1, 1, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !'), (1, 1, 'A bientôt !'), (1, 2, 'A bientôt !');
+        'Oui, j\'ai hâte de commencer !'
+    ), (1, 2, 'Moi aussi !');
 
 -- Discussion 2
 
@@ -322,5 +565,5 @@ INSERT INTO
 VALUES (
         3,
         5,
-        'Bonjour, je suis nouveau ici !'
-    ), (3, 5, 'Merci !');
+        'Je viens tout juste de finir le projet !'
+    );

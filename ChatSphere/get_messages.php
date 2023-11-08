@@ -7,5 +7,10 @@ $idDiscussion = $_GET['idDiscussion'];
 $messagesDiscussion = $unControleur->getAllMessages($idDiscussion);
 
 
+foreach ($messagesDiscussion as $key => $message) {
+    $message['idDiscussionAGroup'] = $unControleur->isDiscussionAGroup($message['idDiscussion']);
+    $messagesDiscussion[$key] = $message;
+}
+
 header('Content-Type: application/json');
 echo json_encode($messagesDiscussion);

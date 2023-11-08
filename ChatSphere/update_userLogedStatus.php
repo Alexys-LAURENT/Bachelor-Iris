@@ -5,12 +5,11 @@ require_once("Controller/controller.class.php");
 
 $unControleur = new Controleur($serveur, $bdd, $user, $mdp);
 
-$message = htmlspecialchars($_POST['message']);
-$idDiscussion = $_POST['idDiscussion'];
+$newStatus = $_POST['status'];
 $idUser = $_POST['idUser'];
 
-$isSend = $unControleur->sendMessage($idDiscussion, $idUser, $message);
+$isUpdate = $unControleur->updateUserStatus($newStatus, $idUser);
 
 
 header('Content-Type: application/json');
-echo json_encode($isSend);
+echo json_encode($isUpdate);

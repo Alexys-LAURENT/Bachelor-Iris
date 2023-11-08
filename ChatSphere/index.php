@@ -14,7 +14,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="<?php echo $user['theme'] ?> select-none">
 
 <head>
     <meta charset="UTF-8">
@@ -29,16 +29,21 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
                         primary: "#FFFFFF",
                         secondary: "#5B6CF9",
                         hover: "#EFF1FF",
+                        darkHover: "#171D27",
                         userMessage: "#F1F1F1",
                         border: "#E2E8F0",
+                        dark: "#0d1117"
                     },
                 },
             },
+            darkMode: "class",
         }
     </script>
-    <script src="./js/index.js"></script>
+    <script src="./js/index.js?"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="./css/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="./css/index.css?">
+    <link rel="shortcut icon" href="./images/Message-icon.svg" type="image/x-icon">
 </head>
 
 <body class="overflow-hidden">
@@ -52,11 +57,7 @@ if (isset($_GET['discussion']) && $unControleur->checkIdDiscussion($_GET['discus
 </body>
 
 <script>
-    if (!Notification) {
-        alert('Le navigateur ne supporte pas les notifications.');
-    }
     Notification.requestPermission();
-    var notification = new Notification('Bonjour !');
 </script>
 
 </html>

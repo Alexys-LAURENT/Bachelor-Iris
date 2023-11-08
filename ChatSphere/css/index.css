@@ -1,10 +1,19 @@
+:is(.dark *) {
+    border-color: #2e2e2e
+}
+
 body {
     margin: 0;
+}
+
+.text-3xs {
+    font-size: 0.6rem;
 }
 
 .text-2xs {
     font-size: 0.7rem;
 }
+
 
 .defaultAvatar {
     background-image: url("../images/User-Profile.png");
@@ -13,18 +22,24 @@ body {
 }
 
 /* scrollbar */
-.messagesDiv::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 0.5rem;
 }
 
-.messagesDiv::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background: none;
 }
 
-.messagesDiv::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: #888;
 }
 
-.messagesDiv::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+@media (min-width: 1024px) {
+    .text-3xs {
+        font-size: 0.7rem;
+    }
 }

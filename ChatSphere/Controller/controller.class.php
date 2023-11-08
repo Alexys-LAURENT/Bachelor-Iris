@@ -1,5 +1,5 @@
 <?php
-require_once("model/model.class.php");
+require_once("Model/model.class.php");
 
 class Controleur
 {
@@ -28,11 +28,21 @@ class Controleur
     public function getDiscussionInfo($idUser, $idDiscussion)
     {
         $name = $this->unModele->getDiscussionName($idDiscussion, $idUser);
-        $pp = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
-        return array(
-            "nom" => $name['nom'],
-            "pp" => $pp['pp']
-        );
+        $createdBy = $this->unModele->getDiscussionCreatedBy($idDiscussion);
+        $usersConv = $this->unModele->getDiscussionImage($idDiscussion, $idUser);
+        if (isset($usersConv['idUser'])) {
+            return array(
+                "idUser" => $usersConv['idUser'],
+                "nom" => $name['nom'],
+                "pp" => $usersConv['pp']
+            );
+        } else {
+            return array(
+                "nom" => $name['nom'],
+                "createdBy" => $createdBy['createdBy'],
+                "pp" => $usersConv['pp']
+            );
+        }
     }
 
     public function sendMessage($idDiscussion, $idUser, $message)
@@ -45,13 +55,65 @@ class Controleur
         return $this->unModele->getDiscussionsDetails($idUser);
     }
 
-    public function createDiscussion($nom, $members)
+    public function createDiscussion($nom, $members, $idUser)
     {
-        $this->unModele->createDiscussion($nom, $members);
+        return $this->unModele->createDiscussion($nom, $members, $idUser);
+    }
+
+    public function renameDiscussion($idDiscussion, $nom)
+    {
+        $this->unModele->renameDiscussion($idDiscussion, $nom);
+    }
+
+    public function deleteDiscussion($idDiscussion)
+    {
+        $this->unModele->deleteDiscussion($idDiscussion);
     }
 
     public function checkIdDiscussion($idDiscussion, $idUser)
     {
         return $this->unModele->checkIdDiscussion($idDiscussion, $idUser);
+    }
+
+    public function getUserStatus($idUser)
+    {
+        return $this->unModele->getUserstatus($idUser);
+    }
+
+    public function updateUserStatus($newStatus, $idUser)
+    {
+        $this->unModele->updateUserStatus($newStatus, $idUser);
+    }
+
+    public function toggleThemeMode($themeMode, $idUser)
+    {
+        $this->unModele->toggleThemeMode($themeMode, $idUser);
+    }
+
+    public function setSeen($idUser, $allIdsMessages)
+    {
+        return $this->unModele->setSeen($idUser, $allIdsMessages);
+    }
+
+    public function isMessageRead($idMessage, $idUser)
+    {
+        return $this->unModele->isMessageRead($idMessage, $idUser);
+    }
+
+    public function isDiscussionAGroup($idDiscussion)
+    {
+        return $this->unModele->isDiscussionAGroup($idDiscussion);
+    }
+
+    // STATISTIQUES ///////////////////////////////
+
+    public function getTotalMessStats($idDiscussion)
+    {
+        return $this->unModele->getTotalMessStats($idDiscussion);
+    }
+
+    public function getTotalMessByMonthByUsersStats($idDiscussion)
+    {
+        return $this->unModele->getTotalMessByMonthByUsersStats($idDiscussion);
     }
 }
