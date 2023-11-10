@@ -177,7 +177,7 @@ if (isset($_POST['deleteDiscussion'])) {
             if (message['idUser'] == <?php echo $user['idUser']; ?>) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
-                        <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-8"}'>
+                        <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-4"}'>
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words text-sm lg:text-base">${ message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
@@ -210,9 +210,9 @@ if (isset($_POST['deleteDiscussion'])) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                     ${isGroup ? `
-                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-11 mb-1 lg:mb-0 lg:ms-14 text-xs lg:text-base ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
+                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-11 mb-1 lg:mb-0 lg:ms-14 text-xs lg:text-base ${previousUser == null ? "mt-0" : "mt-4"}'>${message['prenom']} ${message['nom']}</div>
                     ` : ``}
-                        <div class='msgOthers flex justify-start'>
+                        <div class='msgOthers flex justify-start ${isGroup ? "mt-0" : "mt-4"}'>
                         <div class='bg-cover bg-center bg-gray-700 aspect-square w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-md mx-2 me-0' 
                             style='${message['pp'] !== 'default.webp' ? 
                                 `background-image: url(https://images.chatsphere.alexyslaurent.com/${message['pp']})` : 
