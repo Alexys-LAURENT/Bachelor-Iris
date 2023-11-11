@@ -99,6 +99,52 @@ CREATE TABLE
 
 -- Insertion des entreprises
 
+SET sql_mode='NO_AUTO_VALUE_ON_ZERO';
+
+INSERT INTO
+    entreprises (
+        idEntreprise,
+        nom,
+        adresse,
+        codePostal,
+        ville,
+        siret
+    )
+VALUES (
+        0,
+        'System',
+        'System',
+        'System',
+        'System',
+        'System'
+    );
+
+Insert into
+    users (
+        idUser,
+        idEntreprise,
+        nom,
+        prenom,
+        email,
+        hashedPass,
+        metier,
+        pp,
+        theme,
+        statut
+    )
+values (
+        0,
+        0,
+        'System',
+        'System',
+        'System',
+        'System',
+        'System',
+        'System',
+        'dark',
+        'Hors ligne'
+    );
+
 INSERT INTO
     entreprises (
         nom,

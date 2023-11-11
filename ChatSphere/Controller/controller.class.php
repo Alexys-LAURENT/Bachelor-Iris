@@ -60,9 +60,9 @@ class Controleur
         return $this->unModele->createDiscussion($nom, $members, $idUser);
     }
 
-    public function renameDiscussion($idDiscussion, $nom)
+    public function renameDiscussion($idDiscussion, $nom, $renamedBy)
     {
-        $this->unModele->renameDiscussion($idDiscussion, $nom);
+        $this->unModele->renameDiscussion($idDiscussion, $nom, $renamedBy);
     }
 
     public function deleteDiscussion($idDiscussion)

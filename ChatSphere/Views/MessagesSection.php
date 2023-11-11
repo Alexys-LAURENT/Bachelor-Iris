@@ -3,7 +3,7 @@ if (isset($idDiscussion)) {
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 if (isset($_POST['renameDiscussion'])) {
-    $unControleur->renameDiscussion($idDiscussion, htmlspecialchars($_POST['inputRenameDiscussion']));
+    $unControleur->renameDiscussion($idDiscussion, htmlspecialchars($_POST['inputRenameDiscussion']), $user['prenom'] . " " . $user['nom']);
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 
@@ -174,7 +174,16 @@ if (isset($_POST['deleteDiscussion'])) {
                 hour: 'numeric',
                 minute: 'numeric',
             });
-            if (message['idUser'] == <?php echo $user['idUser']; ?>) {
+            if (message['idUser'] == 0) {
+                messagesDiv.innerHTML += `
+                        <div class='msgSystem items-center flex flex-col text-black dark:text-white ${previousUser == null ? "mt-0" : "mt-4"}'>
+                                <div class="break-words text-sm lg:text-base text-center">${ message['content'] }</div>
+                                <div class='w-full flex justify-center'
+                                    <span class='text-3xs'>${date}</span>
+                                </div>
+                        </div>
+                        `;
+            } else if (message['idUser'] == <?php echo $user['idUser']; ?>) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                         <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-4"}'>
