@@ -33,7 +33,7 @@ if (isset($_POST['deleteDiscussion'])) {
                     <p class="w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
                     <div class="flex items-center gap-2">
                         <div id="userConvStatusColor" class="w-2 h-2 rounded-full <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?> "></div>
-                        <span id="userConvStatusText" class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
+                        <span id="userConvStatusText" class="text-2xs text-elipsis line-clamp-1 <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
                     </div>
                 </div>
 
