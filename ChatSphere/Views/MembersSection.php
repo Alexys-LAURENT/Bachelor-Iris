@@ -84,7 +84,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             // Décalage vers la gauche si le clic est trop proche du bord droit
             var leftPosition = e.clientX;
             if (window.innerWidth - e.clientX < 175) {
-                leftPosition -= 175;
+                leftPosition -= 150;
             }
 
             menu.style.top = e.clientY + 'px';
