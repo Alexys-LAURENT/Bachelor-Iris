@@ -195,6 +195,7 @@ class Modele
             WHERE idUser = :idUser
         )
         GROUP BY d.idDiscussion
+        ORDER BY Max(m.timestamp) DESC
         ";
 
         $donnees = array(
