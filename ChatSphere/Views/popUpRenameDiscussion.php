@@ -59,7 +59,8 @@
 
     // Associez la fonction openPopupRenameDiscussion au clic sur le bouton
     const addButtonRenameDiscussion = document.querySelector("#buttonRenameDiscussion");
-    addButtonRenameDiscussion.addEventListener("click", openPopupRenameDiscussion);
+
+    addButtonRenameDiscussion && addButtonRenameDiscussion.addEventListener("click", openPopupRenameDiscussion);
 
     // Associez la fonction closePopup au clic sur le bouton "Fermer"
     const closeButtonRenameDiscussion = document.querySelector("#closePopupRenameDiscussion");

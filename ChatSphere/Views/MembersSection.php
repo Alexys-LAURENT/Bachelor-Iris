@@ -47,7 +47,7 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
             <!-- Contact row -->
             <?php
             for ($i = 0; $i < count($colleagues); $i++) {
-                echo "<div class='flex max-w-full mx-4 gap-2'>
+                echo "<div class='hover:bg-hover hover:dark:bg-darkHover rounded-md flex max-w-full mx-4 gap-2 colleagueRow' id-colleague='" . $colleagues[$i]['idUser'] . "'>
                             <div class='z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]' style='" . ($colleagues[$i]['pp'] != 'default.webp' ? "background-image: url(https://images.chatsphere.alexyslaurent.com/" . $colleagues[$i]['pp'] . ")" : 'background-color: #' . substr(md5(utf8_encode($colleagues[$i]['idUser'])), 0, 6)) . "'>
                             <span class='flex text-2xl w-full text-white h-full justify-center items-center " . ($colleagues[$i]['pp'] != 'default.webp' ? 'hidden' : '') . "'>" . mb_substr($colleagues[$i]['prenom'], 0, 1, 'UTF-8') . mb_substr($colleagues[$i]['nom'], 0, 1, 'UTF-8') . "</span>
                             </div>
@@ -65,6 +65,80 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
 
 
 <script>
+    var colleagueRows = document.querySelectorAll('.colleagueRow');
+
+    colleagueRows.forEach(colleagueRow => {
+        colleagueRow.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            // Si le menu existe déjà, supprimez-le
+            if (document.querySelector('.contactMenu')) {
+                document.querySelector('.contactMenu').remove();
+            }
+
+            var colleagueId = colleagueRow.getAttribute('id-colleague');
+
+            // Créez le menu à la position de la souris
+            var menu = document.createElement('div');
+            menu.classList.add('absolute', 'z-10', 'rounded-md', 'shadow-xl', 'text-black', 'dark:text-white', 'transition-all', 'duration-500', 'flex', 'flex-col', 'overflow-hidden', 'contactMenu');
+
+            // Décalage vers la gauche si le clic est trop proche du bord droit
+            var leftPosition = e.clientX;
+            if (window.innerWidth - e.clientX < 175) {
+                leftPosition -= 175;
+            }
+
+            menu.style.top = e.clientY + 'px';
+            menu.style.left = leftPosition + 'px';
+            menu.innerHTML = `
+            <button onclick="handleShowDiscussion(${colleagueId})" class="w-full text-sm bg-secondary text-white mt-1 rounded-md px-3 py-1">Envoyer un message</button>`;
+            document.body.appendChild(menu);
+
+            // Ajoutez un écouteur d'événements au document pour fermer le menu lors d'un clic en dehors
+            document.addEventListener('click', function(event) {
+                var isClickInsideMenu = menu.contains(event.target);
+                if (!isClickInsideMenu) {
+                    menu.remove();
+                }
+            });
+        });
+    });
+
+    // disable other context menus
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        // console.log(e.target.closest('div'));
+        // return false;
+        if (e.target.parentNode.classList.contains('colleagueRow') || e.target.parentNode.parentNode.classList.contains('colleagueRow') || e.target.classList.contains('colleagueRow')) {
+            return;
+        } else {
+            if (document.querySelector('.contactMenu')) {
+                document.querySelector('.contactMenu').remove();
+            }
+        }
+    });
+
+    function handleShowDiscussion(idColleague) {
+        // call php function to create discussion
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "createDiscussionRightClick.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // get idDiscussion from response
+                var idDiscussion = xhr.responseText;
+                // redirect to discussion
+                window.location.href = "?token=<?php echo $_GET['token']; ?>&discussion=" + idDiscussion;
+            } else {
+                console.log('The request failed!');
+            }
+        };
+
+        xhr.send("idColleague=" + idColleague + "&idUser=" + <?php echo $user['idUser']; ?>);
+    }
+
+
+
     membersWrapper = document.getElementById('membersWrapper');
     nameInput = document.getElementById('nameInput');
     var users = <?php echo json_encode($colleagues); ?>;
