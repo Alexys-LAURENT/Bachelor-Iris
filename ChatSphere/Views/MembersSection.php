@@ -17,15 +17,15 @@ $metiers = array_filter(array_unique(array_column($colleagues, 'metier')));
     <!-- content -->
     <div class="flex flex-col items-center gap-4 relative min-h-[calc(100%-50px)] max-h-[calc(100%-50px)] overflow-hidden">
         <div class="flex w-full mt-3 max-h-[50px] justify-center ">
-            <div class="flex w-full ms-4 justify-between">
-                <input onkeyup="showColleaguesFiltered()" id="nameInput" type="text" placeholder="Rechercher" class="rounded-md bg-gray-100 px-2 py-1 w-10/12 focus:outline-border cursor-text text-gray-600 dark:bg-darkHover dark:text-white dark:focus:outline-black transition-all duration-500">
-                <button onclick='handleShowFilter()' class="bg-secondary ms-2 me-4 rounded-md w-2/12 max-w-[50px] aspect-square flex justify-center items-center">
+            <div class="flex w-full ms-4 justify-between h-[30px]">
+                <input onkeyup="showColleaguesFiltered()" id="nameInput" type="text" placeholder="Rechercher" class="rounded-md bg-userMessage dark:bg-darkHover px-2 py-1 w-full focus:outline-primary dark:focus:outline-black cursor-text text-gray-600 dark:text-gray-400 transition-all duration-500">
+                <button onclick='handleShowFilter()' class="bg-secondary ms-2 me-4 rounded-md w-[40px] aspect-square flex justify-center items-center">
                     <svg class="relative z-0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                     </svg>
                 </button>
             </div>
-            <div id="filterPopUp" class="hidden overflow-hidden top-[70px] right-6 absolute rounded-md shadow-xl z-10 bg-white dark:bg-dark transition-all duration-500 text-black dark:text-white">
+            <div id="filterPopUp" class="hidden overflow-hidden top-[50px] right-5 absolute rounded-md shadow-xl z-10 bg-white dark:bg-dark transition-all duration-500 text-black dark:text-white">
                 <ul class="flex flex-col max-h-[200px] overflow-y-auto">
                     <?php
                     // order metiers alphabetically
