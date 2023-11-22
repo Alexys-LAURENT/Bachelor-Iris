@@ -5,7 +5,7 @@
             <h2 class="text-center font-bold text-2xl mb-4">Renommer la discussion</h2>
             <form action="" method="post" class="flex flex-col gap-4" autocomplete="off">
 
-                <input type="text" name="inputRenameDiscussion" id="inputRenameDiscussion" placeholder="Nouveau nom du groupe" class="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:drop-shadow focus:drop-shadow-secondary text-black">
+                <input required type="text" name="inputRenameDiscussion" id="inputRenameDiscussion" placeholder="Nouveau nom du groupe" class="border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:drop-shadow focus:drop-shadow-secondary text-black">
 
                 <div class="flex gap-1">
                     <button type="submit" name="renameDiscussion" class="bg-secondary text-white rounded-md text-sm py-1 px-2 hover:scale-105 transition-all">Confirmer</button>
@@ -59,7 +59,8 @@
 
     // Associez la fonction openPopupRenameDiscussion au clic sur le bouton
     const addButtonRenameDiscussion = document.querySelector("#buttonRenameDiscussion");
-    addButtonRenameDiscussion.addEventListener("click", openPopupRenameDiscussion);
+
+    addButtonRenameDiscussion && addButtonRenameDiscussion.addEventListener("click", openPopupRenameDiscussion);
 
     // Associez la fonction closePopup au clic sur le bouton "Fermer"
     const closeButtonRenameDiscussion = document.querySelector("#closePopupRenameDiscussion");

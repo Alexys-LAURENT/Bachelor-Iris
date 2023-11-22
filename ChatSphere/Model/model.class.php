@@ -180,7 +180,7 @@ class Modele
         $sql = "SELECT d.idDiscussion,
         d.nom,
         d.createdBy,
-        SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ':', m.content)), ':', -1) AS dernier_message,
+        SUBSTRING_INDEX(MAX(CONCAT(m.timestamp, ',;-@:[,=;:@$;@@?%/&,', m.content)), ',;-@:[,=;:@$;@@?%/&,', -1) AS dernier_message,
         MAX(m.idMessage) as idDernierMessage,
         (SELECT du_other.idUser
         FROM discussions_users du_other
@@ -195,6 +195,7 @@ class Modele
             WHERE idUser = :idUser
         )
         GROUP BY d.idDiscussion
+        ORDER BY Max(m.timestamp) DESC
         ";
 
         $donnees = array(
@@ -293,7 +294,7 @@ class Modele
         }
     }
 
-    public function renameDiscussion($idDiscussion, $nom)
+    public function renameDiscussion($idDiscussion, $nom, $renamedBy)
     {
         try {
             $sql = "update discussions set nom = :nom where idDiscussion = :idDiscussion;";
@@ -303,6 +304,13 @@ class Modele
             );
             $update = $this->unPDO->prepare($sql);
             $update->execute($donnees);
+
+            $sqlInsertSystemMessage = "insert into messages (idDiscussion, idUser, content) values (:idDiscussion, 0 , '$renamedBy a renommé la discussion en : $nom');";
+            $donnees = array(
+                ":idDiscussion" => $idDiscussion
+            );
+            $insert = $this->unPDO->prepare($sqlInsertSystemMessage);
+            $insert->execute($donnees);
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

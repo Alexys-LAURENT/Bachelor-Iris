@@ -3,7 +3,7 @@ if (isset($idDiscussion)) {
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 if (isset($_POST['renameDiscussion'])) {
-    $unControleur->renameDiscussion($idDiscussion, $_POST['inputRenameDiscussion']);
+    $unControleur->renameDiscussion($idDiscussion, htmlspecialchars($_POST['inputRenameDiscussion']), $user['prenom'] . " " . $user['nom']);
     $discussionInfo = $unControleur->getDiscussionInfo($user['idUser'], $idDiscussion);
 }
 
@@ -25,13 +25,15 @@ if (isset($_POST['deleteDiscussion'])) {
 
 
         <div class="flex w-full items-center ps-4 ">
-            <div class="bg-cover bg-center bg-gray-700 aspect-square w-[40px] h-[40px] rounded-md <?php if (!isset($discussionInfo)) echo 'hidden' ?> " style="background-image: url('https://images.chatsphere.alexyslaurent.com/<?php if (isset($discussionInfo)) echo $discussionInfo['pp']; ?>');"></div>
+            <div class="z-0 bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[40px] h-[40px]  <?php if (!isset($discussionInfo)) echo 'hidden' ?>" style="<?php echo $discussionInfo['pp'] != 'default.webp' ? 'background-image: url(https://images.chatsphere.alexyslaurent.com/' . $discussionInfo['pp'] . ")" : 'background-color: #' . substr(md5(utf8_encode($discussionInfo['idUser'])), 0, 6) ?>  ">
+                <span class='flex text-2xl w-full text-white h-full justify-center items-center <?php echo $discussionInfo['pp'] != 'default.webp' ?  'hidden' : ''; ?>'><?php echo explode(" ", $discussionInfo['nom'])[0][0] . explode(" ", $discussionInfo['nom'])[1][0] ?></span>
+            </div>
             <div class="flex items-center gap-2">
                 <div class="flex flex-col ms-3">
                     <p class="w-full text-elipsis line-clamp-1"><?php if (isset($discussionInfo)) echo $discussionInfo['nom']; ?></p>
                     <div class="flex items-center gap-2">
                         <div id="userConvStatusColor" class="w-2 h-2 rounded-full <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?> "></div>
-                        <span id="userConvStatusText" class="text-2xs <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
+                        <span id="userConvStatusText" class="text-2xs text-elipsis line-clamp-1 <?php if (!isset($discussionInfo)) echo 'hidden' ?> <?php if (!isset($discussionInfo['idUser'])) echo "hidden"; ?>"></span>
                     </div>
                 </div>
 
@@ -161,7 +163,6 @@ if (isset($_POST['deleteDiscussion'])) {
         var messagesDiv = document.getElementById("messagesDiv");
         load == true ? messagesDiv.classList.add("hidden") : "";
         var isGroup = messages[0]['idDiscussionAGroup']
-        console.log(isGroup);
         messagesDiv.innerHTML = "";
         messages.forEach(message => {
             var date = new Date(message['timestamp']).toLocaleString('fr-FR', {
@@ -173,10 +174,19 @@ if (isset($_POST['deleteDiscussion'])) {
                 hour: 'numeric',
                 minute: 'numeric',
             });
-            if (message['idUser'] == <?php echo $user['idUser']; ?>) {
+            if (message['idUser'] == 0) {
+                messagesDiv.innerHTML += `
+                        <div class='msgSystem items-center flex flex-col text-black dark:text-white ${previousUser == null ? "mt-0" : "mt-4"}'>
+                                <div class="break-words text-sm lg:text-base text-center">${ message['content'] }</div>
+                                <div class='w-full flex justify-center'
+                                    <span class='text-3xs'>${date}</span>
+                                </div>
+                        </div>
+                        `;
+            } else if (message['idUser'] == <?php echo $user['idUser']; ?>) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
-                        <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-8"}'>
+                        <div class='msgMe flex justify-end ${previousUser == null ? "mt-0" : "mt-4"}'>
                             <div class='flex flex-col bg-secondary text-white max-w-[80%] rounded-md p-2 mx-2 min-w-[75px]'>
                                 <div class="break-words text-sm lg:text-base">${ message['content'] }</div>
                                 <div class='w-full flex justify-end items-center'>
@@ -209,9 +219,9 @@ if (isset($_POST['deleteDiscussion'])) {
                 if (previousUser == null || previousUser != message['idUser']) {
                     messagesDiv.innerHTML += `
                     ${isGroup ? `
-                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-11 mb-1 lg:mb-0 lg:ms-14 text-xs lg:text-base ${previousUser == null ? "mt-0" : "mt-8"}'>${message['prenom']} ${message['nom']}</div>
+                    <div class='text-black dark:text-white transition-colors duration-500 text-start ms-11 mb-1 lg:mb-0 lg:ms-14 text-xs lg:text-base ${previousUser == null ? "mt-0" : "mt-4"}'>${message['prenom']} ${message['nom']}</div>
                     ` : ``}
-                        <div class='msgOthers flex justify-start'>
+                        <div class='msgOthers flex justify-start ${isGroup ? "mt-0" : "mt-4"}'>
                         <div class='bg-cover bg-center bg-gray-700 aspect-square w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-md mx-2 me-0' 
                             style='${message['pp'] !== 'default.webp' ? 
                                 `background-image: url(https://images.chatsphere.alexyslaurent.com/${message['pp']})` : 

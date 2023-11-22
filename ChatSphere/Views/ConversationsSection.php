@@ -49,7 +49,7 @@ if (isset($_POST['createDiscussion'])) {
 
             </div>
 
-            <div id="discussionsWrapper" class="w-full flex flex-col gap-2 overflow-y-auto h-[calc(100vh-180px)]
+            <div id="discussionsWrapper" class="w-full flex flex-col gap-2 overflow-y-auto overflow-x-hidden h-[calc(100vh-180px)]
             ">
 
             </div>
@@ -87,7 +87,7 @@ if (isset($_POST['createDiscussion'])) {
 
                             <div id="userLoggedStatusWrapper" onclick="toggleStatut()" class="flex items-center gap-1 hover:cursor-pointer hover:bg-hover rounded-md px-2 py-1 text-gray-500 dark:text-gray-300 dark:hover:text-black hidden transition-all duration-500">
                                 <div id="userLogedStatusColor" class="w-2 h-2 rounded-full"></div>
-                                <p id="userLogedStatusText" class="text-xs"></p>
+                                <p id="userLogedStatusText" class="text-xs text-elipsis line-clamp-1"></p>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="mt-[0.15rem] bi bi-chevron-up" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z" />
                                 </svg>
@@ -251,7 +251,8 @@ if (isset($_POST['createDiscussion'])) {
     function displayDiscussions(data, haveToSendNotifications) {
         document.getElementById('discussionsWrapper').innerHTML = "";
         data.forEach(discussion => {
-            var classDiscussion = <?php echo isset($_GET['discussion']) ? $_GET['discussion'] : 'null'; ?>;
+            // if $get discussion is set and is not null and is a number
+            var classDiscussion = <?php echo (isset($_GET['discussion']) && $_GET['discussion'] != null && is_numeric($_GET['discussion'])) ? $_GET['discussion'] : 'null'; ?>;
             var classDiscussion = classDiscussion == discussion.idDiscussion ? 'bg-hover dark:bg-darkHover transition-all duration-500' : '';
             var spanClass = discussion.isMessageRead === false ? "dark:text-white text-black font-bold text-sm" : "text-gray-500 text-xs";
             document.getElementById('discussionsWrapper').innerHTML += `
