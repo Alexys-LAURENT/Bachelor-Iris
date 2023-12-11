@@ -1,4 +1,4 @@
-package Controllera;
+package controller;
 
 public class Note {
     private int idNote, isFavorite, idCategorie;

@@ -1,5 +1,4 @@
-Controller\Categorie.class
-Controller\Note.class
-Controller\Controlleur.class
-Model\Modele.class
-Model\Connexion.class
+model\Model.class
+controller\Note.class
+controller\Controller.class
+model\Connexion.class

@@ -1,14 +1,14 @@
-package Model;
+package model;
 
 import java.util.ArrayList;
 
-import Controllera.Note;
+import controller.Note;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Modele {
+public class Model {
     private static Connexion maConnexion = new Connexion("localhost:3306",
             "syncpro", "root", "");
 
@@ -40,7 +40,7 @@ public class Modele {
             while (desRes.next()) {
                 Note uneNote = new Note(desRes.getInt("idNote"),
                         desRes.getString("titre"),
-                        desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"));
+                        desRes.getString("description"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"));
                 lesNotes.add(uneNote);
             }
             unStat.close();

@@ -1,9 +1,10 @@
-<html>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="Controllera.*" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="controller.Controller"%>
+<%@ page import="controller.Note"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page language="java" pageEncoding="UTF-8" %>
 
+<!DOCTYPE html>
+<html>
 <head>
     <title>NoteFlow</title>
     <meta charset="UTF-8">
@@ -23,25 +24,18 @@
             }
     </script>
 </head>
-
 <body>
     <main class="flex flex-col md:flex-row w-screen min-h-screen bg-bgLight">
         <%@ include file="views/sideBar.jsp" %>
         <h2 class="text-clifford">Hello World!</h2>
         <%
-            ArrayList<Note> notes = Controlleur.getAllNotes();
+            ArrayList<Note> notes = Controller.getAllNotes();
             for(Note note : notes){
                 out.println(note.getTitle());
             }
-            // Note uneNote = new Note();
-            // uneNote.setTitle("Titre");
-            // uneNote.setContent("Contenu");
-            // out.println(uneNote.getTitle());
-            // out.println(uneNote.getContent());
 
         %>
         
     </main>
 </body>
-
 </html>
