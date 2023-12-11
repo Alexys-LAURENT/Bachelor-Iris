@@ -1,13 +1,16 @@
 package Model;
 
-// import java.util.ArrayList;
-// import java.sql.ResultSet;
-// import java.sql.SQLException;
-// import java.sql.Statement;
+import java.util.ArrayList;
 
-public class Model {
-    // private static Connexion maConnexion = new Connexion("localhost:3306",
-    // "orange_sd_24", "root", "");
+import Controllera.Note;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Modele {
+    private static Connexion maConnexion = new Connexion("localhost:3306",
+            "syncpro", "root", "");
 
     /******************* GESTION DES CLIENTS *******************/
     // public static void insertClient(Client unClient) {
@@ -27,27 +30,26 @@ public class Model {
 
     // }
 
-    // public static ArrayList<Client> selectAllClients() {
-    // String req = "select * from client;";
-    // ArrayList<Client> lesClients = new ArrayList<Client>();
-    // try {
-    // maConnexion.seConnecter();
-    // Statement unStat = maConnexion.getMaConnexion().createStatement();
-    // ResultSet desRes = unStat.executeQuery(req);
-    // while (desRes.next()) {
-    // Client unClient = new Client(desRes.getInt("idclient"),
-    // desRes.getString("nom"),
-    // desRes.getString("prenom"), desRes.getString("adresse"));
-    // lesClients.add(unClient);
-    // }
-    // unStat.close();
-    // maConnexion.seDeconnecter();
-    // } catch (SQLException exp) {
-    // System.out.println("Erreur d'execution : " + req + " : " + exp);
-    // }
-
-    // return lesClients;
-    // }
+    public static ArrayList<Note> getAllNotes() {
+        String req = "select * from notes;";
+        ArrayList<Note> lesNotes = new ArrayList<Note>();
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            ResultSet desRes = unStat.executeQuery(req);
+            while (desRes.next()) {
+                Note uneNote = new Note(desRes.getInt("idNote"),
+                        desRes.getString("titre"),
+                        desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"));
+                lesNotes.add(uneNote);
+            }
+            unStat.close();
+            maConnexion.seDeconnecter();
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+        }
+        return lesNotes;
+    }
 
     // public static void deleteClient(int idclient) {
     // String req = "delete from client where idclient = " + idclient + ";";

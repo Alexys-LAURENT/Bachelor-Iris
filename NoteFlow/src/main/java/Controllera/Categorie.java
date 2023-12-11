@@ -1,4 +1,4 @@
-package Controller;
+package Controllera;
 
 public class Categorie {
     private int idCategory;
