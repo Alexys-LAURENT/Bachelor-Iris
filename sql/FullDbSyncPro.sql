@@ -1,6 +1,6 @@
 drop database if exists syncpro;
 
-create database syncpro;
+CREATE DATABASE syncpro CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 use syncpro;
 
@@ -155,7 +155,7 @@ Create table
         idCategorie int not null,
         titre VARCHAR(255) not null,
         isFavorite BOOLEAN NOT NULL DEFAULT false,
-        description longtext not null,
+        content longtext not null,
         constraint PK_NOTES PRIMARY KEY(idNote),
         constraint FK_NOTES_USER FOREIGN KEY(idUser) REFERENCES users(idUser),
         constraint FK_NOTES_CATEGORIE FOREIGN KEY(idCategorie) REFERENCES categories(idCategorie)
@@ -354,7 +354,7 @@ Create table
 
 -- Insertion des secteurs
 
-INSERT INTO secteur (nom)
+INSERT INTO secteurs (nom)
 VALUES ('Informatique'), ('Finance'), ('Marketing'), ('Communication'), ('Ressources Humaines'), ('Juridique'), ('Santé'), ('Enseignement'), ('Commerce'), ('Transport'), ('Tourisme'), ('Hôtellerie'), ('Restauration'), ('Immobilier'), ('BTP'), ('Industrie'), ('Agriculture'), ('Artisanat'), ('Autre');
 
 -- Insertion des entreprises

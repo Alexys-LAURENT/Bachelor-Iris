@@ -1,5 +1,10 @@
-<html>
+<%@ page import="controller.Controller"%>
+<%@ page import="controller.Note"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page language="java" pageEncoding="UTF-8" %>
 
+<!DOCTYPE html>
+<html>
 <head>
     <title>NoteFlow</title>
     <meta charset="UTF-8">
@@ -13,18 +18,24 @@
                 extend: {
                     colors: {
                         bgLight: '#f9fbfc',
+                        }
                     }
                 }
             }
-        }
     </script>
 </head>
-
 <body>
     <main class="flex flex-col md:flex-row w-screen min-h-screen bg-bgLight">
-        <%@include file="views/sideBar.jsp" %>
-            <h2 class="text-clifford">Hello World!</h2>
+        <%@ include file="views/sideBar.jsp" %>
+        <h2 class="text-clifford">Hello World!</h2>
+        <%
+            ArrayList<Note> notes = Controller.getAllNotes();
+            for(Note note : notes){
+                out.println(note.getTitle());
+            }
+
+        %>
+        
     </main>
 </body>
-
 </html>

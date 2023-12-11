@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <div
     class="flex flex-col md:bg-white w-full md:w-2/12 md:min-w-[250px] md:max-w-[250px] md:h-screen  overflow-x-hidden pt-2 gap-4 ">
 
