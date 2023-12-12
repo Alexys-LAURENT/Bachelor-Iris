@@ -1,6 +1,6 @@
 drop database if exists syncpro;
 
-CREATE DATABASE syncpro CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE syncpro;
 
 use syncpro;
 
@@ -143,6 +143,7 @@ Create table
         idCategorie int not null auto_increment,
         idUser int not null,
         libelle VARCHAR(255) not null,
+        hex VARCHAR(255) not null,
         constraint PK_CATEGORIES PRIMARY KEY(idCategorie),
         constraint FK_CATEGORIES_USER FOREIGN KEY(idUser) REFERENCES users(idUser)
     ) engine = innodb,
@@ -156,6 +157,7 @@ Create table
         titre VARCHAR(255) not null,
         isFavorite BOOLEAN NOT NULL DEFAULT false,
         content longtext not null,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         constraint PK_NOTES PRIMARY KEY(idNote),
         constraint FK_NOTES_USER FOREIGN KEY(idUser) REFERENCES users(idUser),
         constraint FK_NOTES_CATEGORIE FOREIGN KEY(idCategorie) REFERENCES categories(idCategorie)
@@ -830,4 +832,47 @@ VALUES (
         3,
         5,
         'Je viens tout juste de finir le projet !'
+    );
+
+-- Insertion des categories de notes
+
+insert into categories VALUES (1, 1, "Perso", "#FF0000");
+
+insert into categories VALUES (2, 1, "Ecole", "#00FF00");
+
+insert into categories VALUES (3, 1, "Travail", "#0000FF");
+
+-- Insertion des notes
+
+insert into notes
+values (
+        1,
+        1,
+        1,
+        "Ma première note",
+        false,
+        "Ceci est ma première note",
+        CURRENT_TIMESTAMP
+    );
+
+insert into notes
+values (
+        2,
+        1,
+        1,
+        "Ma deuxième note",
+        true,
+        "Ceci est ma deuxième note",
+        CURRENT_TIMESTAMP
+    );
+
+insert into notes
+values (
+        3,
+        1,
+        1,
+        "Ma troisième note",
+        false,
+        "Ceci est ma troisième note",
+        CURRENT_TIMESTAMP
     );

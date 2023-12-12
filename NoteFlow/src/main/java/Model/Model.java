@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import controller.Note;
+import controller.ExtendedNote;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,17 +30,17 @@ public class Model {
 
     // }
 
-    public static ArrayList<Note> getAllNotes() {
-        String req = "select * from notes;";
-        ArrayList<Note> lesNotes = new ArrayList<Note>();
+    public static ArrayList<ExtendedNote> getAllNotes() {
+        String req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie LIMIT 100;";
+        ArrayList<ExtendedNote> lesNotes = new ArrayList<ExtendedNote>();
         try {
             maConnexion.seConnecter();
             Statement unStat = maConnexion.getMaConnexion().createStatement();
             ResultSet desRes = unStat.executeQuery(req);
             while (desRes.next()) {
-                Note uneNote = new Note(desRes.getInt("idNote"),
+                ExtendedNote uneNote = new ExtendedNote(desRes.getInt("idNote"),
                         desRes.getString("titre"),
-                        desRes.getString("description"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"));
+                        desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"), desRes.getString("libelle"), desRes.getString("hex"));
                 lesNotes.add(uneNote);
             }
             unStat.close();
