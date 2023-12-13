@@ -12,6 +12,16 @@
     <link rel="stylesheet" href="css/index.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+    <script type="module" defer src="js/editor.js">
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -25,9 +35,22 @@
     </script>
 </head>
 <body>
-    <main class="flex flex-col md:flex-row w-screen min-h-screen bg-bgLight">
+    <main class="flex flex-col md:flex-row w-full h-screen bg-bgLight overflow-hidden">
         <%@ include file="views/sideBar.jsp" %>
-        <%@ include file="views/notesSection.jsp" %>
+
+      <%
+	    if (request.getParameter("note") != null) {
+	%>
+	        <%@  include file="views/notePage.jsp" %>
+	<%
+	    } else {
+	%>
+	        <%@  include file="views/notesSection.jsp" %>
+	<%
+	    }
+	%>
+      
+
     </main>
 </body>
 </html>

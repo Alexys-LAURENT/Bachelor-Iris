@@ -32,7 +32,14 @@ body {
 }
 
 
+.flex-1-1{
+	flex: 1 1 49%;
+}
 
+.ce-toolbar__content,
+.ce-block__content {
+	max-width: 85%;
+}
 
 
 @media screen and (max-width: 768px) {
@@ -60,3 +67,9 @@ body {
         z-index: 9999999;
     }
 }
+
+@media screen and (min-width: 1280px) {
+	.flex-1-1{
+	flex: 1 1 32%;
+}
+	

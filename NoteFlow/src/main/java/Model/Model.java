@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 import java.util.ArrayList;
 
@@ -49,6 +49,36 @@ public class Model {
             System.out.println("Erreur d'execution : " + req + " : " + exp);
         }
         return lesNotes;
+    }
+
+    public static boolean toggleFavorite(int idNote) {
+        String req = "update notes set isFavorite = !isFavorite where idNote = " + idNote + ";";
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            unStat.execute(req);
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+    }
+
+    public static boolean delete(int idNote) {
+        String req = "delete from notes where idNote = " + idNote + ";";
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            unStat.execute(req);
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
     }
 
     // public static void deleteClient(int idclient) {
