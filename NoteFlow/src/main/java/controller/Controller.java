@@ -8,6 +8,7 @@ public class Controller {
     public static ArrayList<ExtendedNote> getAllNotes() {
         return Model.getAllNotes();
     }
+<<<<<<< Updated upstream
 
     public static boolean toggleFavorite(int idNote) {
         return Model.toggleFavorite(idNote);
@@ -15,5 +16,10 @@ public class Controller {
 
     public static boolean delete(int idNote) {
         return Model.delete(idNote);
+=======
+    
+    public static ArrayList<Categorie> getAllCategories() {
+        return Model.getAllCategories();
+>>>>>>> Stashed changes
     }
 }

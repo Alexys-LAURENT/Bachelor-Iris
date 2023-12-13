@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+
+<!-- instaurer les categories -->
+ <% ArrayList<Categorie> categories = Controller.getCategories();   %>
+
 <div
     class="flex flex-col md:bg-white w-full md:w-2/12 md:min-w-[250px] md:max-w-[250px] md:h-screen  overflow-x-hidden pt-2 gap-4 ">
 
@@ -19,10 +23,19 @@
             <div id="tagsContainer"
                 class="tagsContainer relative flex hide-scrollbar md:flex-col md:items-center h-full overflow-auto gap-2 py-2 w-full md:ps-4 md:pe-[6px] md:mx-0 mx-4">
                 <!-- Tags -->
+                
                 <div
                     class="text-xs px-2 py-1 bg-red-100 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold">
                     <p class="text-[#E95830]">Favoris</p>
                 </div>
+                
+                <!-- Afficher toutes les catégories de l'utilisateur -->
+                
+                 <div
+                    class="text-xs px-2 py-1 bg-red-100 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold">
+                    <p class="text-[#E95830]">Categorie</p>
+                </div>
+                
 
             </div>
 

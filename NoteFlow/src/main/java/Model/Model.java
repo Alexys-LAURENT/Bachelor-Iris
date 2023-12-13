@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
+import controller.Categorie;
 import controller.ExtendedNote;
 
 import java.sql.ResultSet;
@@ -49,6 +50,29 @@ public class Model {
             System.out.println("Erreur d'execution : " + req + " : " + exp);
         }
         return lesNotes;
+    }
+    
+    
+    public static ArrayList<Categorie> getAllCategories() {
+        String req = "select * from Categorie where iduser = " + iduser + ";";
+        ArrayList<Categorie> lesCategories = new ArrayList<Categorie>();
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            ResultSet desRes = unStat.executeQuery(req);
+            while (desRes.next()) {
+                Categorie uneCategorie = new Categorie(desRes.getInt("idcategorie"),
+                		 desRes.getInt("iduser"),
+                        desRes.getString("libelle"),
+                        desRes.getString("hex"));
+                lesCategories.add(uneCategorie);
+            }
+            unStat.close();
+            maConnexion.seDeconnecter();
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+        }
+        return lesCategories;
     }
 
     public static boolean toggleFavorite(int idNote) {
