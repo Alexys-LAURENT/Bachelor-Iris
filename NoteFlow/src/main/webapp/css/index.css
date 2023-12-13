@@ -41,6 +41,59 @@ body {
 	max-width: 85%;
 }
 
+#editorjs h1 { 
+    display: block !important;
+    font-size: 2em !important;
+    margin-top: 0.67em !important;
+    margin-bottom: 0.67em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+#editorjs h2 {
+    display: block !important;
+    font-size: 1.5em !important;
+    margin-top: 0.83em !important;
+    margin-bottom: 0.83em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+#editorjs h3 { 
+    display: block !important;
+    font-size: 1.17em !important;
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+#editorjs h4 { 
+    display: block !important;
+    margin-top: 1.33em !important;
+    margin-bottom: 1.33em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+#editorjs h5 { 
+    display: block !important;
+    font-size: .83em !important;
+    margin-top: 1.67em !important;
+    margin-bottom: 1.67em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+#editorjs h6 { 
+    display: block !important;
+    font-size: .67em !important;
+    margin-top: 2.33em !important;
+    margin-bottom: 2.33em !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
 
 @media screen and (max-width: 768px) {
     .hide-scrollbar::-webkit-scrollbar {
@@ -72,4 +125,4 @@ body {
 	.flex-1-1{
 	flex: 1 1 32%;
 }
-	
+}

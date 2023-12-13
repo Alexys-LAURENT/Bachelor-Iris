@@ -9,8 +9,8 @@
     <title>NoteFlow</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/index.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/index.css?v=3">
     <script defer src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
@@ -20,10 +20,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+    <script src="
+        https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+    "></script>
     <script type="module" defer src="js/editor.js">
     </script>
     <script>
         tailwind.config = {
+            important: true,
             theme: {
                 extend: {
                     colors: {
