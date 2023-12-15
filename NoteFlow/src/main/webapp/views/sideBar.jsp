@@ -58,3 +58,17 @@
     </div>
 
 </div>
+
+<script>
+function toggleThemeMode() {
+        document.getElementsByTagName('html')[0].classList.toggle('dark');
+        document.getElementsByTagName('html')[0].classList.toggle('white');
+        if (document.getElementsByTagName('html')[0].classList.contains('dark')) {
+            document.getElementById('moonSvg').classList.remove('hidden');
+            document.getElementById('sunSvg').classList.add('hidden');
+        } else {
+            document.getElementById('moonSvg').classList.add('hidden');
+            document.getElementById('sunSvg').classList.remove('hidden');
+        }
+    }
+</script>

@@ -1,4 +1,4 @@
-<div class="w-full h-full flex p-4 overflow-y-auto overflow-x-hidden justify-center">
+<div class="w-full flex p-4 overflow-y-auto overflow-x-hidden justify-center">
         
            <% ArrayList<ExtendedNote> notes = Controller.getAllNotes();   %>
         

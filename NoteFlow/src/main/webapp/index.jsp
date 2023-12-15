@@ -4,13 +4,13 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en" class="white">
 <head>
     <title>NoteFlow</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/index.css?v=3">
+    <link rel="stylesheet" href="css/index.css?v=4">
     <script defer src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
@@ -20,10 +20,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
     <script src="
         https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
     "></script>
-    <script type="module" defer src="js/editor.js">
     </script>
     <script>
         tailwind.config = {
@@ -34,7 +38,8 @@
                         bgLight: '#f9fbfc',
                         }
                     }
-                }
+                },
+                darkMode: "class",
             }
     </script>
 </head>
