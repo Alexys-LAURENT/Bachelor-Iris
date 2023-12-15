@@ -20,7 +20,7 @@ const editor = new EditorJS({
                 "blockTunes": {
                     "toggler": {
                         "Click to tune": "Cliquer pour modifier",
-                        "or drag to move": "ou glisser pour déplacer"
+                        "or drag to move": "ou glisser pour déplacer",
                     }
                 },
                 "inlineToolbar": {
@@ -32,14 +32,15 @@ const editor = new EditorJS({
                     "toolbox": {
                         "Add": "Ajouter"
                     }
-                }
+                },
+
             },
             toolNames: {
                 "Text": "Texte",
                 "Heading": "Titre",
                 "List": "Liste",
                 "Warning": "Avertissement",
-                "Checklist": "Liste de contrôle",
+                "Checklist": "Checklist",
                 "Quote": "Citation",
                 "Code": "Code",
                 "Delimiter": "Séparateur",
@@ -78,8 +79,8 @@ const editor = new EditorJS({
                     "Insert a table": "Insérer un tableau",
                     "Insert column before": "Insérer une colonne avant",
                     "Insert column after": "Insérer une colonne après",
-                    "Insert row above": "Insérer une ligne au-dessus",
-                    "Insert row below": "Insérer une ligne en-dessous",
+                    "Insert row above": "Insérer une ligne au dessus",
+                    "Insert row below": "Insérer une ligne en dessous",
                     "Delete table": "Supprimer le tableau",
                     "Delete column": "Supprimer la colonne",
                     "Delete row": "Supprimer la ligne",
@@ -123,6 +124,26 @@ const editor = new EditorJS({
                 },
                 "raw": {
                     "Raw HTML": "HTML brut"
+                },
+                "code": {
+                    "Code": "Code",
+                    "Enter a code": "Ajouter du code",
+                    "Code snippet": "Extrait de code"
+                },
+                "header": {
+                    "Heading 1": "Titre 1",
+                    "Heading 2": "Titre 2",
+                    "Heading 3": "Titre 3",
+                    "Heading 4": "Titre 4",
+                    "Heading 5": "Titre 5",
+                    "Heading 6": "Titre 6",
+                    "Heading": "Titre"
+                },
+                "warning": {
+                    "Warning": "Avertissement",
+                    "Add a warning": "Ajouter un avertissement",
+                    "Message": "Message",
+                    "Title": "Titre"
                 }
             },
             blockTunes: {
@@ -172,7 +193,6 @@ const editor = new EditorJS({
         },
         Marker: {
             class: Marker,
-            shortcut: 'CMD+SHIFT+M',
         },
         list: {
             class: NestedList,
@@ -180,7 +200,6 @@ const editor = new EditorJS({
         },
         code: {
             class: CodeTool,
-            shortcut: 'CMD+SHIFT+C',
         },
         embed: {
             class: Embed,
@@ -190,6 +209,34 @@ const editor = new EditorJS({
                     youtube: true,
                 }
             }
+        },
+        paragraph: {
+            class: Paragraph,
+            inlineToolbar: true,
+        },
+        quote: {
+            class: Quote,
+            inlineToolbar: true,
+            config: {
+                quotePlaceholder: 'Enter a quote',
+                captionPlaceholder: 'Quote\'s author',
+            },
+        },
+        delimiter: {
+            class: Delimiter,
+            inlineToolbar: true,
+        },
+        warning: {
+            class: Warning,
+            inlineToolbar: true,
+            config: {
+                titlePlaceholder: 'Title',
+                messagePlaceholder: 'Message',
+            },
+        },
+        checklist: {
+            class: Checklist,
+            inlineToolbar: true,
         },
     }
 });
@@ -209,4 +256,3 @@ editor.isReady
         console.log(`Editor.js initialization failed because of ${reason}`)
     }
     )
-
