@@ -1,4 +1,18 @@
+function getUrlParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
 const editor = new EditorJS({
+    onChange: () => {
+
+        editor.save().then((outputData) => {
+            console.log('Article data: ', outputData)
+        }).catch((error) => {
+            console.log('Saving failed: ', error)
+        }
+        )
+    },
     holder: 'editorjs',
     i18n: {
         messages: {
@@ -138,7 +152,7 @@ const editor = new EditorJS({
                 }
             }
         }
-    },    
+    },
     tools: {
         header: {
             class: Header,

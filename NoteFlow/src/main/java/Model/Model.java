@@ -40,7 +40,8 @@ public class Model {
             while (desRes.next()) {
                 ExtendedNote uneNote = new ExtendedNote(desRes.getInt("idNote"),
                         desRes.getString("titre"),
-                        desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"), desRes.getString("libelle"), desRes.getString("hex"));
+                        desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"),
+                        desRes.getString("libelle"), desRes.getString("hex"));
                 lesNotes.add(uneNote);
             }
             unStat.close();
@@ -80,6 +81,21 @@ public class Model {
             return false;
         }
     }
+
+	public static boolean updateNote(int idNote, String outputData) {
+        String req = "update notes set content = '" + outputData + "' where idNote = " + idNote + ";";
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            unStat.execute(req);
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+	}
 
     // public static void deleteClient(int idclient) {
     // String req = "delete from client where idclient = " + idclient + ";";

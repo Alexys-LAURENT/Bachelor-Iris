@@ -16,4 +16,8 @@ public class Controller {
     public static boolean delete(int idNote) {
         return Model.delete(idNote);
     }
+    
+    public static boolean updateNote(int idNote, String outputData) {
+    	return Model.updateNote(idNote,outputData);
+    }
 }
