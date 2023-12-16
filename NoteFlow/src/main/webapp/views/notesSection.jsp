@@ -1,3 +1,9 @@
+<%@ page import="java.time.format.TextStyle" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.ZoneId" %>
+
 <%
     if(request.getParameter("idNoteToggleFavorite") != null){
         int idNoteToggleFavorite = Integer.parseInt(request.getParameter("idNoteToggleFavorite"));
@@ -14,7 +20,7 @@
     }
 %>
 
-<div class="w-full flex p-4 overflow-y-auto overflow-x-hidden justify-center transition-all duration-500 dark:bg-dark dark:text-white">
+<div class="w-full h-full flex p-4 overflow-y-auto overflow-x-hidden justify-center transition-all duration-500 dark:bg-dark dark:text-white">
         
            <% ArrayList<ExtendedNote> notes = Controller.getAllNotes();   %>
         
@@ -26,14 +32,21 @@
 				<a href="index.jsp?note=<%= note.getIdNote() %><%= request.getParameter("token") != null ? "&token=" + request.getParameter("token") : "" %>">
 				<a href="index.jsp?token=<%= request.getParameter("token") %>&note=<%= note.getIdNote() %>">
 					<span class="absolute w-[4px] h-[45px] bg-[<%= note.getHex() %>] left-0 top-[15px]"></span>
-					<div class="flex w-full h-[40px] items-center" >
+					<div class="flex w-full h-[40px] items-center pt-4">
 						<p class="font-semibold max-w-full overflow-hidden text-ellipsis line-clamp-1 text-base md:text-xl">
 							<%= note.getTitle() %>
 						</p>
-						<span class="w-4 h-4 min-w-4 min-h-4 rounded-full flex ms-2 bg-[<%= note.getHex() %>] <%= note.getTitle().length() >= 38 ? "hidden" : "hidden md:flex"  %>"></span>
+						<span class="mt-[5px] w-4 h-4 min-w-4 min-h-4 rounded-full flex ms-2 bg-[<%= note.getHex() %>] <%= note.getTitle().length() >= 38 ? "hidden" : "hidden md:flex"  %>"></span>
 					</div>
-					<div class="flex max-w-full h-[130px] max-h-[130px] overflow-hidden">
-						<p class="max-h-[115px] md:max-h-[120px] text-ellipsis text-xs md:text-base line-clamp-[7] md:line-clamp-5">
+					<div class="flex flex-col max-w-full h-[130px] max-h-[130px] overflow-hidden">
+						<p class="max-h-[115px] md:max-h-[120px] text-ellipsis text-2xs md:text-xs line-clamp-[7] md:line-clamp-5">
+							<%-- timestamp jour mois année zn français --%>
+							<% 
+								LocalDateTime timestamp = note.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+							%>
+							<%= timestamp.getDayOfMonth() + " " + timestamp.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + timestamp.getYear() %>
+						</p>
+						<p class="max-h-[115px] md:max-h-[120px] text-ellipsis text-sm md:text-base line-clamp-[7] md:line-clamp-5 pt-2">
 							<%= note.getContent() %>
 						</p>
 					</div>

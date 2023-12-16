@@ -94,7 +94,7 @@ public class Model {
                 ExtendedNote uneNote = new ExtendedNote(desRes.getInt("idNote"),
                         desRes.getString("titre"),
                         desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"),
-                        desRes.getString("libelle"), desRes.getString("hex"));
+                        desRes.getString("libelle"), desRes.getString("hex"), desRes.getTimestamp("timestamp"));
                 lesNotes.add(uneNote);
             }
             unStat.close();
@@ -103,6 +103,28 @@ public class Model {
             System.out.println("Erreur d'execution : " + req + " : " + exp);
         }
         return lesNotes;
+    }
+
+    public static ExtendedNote getNoteById(int idNote) {
+        String req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where idNote = "
+                + idNote + ";";
+        ExtendedNote uneNote = null;
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            ResultSet desRes = unStat.executeQuery(req);
+            if (desRes.next()) {
+                uneNote = new ExtendedNote(desRes.getInt("idNote"),
+                        desRes.getString("titre"),
+                        desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"),
+                        desRes.getString("libelle"), desRes.getString("hex"), desRes.getTimestamp("timestamp"));
+            }
+            unStat.close();
+            maConnexion.seDeconnecter();
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+        }
+        return uneNote;
     }
 
     public static boolean toggleFavorite(int idNote) {

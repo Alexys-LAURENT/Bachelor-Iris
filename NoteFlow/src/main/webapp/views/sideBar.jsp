@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <div
     class="flex flex-col md:bg-white w-full md:w-2/12 md:min-w-[250px] md:max-w-[250px] md:h-screen overflow-x-hidden pt-2 gap-4 transition-colors duration-500 border-e-2 dark:border-gray-800 z-10 dark:bg-dark dark:text-white">
 
@@ -10,17 +9,17 @@
 
     <!-- Search input -->
     <div class="px-4">
-        <input type="text" class="w-full bg-white border rounded-md h-9 focus:outline-none px-2 text-black dark:bg-darkNote dark:text-white dark:border-gray-800 transition-all duration-500"
+        <input type="text" class="w-full bg-white border rounded-md h-9 px-2 text-black dark:bg-darkNote dark:text-white dark:border-gray-800 transition-all duration-500"
             placeholder="Rechercher une note" name="" id="">
     </div>
 
-    <div class="h-full overflow-hidden">
+    <div class="h-[60px] md:h-full overflow-hidden">
         <div class="flex md:flex-col h-full relative scroll-shadow-s" id="tagsWrapper">
             <div id="tagsContainer"
-                class="tagsContainer relative flex hide-scrollbar md:flex-col md:items-center h-full overflow-auto gap-2 py-2 w-full md:ps-4 md:pe-[6px] md:mx-0 mx-4">
+                class="tagsContainer relative flex hide-scrollbar md:flex-col md:items-center min-h-[10px] h-full overflow-auto gap-2 py-2 w-full md:ps-4 md:mx-0 mx-4">
                 <!-- Tags -->
                 <div
-                    class="text-xs px-2 py-1 bg-red-100 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold">
+                    class="text-xs px-2 py-1 bg-red-100 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none">
                     <p class="text-[#E95830]">Favoris</p>
                 </div>
 
@@ -55,6 +54,44 @@
 </div>
 
 <script>
+
+    // si tagsContainer n'est pas scrollable en y, pr-4
+    if (document.getElementById('tagsContainer').scrollHeight <= document.getElementById('tagsContainer').clientHeight) {
+        document.getElementById('tagsContainer').classList.add('md:pe-4');
+    } else {
+        document.getElementById('tagsContainer').classList.add('md:pe-[6px]');
+    }
+
+    // Scroll tags drag souris
+    document.addEventListener('DOMContentLoaded', function() {
+        const tagsContainer = document.querySelector('#tagsContainer');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        tagsContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - tagsContainer.offsetLeft;
+            scrollLeft = tagsContainer.scrollLeft;
+        });
+
+        tagsContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        tagsContainer.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        tagsContainer.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - tagsContainer.offsetLeft;
+            const walk = (x - startX) * 1;
+            tagsContainer.scrollLeft = scrollLeft - walk;
+        });
+    });
+    
     if (document.getElementsByTagName('html')[0].classList.contains('dark')) {
         document.getElementById('moonSvg').classList.remove('hidden');
         document.getElementById('sunSvg').classList.add('hidden');

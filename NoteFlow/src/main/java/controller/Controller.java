@@ -28,4 +28,8 @@ public class Controller {
     public static boolean toggleThemeMode(String themeMode, int idUser) {
         return Model.toggleThemeMode(themeMode, idUser);
     }
+
+    public static ExtendedNote getNoteById(int idNote) {
+        return Model.getNoteById(idNote);
+    }
 }
