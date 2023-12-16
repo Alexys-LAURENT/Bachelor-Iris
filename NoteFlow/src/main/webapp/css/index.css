@@ -38,7 +38,8 @@ body {
 
 .ce-toolbar__content,
 .ce-block__content {
-    max-width: 85%;
+    max-width: 100% !important;
+    margin-left: 75px !important;
 }
 
 .ce-popover-item__icon {

@@ -3,10 +3,15 @@ package Model;
 import java.util.ArrayList;
 
 import controller.ExtendedNote;
+import controller.User;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 public class Model {
     private static Connexion maConnexion = new Connexion("localhost:3306",
@@ -29,6 +34,54 @@ public class Model {
     // }
 
     // }
+
+    public static User checkToken(String token) {
+        String sql = "SELECT * FROM token WHERE token = ?;";
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement stmt = maConnexion.getMaConnexion().prepareStatement(sql);
+            stmt.setString(1, token);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Timestamp tokenDate = rs.getTimestamp("expireAt");
+                if (tokenDate.before(new Date())) {
+                    maConnexion.seDeconnecter();
+                    return null;
+                } else {
+                    sql = "SELECT idUser, nom, prenom, metier, pp, email, theme, statut FROM users WHERE idUser = (SELECT idUser FROM token WHERE token = ?);";
+                    stmt = maConnexion.getMaConnexion().prepareStatement(sql);
+                    stmt.setString(1, token);
+                    ResultSet userSet = stmt.executeQuery();
+                    if (userSet.next()) {
+                        User user = new User(userSet.getInt("idUser"), userSet.getString("nom"),
+                                userSet.getString("prenom"), userSet.getString("metier"), userSet.getString("pp"),
+                                userSet.getString("email"), userSet.getString("theme"), userSet.getString("statut"));
+                        maConnexion.seDeconnecter();
+                        return user;
+                    }
+                }
+            }
+            maConnexion.seDeconnecter();
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + sql + " : " + exp);
+        }
+        return null;
+    }
+
+    public static boolean toggleThemeMode(String themeMode, int idUser) {
+        String req = "update users set theme = '" + themeMode + "' where idUser = " + idUser + ";";
+        try {
+            maConnexion.seConnecter();
+            Statement unStat = maConnexion.getMaConnexion().createStatement();
+            unStat.execute(req);
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+    }
 
     public static ArrayList<ExtendedNote> getAllNotes() {
         String req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie LIMIT 100;";
@@ -82,7 +135,7 @@ public class Model {
         }
     }
 
-	public static boolean updateNote(int idNote, String outputData) {
+    public static boolean updateNote(int idNote, String outputData) {
         String req = "update notes set content = '" + outputData + "' where idNote = " + idNote + ";";
         try {
             maConnexion.seConnecter();
@@ -95,7 +148,7 @@ public class Model {
             System.out.println("Erreur d'execution : " + req + " : " + exp);
             return false;
         }
-	}
+    }
 
     // public static void deleteClient(int idclient) {
     // String req = "delete from client where idclient = " + idclient + ";";

@@ -1,15 +1,29 @@
 <%@ page import="controller.Controller"%>
 <%@ page import="controller.ExtendedNote"%>
+<%@ page import="controller.User"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page language="java" pageEncoding="UTF-8" %>
 
+<%-- Check token in URL, if it is valid, set the session attribute to the token --%>
+<%
+    String token = request.getParameter("token");
+    User user = Controller.checkToken(token);
+    if (user != null) {
+        session.setAttribute("token", token);
+        session.setAttribute("user", user);
+    } else {
+        response.sendRedirect("login.jsp");
+    }
+%>
+
 <!DOCTYPE html>
-<html lang="en" class="white">
+<html lang="en" class="<%= user.getTheme() %>">
 <head>
     <title>NoteFlow</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/index.css?v=4">
     <script defer src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
@@ -36,6 +50,8 @@
                 extend: {
                     colors: {
                         bgLight: '#f9fbfc',
+                        darkNote: "#171D27",
+                        dark: "#0d1117",
                         }
                     }
                 },
