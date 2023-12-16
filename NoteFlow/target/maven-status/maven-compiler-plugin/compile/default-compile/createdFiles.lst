@@ -1,0 +1,7 @@
+controller\ExtendedNote.class
+controller\Controller.class
+Model\Model.class
+Model\Connexion.class
+controller\Note.class
+controller\ToggleThemeModeServlet.class
+controller\User.class

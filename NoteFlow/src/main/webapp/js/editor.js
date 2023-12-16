@@ -3,11 +3,47 @@ function getUrlParam(name) {
     return urlParams.get(name);
 }
 
+
+const loadData = () => {
+    $.ajax({
+        url: "/noteflow/getNote",
+        type: "GET",
+        data: {
+            idNote: getUrlParam('note'),
+        },
+        success: function (data) {
+            // detect fully html tag in stringifiedData and decode it
+            var decodedData = data.replace(/%27/g, "'").replace(/%22/g, '"');
+            decodedData = decodeURIComponent(decodedData);
+
+            editor.render(JSON.parse(JSON.parse(decodedData)));
+        }
+    });
+}
+
+
+
 const editor = new EditorJS({
     onChange: () => {
 
         editor.save().then((outputData) => {
-            console.log('Article data: ', outputData)
+
+            const stringifiedData = JSON.stringify(outputData);
+            // detect html tag in stringifiedData and encode it
+            const encodedData = stringifiedData.replace(/<[^>]*>/g, function (tag) {
+                return encodeURIComponent(tag);
+            });
+
+
+            $.ajax({
+                url: "/noteflow/saveNote",
+                type: "POST",
+                data: {
+                    content: JSON.stringify(encodedData),
+                    idNote: getUrlParam('note'),
+                }
+            });
+
         }).catch((error) => {
             console.log('Saving failed: ', error)
         }
@@ -241,15 +277,13 @@ const editor = new EditorJS({
     }
 });
 
+
+
 editor.isReady
     .then(() => {
-        console.log('Editor.js is ready to work!')
-        editor.save().then((outputData) => {
-            console.log('Article data: ', outputData)
-        }).catch((error) => {
-            console.log('Saving failed: ', error)
+        if (getUrlParam('note') != null) {
+            loadData();
         }
-        )
     }
     )
     .catch((reason) => {

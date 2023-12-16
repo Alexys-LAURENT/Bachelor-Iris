@@ -20,6 +20,10 @@ public class Controller {
     public static boolean updateNote(int idNote, String outputData) {
         return Model.updateNote(idNote, outputData);
     }
+    
+    public static String getNoteContent(int idNote) {
+        return Model.getNoteContent(idNote);
+    }
 
     public static User checkToken(String token) {
         return Model.checkToken(token);

@@ -40,6 +40,7 @@ body {
 .ce-block__content {
     max-width: 100% !important;
     margin-left: 75px !important;
+    margin-right:75px !important;
 }
 
 .ce-popover-item__icon {

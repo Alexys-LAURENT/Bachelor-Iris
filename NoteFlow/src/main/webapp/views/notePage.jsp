@@ -16,7 +16,7 @@
 %>
 
 <div class="w-full h-full flex flex-col p-12 transition-all duration-500 dark:bg-dark">
-        <div class="transition-all duration-500 w-full h-[40px] rounded-t-md border-2 border-b-0 bg-white dark:border-gray-800 px-8 text-lg font-semibold flex items-center justify-between bg-[<%= noteEdit.getHex() %>] bg-opacity-50 text-[<%= noteEdit.getHex() %>]">
+        <div class="transition-all duration-500 w-full h-[40px] rounded-t-md border-2 border-b-0 bg-white dark:border-gray-800 px-8 text-lg font-semibold flex items-center justify-between bg-[<%= noteEdit.getHex() %>]/20 text-[<%= noteEdit.getHex() %>]">
                 <div>
                         <%= noteEdit.getLibelle() %>
                 </div>
@@ -29,19 +29,21 @@
                         </form>
                 </div>
         </div>
-        <div class="dark:bg-gray-400 px-8 bg-gray-200 border-2 border-t-0 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between">
-                <div class="text-4xl font-bold">
+        <div class="dark:bg-gray-400 px-8 bg-white border-2 border-t-0 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between">
+                <div class="text-3xl max-w-[80%] w-[80%] font-bold">
+                <p class="line-clamp-1 text-ellipsis overflow-hidden w-full">
                         <%= noteEdit.getTitle() %>
+                 </p>
                 </div>
-                <div>
+                <div class="w-[20%] flex justify-end">
                         <%-- timestamp jour mois année zn français --%>
 			<% 
 				LocalDateTime timestamp = noteEdit.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			%>
-			<%= "Le " + timestamp.getDayOfMonth() + " " + timestamp.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + timestamp.getYear() + " &agrave; " + timestamp.getHour() + ":" + String.format("%02d", timestamp.getMinute()) %>
+			<span class="text-sm line-clamp-2 text-ellipsis"><%= "Le " + timestamp.getDayOfMonth() + " " + timestamp.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + timestamp.getYear() + ", " + timestamp.getHour() + "h" + String.format("%02d", timestamp.getMinute()) %></span>
                 </div>
         </div>
-        <div id="editorjs" class="rounded-b-md dark:bg-gray-400 bg-gray-200 border-2 border-t-0 dark:border-gray-800 transition-all duration-500 w-full h-full overflow-y-auto overflow-x-hidden"></div>
+        <div id="editorjs" class="rounded-b-md dark:bg-gray-400 bg-white border-2 border-t-0 dark:border-gray-800 transition-all duration-500 w-full h-full overflow-y-auto overflow-x-hidden"></div>
 </div>
 
 

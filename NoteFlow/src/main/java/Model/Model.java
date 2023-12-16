@@ -158,11 +158,13 @@ public class Model {
     }
 
     public static boolean updateNote(int idNote, String outputData) {
-        String req = "update notes set content = '" + outputData + "' where idNote = " + idNote + ";";
+        String req = "UPDATE notes SET content = ? WHERE idNote = ?";
         try {
             maConnexion.seConnecter();
-            Statement unStat = maConnexion.getMaConnexion().createStatement();
-            unStat.execute(req);
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setString(1, outputData);
+            unStat.setInt(2, idNote);
+            unStat.executeUpdate();
             unStat.close();
             maConnexion.seDeconnecter();
             return true;
@@ -170,6 +172,25 @@ public class Model {
             System.out.println("Erreur d'execution : " + req + " : " + exp);
             return false;
         }
+    }
+
+    public static String getNoteContent(int idNote) {
+        String req = "SELECT content FROM notes WHERE idNote = ?";
+        String content = "";
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setInt(1, idNote);
+            ResultSet desRes = unStat.executeQuery();
+            if (desRes.next()) {
+                content = desRes.getString("content");
+            }
+            unStat.close();
+            maConnexion.seDeconnecter();
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+        }
+        return content;
     }
 
     // public static void deleteClient(int idclient) {
