@@ -45,7 +45,7 @@
 							%>
 							<%= timestamp.getDayOfMonth() + " " + timestamp.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + timestamp.getYear() %>
 						</p>
-						<div id="editorJsNotePreview<%= note.getIdNote() %>" class="max-h-[115px] md:max-h-[120px] text-ellipsis text-sm md:text-base line-clamp-[7] md:line-clamp-5 pt-2 previewNote pointer-events-none select-none" tabindex="-1">
+						<div id="notePreview<%= note.getIdNote() %>" class="flex-col gap-[20px] max-h-[115px] md:max-h-[120px] text-sm md:text-base pt-2 previewNote pointer-events-none select-none flex" tabindex="-1">
 							<div class="shadow rounded-md p-4 w-full mx-auto">
 								<div class="animate-pulse flex space-x-4">
 									<div class="flex-1 space-y-6 py-1">
@@ -90,7 +90,15 @@
         </div>
 </div>
 
+<script src="js/previewNote.js"></script>
 <script>
+			<% for (ExtendedNote note : notes) { %>
+				// Preview note with keys id and content in single array
+				handlePreview(
+					{ id: <%= note.getIdNote() %>, content: <%= note.getContent() %> },
+				);
+			<% } %>
+
 		// Show toast when deleting a note
 		function showToastDelete(idNote, title) {
 			const Toast = Swal.mixin({

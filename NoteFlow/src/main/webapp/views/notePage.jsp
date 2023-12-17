@@ -47,4 +47,4 @@
 </div>
 
 
-<script type="module" defer src="js/editor.js"></script>
+<script type="module" defer src="js/editor.js?v=2"></script>
