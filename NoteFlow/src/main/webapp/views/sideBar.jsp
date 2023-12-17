@@ -9,8 +9,8 @@
 
     <!-- Search input -->
     <div class="px-4">
-        <input type="text" class="w-full bg-white border rounded-md h-9 px-2 text-black dark:bg-darkNote dark:text-white dark:border-gray-800 transition-all duration-500"
-            placeholder="Rechercher une note" name="" id="">
+        <input type="text" class="w-full bg-white border rounded-md h-9 focus:outline-none px-2 text-black dark:bg-darkNote dark:text-white dark:border-gray-800 transition-all duration-500"
+            placeholder="Rechercher une note" name="searchInput" id="searchInput">
     </div>
 
     <div class="h-[60px] md:h-full overflow-hidden">
