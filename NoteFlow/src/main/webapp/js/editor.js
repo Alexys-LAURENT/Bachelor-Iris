@@ -14,7 +14,12 @@ const loadData = () => {
         success: function (data) {
             // detect fully html tag in stringifiedData and decode it
             var decodedData = data.replace(/%27/g, "'").replace(/%22/g, '"');
+
             decodedData = decodeURIComponent(decodedData);
+
+            // replace pattern class="\...\" to class='...'
+            decodedData = decodedData.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
+
 
             editor.render(JSON.parse(JSON.parse(decodedData)));
         }
