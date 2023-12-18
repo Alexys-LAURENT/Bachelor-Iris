@@ -58,8 +58,8 @@
             }
     </script>
 </head>
-<body>
-    <main class="flex flex-col md:flex-row w-full h-screen bg-bgLight overflow-hidden">
+<body class="bg-bgLight dark:bgDark">
+    <main class="flex flex-col md:flex-row w-full h-screen bg-bgLight dark:bg-dark md:overflow-hidden">
     <%
         if (user != null) {
     %>

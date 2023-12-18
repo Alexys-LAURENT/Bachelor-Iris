@@ -1,10 +1,10 @@
 <div
-    class="flex flex-col md:bg-white w-full md:w-2/12 md:min-w-[250px] md:max-w-[250px] md:h-screen overflow-x-hidden pt-2 gap-4 transition-colors duration-500 border-e-2 dark:border-gray-800 z-10 dark:bg-dark dark:text-white">
+    class="flex min-h-[150px] md:min-h-0 flex-col md:bg-white w-full md:w-2/12 md:min-w-[250px] md:max-w-[250px] md:h-screen overflow-x-hidden pt-2 gap-4 transition-colors duration-500 md:border-e-2 dark:border-gray-800 z-10 dark:bg-dark dark:text-white">
 
     <!-- Title -->
     <div class="flex justify-between px-4">
         <h1 class="text-xl">Mes notes</h1>
-        <div class="avatar md:hidden w-8 h-8 rounded-full bg-gray-500"></div>
+        <div class="avatar md:hidden w-8 h-8 rounded-full bg-cover bg-center" style="background-image: url(https://images.chatsphere.alexyslaurent.com/<%= user.getPp() %>);"></div>
     </div>
 
     <!-- Search input -->
@@ -13,14 +13,14 @@
             placeholder="Rechercher une note" name="searchInput" id="searchInput">
     </div>
 
-    <div class="h-[60px] md:h-full overflow-hidden">
+    <div class=" md:h-full overflow-hidden">
         <div class="flex md:flex-col h-full relative scroll-shadow-s" id="tagsWrapper">
             <div id="tagsContainer"
                 class="tagsContainer relative flex hide-scrollbar md:flex-col md:items-center min-h-[10px] h-full overflow-auto gap-2 py-2 w-full md:ps-4 md:mx-0 mx-4">
                 <!-- Tags -->
-                <div
-                    class="text-xs px-2 py-1 bg-red-100 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none">
-                    <p class="text-[#E95830]">Favoris</p>
+                <div onclick="toggleOnlyFavParams()"
+                    class="text-xs px-2 py-1 bg-[#FFF5E5] flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none <%= request.getParameter("onlyFav") != null && "true".equals(request.getParameter("onlyFav")) ? "outline outline-[2.5px] outline-[#F18600]" : "" %>">
+                    <p class="text-[#F18600]">Favoris</p>
                 </div>
 
             </div>
@@ -123,5 +123,16 @@ function toggleThemeModeInBdd() {
             idUser: <%= user.getIdUser() %>
         }
     });
+}
+
+function toggleOnlyFavParams(){
+    // Toggle onlyFav params in url
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('onlyFav')) {
+        urlParams.delete('onlyFav');
+    } else {
+        urlParams.append('onlyFav', true);
+    }
+    window.location.search = urlParams;
 }
 </script>

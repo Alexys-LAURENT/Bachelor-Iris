@@ -33,7 +33,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 }
 %>
 
-<div class="w-full h-full flex p-4 overflow-y-auto overflow-x-hidden justify-center transition-all duration-500 dark:bg-dark dark:text-white">
+<div class="w-full md:h-full md:min-h-0 flex p-4 md:overflow-y-auto md:overflow-x-hidden justify-center transition-all duration-500 dark:bg-dark dark:text-white">
         
         
         

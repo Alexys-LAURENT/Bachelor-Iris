@@ -53,8 +53,6 @@
 <script type="module" defer src="js/editor.js?v=2"></script>
 <script>
 function goBack() {
-	console.log("test")
-    // get url params token
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     // redirect to home page
