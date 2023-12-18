@@ -135,4 +135,19 @@ function toggleOnlyFavParams(){
     }
     window.location.search = urlParams;
 }
+
+document.getElementById('searchInput').addEventListener('keyup',searchNotesByTitle);
+
+function searchNotesByTitle(){
+    const searchInputValue = document.getElementById('searchInput').value;
+    const notesTitle = document.getElementsByClassName('noteTitle');
+
+    for (let i = 0; i < notesTitle.length; i++) {
+        if(notesTitle[i].innerHTML.toLowerCase().includes(searchInputValue.toLowerCase())){
+            notesTitle[i].parentElement.parentElement.parentElement.style.cssText = 'display: flex !important;';
+        }else{
+            notesTitle[i].parentElement.parentElement.parentElement.style.cssText = 'display: none !important;';
+        }
+    }
+}
 </script>

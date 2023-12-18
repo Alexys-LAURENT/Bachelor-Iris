@@ -44,7 +44,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 				<a href="index.jsp?token=<%= request.getParameter("token") %>&note=<%= note.getIdNote() %>">
 					<span class="absolute w-[4px] h-[45px] bg-[<%= note.getHex() %>] left-0 top-[15px]"></span>
 					<div class="flex w-full h-[40px] items-center pt-4">
-						<p class="font-semibold max-w-full overflow-hidden text-ellipsis line-clamp-1 text-base md:text-xl">
+						<p class="noteTitle font-semibold max-w-full overflow-hidden text-ellipsis line-clamp-1 text-base md:text-xl">
 							<%= note.getTitle() %>
 						</p>
 						<span class="mt-[5px] w-4 h-4 min-w-4 min-h-4 rounded-full flex ms-2 bg-[<%= note.getHex() %>] <%= note.getTitle().length() >= 38 ? "hidden" : "hidden md:flex"  %>"></span>
