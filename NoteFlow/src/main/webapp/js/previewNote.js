@@ -26,8 +26,6 @@ function handlePreview(note) {
         }
     });
 
-    console.log(note.content);
-
     html = "";
 
     note.content.forEach(block => {
@@ -76,7 +74,10 @@ function createHeader(data) {
 }
 
 function createParagraph(data) {
-    return `<p>${data.text}</p>`;
+    return `
+    <div class="break-words">
+        ${data.text}
+    </div>`;
 }
 
 function createList(data) {
@@ -93,7 +94,7 @@ function createTable(data) {
     data.content.forEach(row => {
         html += `<tr>`;
         row.forEach(cell => {
-            html += `<td class="first:border-l-0 last:border-r-0 py-1 border border-black dark:border-white text-black dark:text-white transition-all duration-500">
+            html += `<td class="first:border-l-0 last:border-r-0 py-1 border border-black dark:border-white text-black dark:text-white transition-all duration-500 w-[33%] break-all leading-[30px] px-2 align-baseline">
                 ${cell}
             </td>`;
         });
@@ -160,8 +161,14 @@ function createChecklist(data) {
     html = "<div class='flex flex-col gap-2 w-full'>";
     data.items.forEach(item => {
         html += `
-                <div class="flex gap-2 w-full">
-                    <input type="checkbox" ${item.checked ? "checked" : ""} class="w-4 h-4 mt-[0.3rem] dark:invert transition-all duration-500" onfocus="this.blur();">
+                <div class="flex gap-3 w-full">
+                    <div class="mt-[0.3rem] block w-4 h-4 rounded-[0.25rem] border-2 ${item.checked ? 'bg-[#369FFF] border-[#369FFF]' : 'bg-white border-gray-300'} relative">
+                        ${item.checked ? `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="absolute bottom-[-2px] right-[-2px] bi bi-check" viewBox="0 0 16 16">
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                            </svg>
+                        ` : ''}
+                    </div>
                     <div class="text-black dark:text-white transition-all duration-500">
                         ${item.text}
                     </div>
