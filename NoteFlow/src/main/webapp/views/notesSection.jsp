@@ -70,8 +70,8 @@
 						</div>
 					</div>
 					<div class="flex w-full h-[50px] items-center justify-end text-white dark:text-black transition-all duration-500 ">
-						<div class="px-2 py-[2px] min-w-[100px] rounded-full flex justify-center items-center bg-[<%= note.getHex() %>] dark:bg-opacity-10 bg-opacity-50 transition-all duration-500">
-							<span class="text-xs font-semibold dark:text-[<%= note.getHex() %>] text-gray-600 transition-all duration-500">
+						<div class="px-2 py-[2px] min-w-[100px] rounded-full flex justify-center items-center bg-[<%= note.getHex() %>]/10 dark:bg-opacity-10 bg-opacity-50 transition-all duration-500">
+							<span class="text-xs font-semibold text-[<%= note.getHex() %>] transition-all duration-500">
 								<%= note.getLibelle() %>
 							</span>
 						</div>

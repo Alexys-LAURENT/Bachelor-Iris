@@ -18,3 +18,4 @@ document.getElementById("tagsContainer").addEventListener("hover", function () {
         document.getElementById("tagsWrapper").classList.add("md:pe-4");
     }
 });
+

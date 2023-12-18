@@ -45,6 +45,90 @@ body {
     scrollbar-width: none;
 }
 
+
+.dark .ce-code__textarea {
+    transition-duration: 500ms;
+    --tw-text-opacity: 1 !important;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .cdx-marker {
+    transition-duration: 500ms;
+    --tw-text-opacity: 1 !important;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+.dark .tc-add-row:hover,
+.dark .tc-add-column:hover,
+.dark .tc-row--selected,
+.dark .tc-row--selected:after,
+.dark .tc-cell--selected {
+    transition-duration: 500ms;
+    --tw-text-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .tc-add-row:before {
+	 transition-duration: 500ms;
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(23 29 39 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .tc-popover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .tc-popover svg {
+    filter:invert(1);
+}
+
+.dark .ce-popover--opened{
+    --tw-text-opacity: 1 !important;
+    background-color: rgb(224, 214, 200) !important;
+}
+
+.dark .ce-popover--opened .cdx-search-field__input{
+	color:black;
+}
+
+.dark .ce-popover-item__icon{
+	filter:invert(1);
+}
+
+.dark .ce-toolbar__actions--opened{
+	filter:invert(1);
+}
+
+.dark .ce-inline-toolbar{
+	filter:invert(1);
+	background-color: rgb(224, 214, 200) !important;
+}
+
+.dark .ce-inline-toolbar svg{
+	filter:invert(1);
+}
+
+.dark .ce-conversion-toolbar{
+	background-color: rgb(224, 214, 200) !important;
+}
+
+.dark .ce-conversion-toolbar .ce-conversion-tool{
+	filter:invert(1);
+	--tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .cdx-warning{
+	filter:invert(1);
+}
+
+.dark .ce-block--selected .ce-block__content{
+	--tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
 #editorjs::-webkit-scrollbar-track {
     background-color: transparent;
     margin: 7px 0px;
@@ -57,6 +141,11 @@ body {
 #editorjs:hover::-webkit-scrollbar-thumb {
     background-color: #e1e4e8;
     border-radius: 8px;
+}
+
+.dark #editorjs:hover::-webkit-scrollbar-thumb {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
 }
 
 .flex-1-1 {
