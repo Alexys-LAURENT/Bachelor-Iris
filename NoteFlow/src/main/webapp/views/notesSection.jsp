@@ -19,10 +19,22 @@
         response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
     }
 %>
+<%
+ArrayList<ExtendedNote> notes;
+if(request.getParameter("tag") != null){
+	String tag = request.getParameter("tag");
+	// pass the user id with user.getIdUser() wich is a number as a string
+	notes = Controller.getAllNotes(tag, user.getIdUser());
+}else{
+	notes = Controller.getAllNotes("null", user.getIdUser());
+}
+if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter("onlyFav"))){
+	notes = Controller.returnFavNotes(notes);
+}
+%>
 
 <div class="w-full h-full flex p-4 overflow-y-auto overflow-x-hidden justify-center transition-all duration-500 dark:bg-dark dark:text-white">
         
-           <% ArrayList<ExtendedNote> notes = Controller.getAllNotes();   %>
         
         
         <div class="flex flex-wrap w-full gap-4 xl:gap-8 justify-center 2xl:justify-start content-start">
@@ -39,7 +51,7 @@
 					</div>
 					<div class="flex flex-col max-w-full h-[210px] overflow-hidden">
 						<p class="min-h-[20px] md:min-h-[15px] text-ellipsis text-2xs md:text-xs line-clamp-[7] md:line-clamp-5">
-							<%-- timestamp jour mois année zn français --%>
+							<%-- timestamp jour mois annï¿½e zn franï¿½ais --%>
 							<% 
 								LocalDateTime timestamp = note.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 							%>
@@ -97,7 +109,7 @@
         </div>
 </div>
 
-<script src="js/previewNote.js?v=3"></script>
+<script src="js/previewNote.js?v=4"></script>
 <script defer>
 		<% for (ExtendedNote note : notes) { %>
 			// Preview note with keys id and content in single array
@@ -132,8 +144,8 @@
 
 			Toast.fire({
 				icon: 'warning',
-				title: 'Êtes-vous sûr?',
-				text: "Vous ne pourrez pas revenir en arrière!",
+				title: 'ï¿½tes-vous sï¿½r?',
+				text: "Vous ne pourrez pas revenir en arriï¿½re!",
 				showCancelButton: true,
 				showConfirmButton: true,
 				confirmButtonText: "Oui, supprimer!",
@@ -148,8 +160,8 @@
 					Toast.fire({
 						icon: 'error',
 						timer: 2000,
-						title: 'Annulée',
-						text: "La note n'a pas été supprimée."
+						title: 'Annulï¿½e',
+						text: "La note n'a pas ï¿½tï¿½ supprimï¿½e."
 					});
 				}
 			});
@@ -185,6 +197,6 @@
 		const showConfirmation = localStorage.getItem('showConfirmation');
 		if (showConfirmation) {
 			localStorage.removeItem('showConfirmation');
-			showToastConfirmDelete("Supprimée", "La note a bien été supprimée.");
+			showToastConfirmDelete("Supprimï¿½e", "La note a bien ï¿½tï¿½ supprimï¿½e.");
 		}
 	</script>

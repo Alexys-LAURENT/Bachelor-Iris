@@ -70,7 +70,7 @@ function handlePreview(note) {
 }
 
 function createHeader(data) {
-    return `<h${data.level}>${data.text}</h${data.level}>`;
+    return `<h${data.level} class="!my-0">${data.text}</h${data.level}>`;
 }
 
 function createParagraph(data) {

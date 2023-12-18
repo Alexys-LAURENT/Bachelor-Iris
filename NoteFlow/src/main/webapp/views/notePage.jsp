@@ -34,11 +34,9 @@
                         </form>
                 </div>
         </div>
-        <div class="dark:bg-darkNote dark:text-white px-8 bg-white border-2 border-t-0 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between">
+        <div class="dark:bg-darkNote dark:text-white px-8 bg-white border-2 border-t-0 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between gap-2">
                 <div class="text-3xl max-w-[80%] w-[80%] font-bold">
-                <p class="line-clamp-1 text-ellipsis overflow-hidden w-full">
-                        <%= noteEdit.getTitle() %>
-                 </p>
+                        <input onblur="handleInputBlur()" id="inputNoteTitle" type="text" class="w-full focus:outline-none text-ellipsis" value="<%= noteEdit.getTitle() %>">
                 </div>
                 <div class="w-[20%] flex justify-end">
                         <%-- timestamp jour mois année zn français --%>
@@ -62,4 +60,23 @@ function goBack() {
     // redirect to home page
     window.location.href = "/noteflow?token=" + token;
 }
+
+document.getElementById("inputNoteTitle").addEventListener("keyup", function(event) {
+
+        $.ajax({
+            url: "/noteflow/renameNote",
+            type: "POST",
+            data: {
+                titre: document.getElementById("inputNoteTitle").value.length > 0 ? document.getElementById("inputNoteTitle").value : "Sans titre",
+                idNote: new URLSearchParams(window.location.search).get("note")
+            }
+        });
+});
+
+function handleInputBlur(){
+        if(document.getElementById("inputNoteTitle").value.length === 0){
+                document.getElementById("inputNoteTitle").value = "Sans titre";
+        }
+}
+
 </script>

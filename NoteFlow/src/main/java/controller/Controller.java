@@ -5,8 +5,23 @@ import java.util.ArrayList;
 import Model.Model;
 
 public class Controller {
-    public static ArrayList<ExtendedNote> getAllNotes() {
-        return Model.getAllNotes();
+    // getAllNotes can take a optional parameter to filter the notes
+    public static ArrayList<ExtendedNote> getAllNotes(String filter, int idUser){
+        return Model.getAllNotes(filter, idUser);
+    }
+    
+    public static ArrayList<ExtendedNote> returnFavNotes(ArrayList<ExtendedNote> notes) {
+        ArrayList<ExtendedNote> favNotes = new ArrayList<ExtendedNote>();
+        for (ExtendedNote note : notes) {
+            if (note.getIsFavorite() == 1) {
+                favNotes.add(note);
+            }
+        }
+        return favNotes;
+    }
+
+    public static boolean renameNote(String titre, int idNote) {
+        return Model.renameNote(titre, idNote);
     }
 
     public static boolean toggleFavorite(int idNote) {
