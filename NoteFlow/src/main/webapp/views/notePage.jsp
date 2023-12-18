@@ -17,7 +17,7 @@
 
 <div class="w-full h-full flex flex-col p-12 pt-6 transition-all duration-500 dark:bg-dark">
 
-<svg onclick="goBack()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer" viewBox="0 0 16 16">
+<svg onclick="goBack()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer dark:fill-white" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
 </svg>
 
@@ -36,7 +36,7 @@
         </div>
         <div class="dark:bg-darkNote dark:text-white px-8 bg-white border-2 border-t-0 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between gap-2">
                 <div class="text-3xl max-w-[80%] w-[80%] font-bold">
-                        <input onblur="handleInputBlur()" id="inputNoteTitle" type="text" class="w-full focus:outline-none text-ellipsis" value="<%= noteEdit.getTitle() %>">
+                        <input onblur="handleInputBlur()" id="inputNoteTitle" type="text" class="w-full focus:outline-none text-ellipsis bg-transparent" value="<%= noteEdit.getTitle() %>">
                 </div>
                 <div class="w-[20%] flex justify-end">
                         <%-- timestamp jour mois année zn français --%>
