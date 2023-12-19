@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controller.ExtendedNote;
 import controller.User;
+import controller.Tag;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,33 +84,30 @@ public class Model {
         }
     }
 
-    public static ArrayList<ExtendedNote> getAllNotes(String categorie, int idUser){
+    public static ArrayList<ExtendedNote> getAllNotes(String categorie, int idUser) {
         String req = "";
         ArrayList<ExtendedNote> lesNotes = new ArrayList<ExtendedNote>();
 
-        
-        	if("null".equals(categorie) || "".equals(categorie)){
-            	req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where n.idUser = ? LIMIT 100";
-        	}else{
-            	// check if categorie is a categorie from user
-            	if(!checkIfTagIsFromUser(categorie, idUser)){
-                	req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where n.idUser = ? LIMIT 100";
-            	}else{
-                	req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where c.libelle = ? AND n.idUser = ? LIMIT 100";
-            	}
-        	}
-        
+        if ("null".equals(categorie) || "".equals(categorie)) {
+            req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where n.idUser = ?";
+        } else {
+            // check if categorie is a categorie from user
+            if (!checkIfTagIsFromUser(categorie, idUser)) {
+                req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where n.idUser = ?";
+            } else {
+                req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where c.idCategorie = ? AND n.idUser = ?";
+            }
+        }
 
         try {
             maConnexion.seConnecter();
             PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
-            if("null".equals(categorie) || "".equals(categorie) || !checkIfTagIsFromUser(categorie, idUser)){
+            if ("null".equals(categorie) || "".equals(categorie) || !checkIfTagIsFromUser(categorie, idUser)) {
                 unStat.setInt(1, idUser);
-            }else{
+            } else {
                 unStat.setString(1, categorie);
                 unStat.setInt(2, idUser);
             }
-            System.out.println(unStat);
             ResultSet desRes = unStat.executeQuery();
             while (desRes.next()) {
                 ExtendedNote uneNote = new ExtendedNote(desRes.getInt("idNote"),
@@ -127,7 +125,7 @@ public class Model {
     }
 
     public static boolean checkIfTagIsFromUser(String categorie, int idUser) {
-        String req = "SELECT * FROM categories WHERE libelle = ? AND idUser = ?;";
+        String req = "SELECT * FROM categories WHERE idCategorie = ? AND idUser = ?;";
         try {
             maConnexion.seConnecter();
             PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
@@ -253,81 +251,128 @@ public class Model {
         return content;
     }
 
-    // public static void deleteClient(int idclient) {
-    // String req = "delete from client where idclient = " + idclient + ";";
-    // try {
-    // maConnexion.seConnecter();
-    // Statement unStat = maConnexion.getMaConnexion().createStatement();
-    // unStat.execute(req);
-    // unStat.close();
-    // maConnexion.seDeconnecter();
-    // } catch (SQLException exp) {
-    // System.out.println("Erreur d'execution : " + req + " : " + exp);
-    // }
-    // }
+    public static ArrayList<Tag> getUserTags(int idUser) {
+        String req = "SELECT * FROM categories WHERE idUser = ?";
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setInt(1, idUser);
+            ResultSet desRes = unStat.executeQuery();
+            while (desRes.next()) {
+                Tag tag = new Tag(desRes.getInt("idCategorie"), desRes.getString("libelle"),
+                        desRes.getString("hex"));
+                tags.add(tag);
+            }
+            unStat.close();
+            maConnexion.seDeconnecter();
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+        }
+        return tags;
+    }
 
-    // public static Client selectWhereClient(int idclient) {
-    // String req = "select * from client where idclient = " + idclient + ";";
-    // Client unClient = null;
-    // try {
-    // maConnexion.seConnecter();
-    // Statement unStat = maConnexion.getMaConnexion().createStatement();
-    // ResultSet unRes = unStat.executeQuery(req);
-    // if (unRes.next()) {
-    // unClient = new Client(
-    // unRes.getInt("idclient"),
-    // unRes.getString("nom"),
-    // unRes.getString("prenom"),
-    // unRes.getString("adresse"));
-    // }
-    // unStat.close();
-    // maConnexion.seDeconnecter();
-    // } catch (SQLException exp) {
-    // System.out.println("Erreur d'execution : " + req + " : " + exp);
-    // }
+    public static boolean updateNoteTag(int idNote, int idTag) {
+        String req = "UPDATE notes SET idCategorie = ? WHERE idNote = ?";
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setInt(1, idTag);
+            unStat.setInt(2, idNote);
+            // Log the prepared statement
+            unStat.executeUpdate();
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+    }
 
-    // return unClient;
-    // }
+    public static boolean createTagInNote(int idUser, String tagName, String hex, int idNote) {
+        String req = "INSERT INTO categories (libelle, hex, idUser) VALUES (?, ?, ?)";
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setString(1, tagName);
+            unStat.setString(2, hex);
+            unStat.setInt(3, idUser);
+            unStat.executeUpdate();
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return updateNoteTag(idNote, lastInsertIdTag(idUser));
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+    }
 
-    // public static void updateClient(Client unClient) {
-    // String req = "update client set "
-    // + "nom = '" + unClient.getNom() + "',"
-    // + "prenom = '" + unClient.getPrenom() + "',"
-    // + "adresse = '" + unClient.getAdresse() + "' "
-    // + "where idclient = " + unClient.getIdclient() + ";";
-    // try {
-    // maConnexion.seConnecter();
-    // Statement unStat = maConnexion.getMaConnexion().createStatement();
-    // unStat.execute(req);
-    // unStat.close();
-    // maConnexion.seDeconnecter();
-    // } catch (SQLException exp) {
-    // System.out.println("Erreur d'execution : " + req + " : " + exp);
-    // }
-    // }
+    public static int lastInsertIdTag(int idUser) {
+        String req = "SELECT idCategorie FROM categories WHERE idUser = ? ORDER BY idCategorie DESC LIMIT 1";
+        int idTag = 0;
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setInt(1, idUser);
+            ResultSet desRes = unStat.executeQuery();
+            if (desRes.next()) {
+                idTag = desRes.getInt("idCategorie");
+            }
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return idTag;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return idTag;
+        }
+    }
 
-    // public static ArrayList<Client> selectLikeClients(String filtre) {
-    // String req = "select * from client where "
-    // + "nom like '%" + filtre + "%' "
-    // + "or prenom like '%" + filtre + "%' "
-    // + "or adresse like '%" + filtre + "%';";
-    // ArrayList<Client> lesClients = new ArrayList<Client>();
-    // try {
-    // maConnexion.seConnecter();
-    // Statement unStat = maConnexion.getMaConnexion().createStatement();
-    // ResultSet desRes = unStat.executeQuery(req);
-    // while (desRes.next()) {
-    // Client unClient = new Client(desRes.getInt("idclient"),
-    // desRes.getString("nom"),
-    // desRes.getString("prenom"), desRes.getString("adresse"));
-    // lesClients.add(unClient);
-    // }
-    // unStat.close();
-    // maConnexion.seDeconnecter();
-    // } catch (SQLException exp) {
-    // System.out.println("Erreur d'execution : " + req + " : " + exp);
-    // }
+    public static boolean createTagOutsideNote(int idUser, String tagName, String hex) {
+        String req = "INSERT INTO categories (libelle, hex, idUser) VALUES (?, ?, ?)";
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setString(1, tagName);
+            unStat.setString(2, hex);
+            unStat.setInt(3, idUser);
+            unStat.executeUpdate();
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+    }
 
-    // return lesClients;
-    // }
+    public static boolean createNote(String titre, String idCategory, int idUser) {
+        System.out.println("Model: " + titre + " " + idCategory + " " + idUser);
+        String req = "";
+        if ("0".equals(idCategory)) {
+            req = "INSERT INTO notes (titre, idCategorie, idUser, content) VALUES (?, null, ?, '')";
+        } else {
+            req = "INSERT INTO notes (titre, idCategorie, idUser, content) VALUES (?, ?, ?, '')";
+        }
+        try {
+            maConnexion.seConnecter();
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            if ("0".equals(idCategory)) {
+                unStat.setString(1, titre);
+                unStat.setInt(2, idUser);
+            } else {
+                unStat.setString(1, titre);
+                unStat.setString(2, idCategory);
+                unStat.setInt(3, idUser);
+            }
+            unStat.executeUpdate();
+            unStat.close();
+            maConnexion.seDeconnecter();
+            return true;
+        } catch (SQLException exp) {
+            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            return false;
+        }
+    }
+
 }

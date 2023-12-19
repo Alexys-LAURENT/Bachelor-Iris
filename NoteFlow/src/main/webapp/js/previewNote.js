@@ -1,4 +1,10 @@
 function handlePreview(note) {
+
+    if (note.content === "") {
+        document.getElementById("notePreview" + note.id).innerHTML = "";
+        return;
+    }
+
     note.content = JSON.parse(note.content);
     var preview = document.getElementById("notePreview" + note.id);
 

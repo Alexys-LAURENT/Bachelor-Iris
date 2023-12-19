@@ -40,6 +40,29 @@ body {
     opacity: 1;
 }
 
+#tagMenu::-webkit-scrollbar {
+    opacity: 0;
+    width: 10px;
+}
+
+#tagMenu:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+#tagMenu {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#tagMenu::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+#tagMenu::-webkit-scrollbar-thumb {
+    background-color: #e1e4e8;
+    border-radius: 8px;
+}
+
 #editorjs {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -70,7 +93,7 @@ body {
 }
 
 .dark .tc-add-row:before {
-	 transition-duration: 500ms;
+    transition-duration: 500ms;
     --tw-bg-opacity: 1 !important;
     background-color: rgb(23 29 39 / var(--tw-bg-opacity)) !important;
 }
@@ -81,51 +104,51 @@ body {
 }
 
 .dark .tc-popover svg {
-    filter:invert(1);
+    filter: invert(1);
 }
 
-.dark .ce-popover--opened{
+.dark .ce-popover--opened {
     --tw-text-opacity: 1 !important;
     background-color: rgb(224, 214, 200) !important;
 }
 
-.dark .ce-popover--opened .cdx-search-field__input{
-	color:black;
+.dark .ce-popover--opened .cdx-search-field__input {
+    color: black;
 }
 
-.dark .ce-popover-item__icon{
-	filter:invert(1);
+.dark .ce-popover-item__icon {
+    filter: invert(1);
 }
 
-.dark .ce-toolbar__actions--opened{
-	filter:invert(1);
+.dark .ce-toolbar__actions--opened {
+    filter: invert(1);
 }
 
-.dark .ce-inline-toolbar{
-	filter:invert(1);
-	background-color: rgb(224, 214, 200) !important;
+.dark .ce-inline-toolbar {
+    filter: invert(1);
+    background-color: rgb(224, 214, 200) !important;
 }
 
-.dark .ce-inline-toolbar svg{
-	filter:invert(1);
+.dark .ce-inline-toolbar svg {
+    filter: invert(1);
 }
 
-.dark .ce-conversion-toolbar{
-	background-color: rgb(224, 214, 200) !important;
+.dark .ce-conversion-toolbar {
+    background-color: rgb(224, 214, 200) !important;
 }
 
-.dark .ce-conversion-toolbar .ce-conversion-tool{
-	filter:invert(1);
-	--tw-bg-opacity: 1 !important;
+.dark .ce-conversion-toolbar .ce-conversion-tool {
+    filter: invert(1);
+    --tw-bg-opacity: 1 !important;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
 }
 
-.dark .cdx-warning{
-	filter:invert(1);
+.dark .cdx-warning {
+    filter: invert(1);
 }
 
-.dark .ce-block--selected .ce-block__content{
-	--tw-bg-opacity: 1 !important;
+.dark .ce-block--selected .ce-block__content {
+    --tw-bg-opacity: 1 !important;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
 }
 
@@ -168,8 +191,8 @@ body {
 #editorjs h1 {
     display: block !important;
     font-size: 2em !important;
-    margin-top: 0.67em ;
-    margin-bottom: 0.67em ;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
     margin-left: 0 !important;
     margin-right: 0 !important;
     font-weight: bold !important;
@@ -179,8 +202,8 @@ body {
 #editorjs h2 {
     display: block !important;
     font-size: 1.5em !important;
-    margin-top: 0.83em ;
-    margin-bottom: 0.83em ;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
     margin-left: 0 !important;
     margin-right: 0 !important;
     font-weight: bold !important;
@@ -190,8 +213,8 @@ body {
 #editorjs h3 {
     display: block !important;
     font-size: 1.17em !important;
-    margin-top: 1em ;
-    margin-bottom: 1em ;
+    margin-top: 1em;
+    margin-bottom: 1em;
     margin-left: 0 !important;
     margin-right: 0 !important;
     font-weight: bold !important;
@@ -200,8 +223,8 @@ body {
 .previewNote h4,
 #editorjs h4 {
     display: block !important;
-    margin-top: 1.33em ;
-    margin-bottom: 1.33em ;
+    margin-top: 1.33em;
+    margin-bottom: 1.33em;
     margin-left: 0 !important;
     margin-right: 0 !important;
     font-weight: bold !important;
@@ -222,8 +245,8 @@ body {
 #editorjs h6 {
     display: block !important;
     font-size: .67em !important;
-    margin-top: 2.33em ;
-    margin-bottom: 2.33em ;
+    margin-top: 2.33em;
+    margin-bottom: 2.33em;
     margin-left: 0 !important;
     margin-right: 0 !important;
     font-weight: bold !important;
@@ -231,6 +254,22 @@ body {
 
 .previewNote ul {
     padding: revert !important;
+}
+
+@media screen and (max-width: 640px) {
+
+    .ce-toolbar__content,
+    .ce-block__content {
+        max-width: 100% !important;
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+}
+
+@media (max-width: 650px) {
+    .ce-popover {
+        bottom: inherit !important;
+    }
 }
 
 @media screen and (max-width: 768px) {

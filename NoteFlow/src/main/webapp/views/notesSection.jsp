@@ -3,22 +3,6 @@
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.ZoneId" %>
-
-<%
-    if(request.getParameter("idNoteToggleFavorite") != null){
-        int idNoteToggleFavorite = Integer.parseInt(request.getParameter("idNoteToggleFavorite"));
-        Controller.toggleFavorite(idNoteToggleFavorite);
-        // refresh
-        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
-    }
-
-    if(request.getParameter("idNoteDelete") != null){
-        int idNoteDelete = Integer.parseInt(request.getParameter("idNoteDelete"));
-        Controller.delete(idNoteDelete);
-        // refresh
-        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
-    }
-%>
 <%
 ArrayList<ExtendedNote> notes;
 if(request.getParameter("tag") != null){
@@ -33,7 +17,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 }
 %>
 
-<div class="w-full md:h-full md:min-h-0 flex p-4 md:overflow-y-auto md:overflow-x-hidden justify-center transition-all duration-500 dark:bg-dark dark:text-white">
+<div class="w-full md:h-full md:min-h-0 flex p-4 md:overflow-y-auto md:overflow-x-hidden justify-center transition-all duration-500 bg-white dark:bg-dark dark:text-white">
         
         
         
@@ -82,7 +66,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 						</div>
 					</div>
 					<div class="flex w-full h-[50px] items-center justify-end text-white dark:text-black transition-all duration-500 ">
-						<div class="px-2 py-[2px] min-w-[100px] rounded-full flex justify-center items-center bg-[<%= note.getHex() %>]/10 dark:bg-opacity-10 bg-opacity-50 transition-all duration-500">
+						<div class="px-2 py-[2px] min-w-[100px] rounded-full flex justify-center items-center bg-[<%= note.getHex() %>]/50 dark:bg-[<%= note.getHex() %>]/10 dark:bg-opacity-10 bg-opacity-50 transition-all duration-500">
 							<span class="text-xs font-semibold text-[<%= note.getHex() %>] transition-all duration-500">
 								<%= note.getLibelle() %>
 							</span>
@@ -94,7 +78,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="grey" class="<%= note.getIsFavorite() == 1 ? "fill-yellow-500" : "fill-gray-500 hover:fill-yellow-500" %> hover:duration-0 transition-all duration-500 bi bi-star-fill" viewBox="0 0 16 16" onclick="document.getElementById('form-favorite-<%= note.getIdNote() %>').submit()">
 	  							<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
 							</svg>
-							<input type="hidden" name="idNoteToggleFavorite" value="<%= note.getIdNote() %>" id="idNoteToggleFavorite2">
+							<input type="hidden" name="idNoteToggleFavoriteIndex" value="<%= note.getIdNote() %>" id="idNoteToggleFavorite2">
 						</form>
 						<form method="POST" id="form-delete-<%= note.getIdNote() %>">
 							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="black" class="hover:fill-red-500 dark:hover:fill-red-500 dark:fill-white bi bi-trash3-fill hover:duration-0 transition-all duration-500" viewBox="0 0 16 16" onclick="showToastDelete(<%= note.getIdNote() %>, '<%= note.getTitle() %>')">
@@ -109,12 +93,12 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
         </div>
 </div>
 
-<script src="js/previewNote.js?v=4"></script>
+<script src="js/previewNote.js?v=5"></script>
 <script defer>
 		<% for (ExtendedNote note : notes) { %>
 			// Preview note with keys id and content in single array
 			handlePreview(
-				{ id: <%= note.getIdNote() %>, content: <%= note.getContent() %> },
+				{ id: <%= note.getIdNote() %>, content: <%= note.getContent().length() > 0 ? note.getContent() : "''" %> },
 			);
 		<% } %>
 
@@ -144,8 +128,8 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 
 			Toast.fire({
 				icon: 'warning',
-				title: 'ï¿½tes-vous sï¿½r?',
-				text: "Vous ne pourrez pas revenir en arriï¿½re!",
+				title: 'Êtes-vous sûr?',
+				text: "Vous ne pourrez pas revenir en arrière!",
 				showCancelButton: true,
 				showConfirmButton: true,
 				confirmButtonText: "Oui, supprimer!",
@@ -160,8 +144,8 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 					Toast.fire({
 						icon: 'error',
 						timer: 2000,
-						title: 'Annulï¿½e',
-						text: "La note n'a pas ï¿½tï¿½ supprimï¿½e."
+						title: 'Annulée',
+						text: "La note n'a pas été supprimée."
 					});
 				}
 			});
@@ -197,6 +181,6 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 		const showConfirmation = localStorage.getItem('showConfirmation');
 		if (showConfirmation) {
 			localStorage.removeItem('showConfirmation');
-			showToastConfirmDelete("Supprimï¿½e", "La note a bien ï¿½tï¿½ supprimï¿½e.");
+			showToastConfirmDelete("Supprimée", "La note a bien été supprimée.");
 		}
 	</script>

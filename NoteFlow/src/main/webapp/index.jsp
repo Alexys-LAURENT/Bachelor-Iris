@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="controller.Controller"%>
 <%@ page import="controller.ExtendedNote"%>
 <%@ page import="controller.User"%>
@@ -16,6 +16,61 @@
     }
 %>
 
+<%
+    if(request.getParameter("idNoteToggleFavoriteIndex") != null){
+        int idNoteToggleFavorite = Integer.parseInt(request.getParameter("idNoteToggleFavoriteIndex"));
+        Controller.toggleFavorite(idNoteToggleFavorite);
+        // refresh
+        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
+    }
+
+    if(request.getParameter("idNoteDelete") != null){
+        int idNoteDelete = Integer.parseInt(request.getParameter("idNoteDelete"));
+        Controller.delete(idNoteDelete);
+        // refresh
+        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
+    }
+%>
+
+<%
+    if(request.getParameter("newTagIndex") != null && request.getParameter("hex") != null){
+            Controller.createTagOutsideNote(user.getIdUser(), request.getParameter("newTag"), request.getParameter("hex"));
+            // refresh
+            response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
+    }
+%>
+
+
+<%
+        if(request.getParameter("idNoteToggleFavorite") != null){
+                int idNoteToggleFavorite = Integer.parseInt(request.getParameter("idNoteToggleFavorite"));
+                Controller.toggleFavorite(idNoteToggleFavorite);
+                // refresh
+                response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
+        }
+
+        if(request.getParameter("idTag") != null){
+                Controller.updateNoteTag(Integer.parseInt(request.getParameter("note")), Integer.parseInt(request.getParameter("idTag")));
+                // refresh
+                response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
+        }
+
+        if(request.getParameter("newTag") != null && request.getParameter("hex") != null){
+                Controller.createTagInNote(user.getIdUser(), request.getParameter("newTag"), request.getParameter("hex"), Integer.parseInt(request.getParameter("note")));
+                // refresh
+                response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
+        }
+%>
+
+<% if (request.getParameter("newNoteIndex") != null) {
+    Controller.createNote(
+        request.getParameter("newNoteIndex"),
+        request.getParameter("idCategorie"),
+        user.getIdUser()
+    );
+    response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
+} %>
+
 <!DOCTYPE html>
 <html lang="en" class="<%= user != null ? user.getTheme() : "white" %>">
 <head>
@@ -24,7 +79,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/index.css?v=3">
+    <link rel="stylesheet" href="css/index.css?v=6">
     <script defer src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
@@ -59,15 +114,11 @@
     </script>
 </head>
 <body class="bg-bgLight dark:bgDark">
-    <main class="flex flex-col md:flex-row w-full h-screen bg-bgLight dark:bg-dark md:overflow-hidden">
+    <main class="flex flex-col md:flex-row w-full h-screen bg-bgLight dark:bg-dark md:overflow-hidden transition-all duration-500">
     <%
         if (user != null) {
     %>
         <%@ include file="views/sideBar.jsp" %>
-
-    <%
-        }
-    %>
 
     <%
 	    if (request.getParameter("note") != null) {
@@ -80,6 +131,10 @@
 	<%
 	    }
 	%>
+
+    <%
+        }
+    %>
       
 
     </main>
