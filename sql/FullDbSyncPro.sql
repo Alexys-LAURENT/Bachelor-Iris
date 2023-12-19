@@ -153,7 +153,7 @@ Create table
     notes(
         idNote int not null auto_increment,
         idUser int not null,
-        idCategorie int not null,
+        idCategorie int,
         titre VARCHAR(255) not null,
         isFavorite BOOLEAN NOT NULL DEFAULT false,
         content longtext not null,

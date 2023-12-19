@@ -1,4 +1,7 @@
-model\Model.class
-controller\Note.class
+controller\ExtendedNote.class
 controller\Controller.class
-model\Connexion.class
+Model\Model.class
+Model\Connexion.class
+controller\Note.class
+controller\ToggleThemeModeServlet.class
+controller\User.class

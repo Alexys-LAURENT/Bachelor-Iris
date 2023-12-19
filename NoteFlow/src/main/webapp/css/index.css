@@ -31,16 +31,253 @@ body {
     border-radius: 8px;
 }
 
+#editorjs::-webkit-scrollbar {
+    opacity: 0;
+    width: 10px;
+}
+
+#editorjs:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+#tagMenu::-webkit-scrollbar {
+    opacity: 0;
+    width: 10px;
+}
+
+#tagMenu:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+#tagMenu {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#tagMenu::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+#tagMenu::-webkit-scrollbar-thumb {
+    background-color: #e1e4e8;
+    border-radius: 8px;
+}
+
+#editorjs {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 
 
+.dark .ce-code__textarea {
+    transition-duration: 500ms;
+    --tw-text-opacity: 1 !important;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
 
+.dark .cdx-marker {
+    transition-duration: 500ms;
+    --tw-text-opacity: 1 !important;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+.dark .tc-add-row:hover,
+.dark .tc-add-column:hover,
+.dark .tc-row--selected,
+.dark .tc-row--selected:after,
+.dark .tc-cell--selected {
+    transition-duration: 500ms;
+    --tw-text-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .tc-add-row:before {
+    transition-duration: 500ms;
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(23 29 39 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .tc-popover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .tc-popover svg {
+    filter: invert(1);
+}
+
+.dark .ce-popover--opened {
+    --tw-text-opacity: 1 !important;
+    background-color: rgb(224, 214, 200) !important;
+}
+
+.dark .ce-popover--opened .cdx-search-field__input {
+    color: black;
+}
+
+.dark .ce-popover-item__icon {
+    filter: invert(1);
+}
+
+.dark .ce-toolbar__actions--opened {
+    filter: invert(1);
+}
+
+.dark .ce-inline-toolbar {
+    filter: invert(1);
+    background-color: rgb(224, 214, 200) !important;
+}
+
+.dark .ce-inline-toolbar svg {
+    filter: invert(1);
+}
+
+.dark .ce-conversion-toolbar {
+    background-color: rgb(224, 214, 200) !important;
+}
+
+.dark .ce-conversion-toolbar .ce-conversion-tool {
+    filter: invert(1);
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.dark .cdx-warning {
+    filter: invert(1);
+}
+
+.dark .ce-block--selected .ce-block__content {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+#editorjs::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin: 7px 0px;
+}
+
+#editorjs::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+#editorjs:hover::-webkit-scrollbar-thumb {
+    background-color: #e1e4e8;
+    border-radius: 8px;
+}
+
+.dark #editorjs:hover::-webkit-scrollbar-thumb {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
+}
+
+.flex-1-1 {
+    flex: 1 1 49%;
+}
+
+.ce-toolbar__content,
+.ce-block__content {
+    max-width: 100% !important;
+    margin-left: 75px !important;
+    margin-right: 75px !important;
+}
+
+.ce-popover-item__icon {
+    min-width: 26px !important;
+    min-height: 26px !important;
+}
+
+.previewNote h1,
+#editorjs h1 {
+    display: block !important;
+    font-size: 2em !important;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+
+.previewNote h2,
+#editorjs h2 {
+    display: block !important;
+    font-size: 1.5em !important;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+
+.previewNote h3,
+#editorjs h3 {
+    display: block !important;
+    font-size: 1.17em !important;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+
+.previewNote h4,
+#editorjs h4 {
+    display: block !important;
+    margin-top: 1.33em;
+    margin-bottom: 1.33em;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+
+.previewNote h5,
+#editorjs h5 {
+    display: block !important;
+    font-size: .83em !important;
+    margin-top: 1.67em;
+    margin-bottom: 1.67em;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+
+.previewNote h6,
+#editorjs h6 {
+    display: block !important;
+    font-size: .67em !important;
+    margin-top: 2.33em;
+    margin-bottom: 2.33em;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-weight: bold !important;
+}
+
+.previewNote ul {
+    padding: revert !important;
+}
+
+@media screen and (max-width: 640px) {
+
+    .ce-toolbar__content,
+    .ce-block__content {
+        max-width: 100% !important;
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+}
+
+@media (max-width: 650px) {
+    .ce-popover {
+        bottom: inherit !important;
+    }
+}
 
 @media screen and (max-width: 768px) {
     .hide-scrollbar::-webkit-scrollbar {
         display: none;
     }
 
-    .scroll-shadow-s::after {
+    html.white .scroll-shadow-s::after {
         content: "";
         width: 40px;
         height: 100%;
@@ -50,7 +287,7 @@ body {
         z-index: 9999999;
     }
 
-    .scroll-shadow-e::before {
+    html.white .scroll-shadow-e::before {
         content: "";
         width: 40px;
         height: 100%;
@@ -58,5 +295,31 @@ body {
         left: 15px;
         background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(249, 251, 252, 1));
         z-index: 9999999;
+    }
+
+    html.dark .scroll-shadow-s::after {
+        content: "";
+        width: 40px;
+        height: 100%;
+        position: absolute;
+        right: 15px;
+        background: linear-gradient(to right, rgba(13, 17, 23, 0), rgba(13, 17, 23, 1));
+        z-index: 9999999;
+    }
+
+    html.dark .scroll-shadow-e::before {
+        content: "";
+        width: 40px;
+        height: 100%;
+        position: absolute;
+        left: 15px;
+        background: linear-gradient(to left, rgba(13, 17, 23, 0), rgba(13, 17, 23, 1));
+        z-index: 9999999;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .flex-1-1 {
+        flex: 1 1 32%;
     }
 }
