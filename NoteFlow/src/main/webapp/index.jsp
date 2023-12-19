@@ -34,7 +34,7 @@
 
 <%
     if(request.getParameter("newTagIndex") != null && request.getParameter("hex") != null){
-            Controller.createTagOutsideNote(user.getIdUser(), request.getParameter("newTag"), request.getParameter("hex"));
+            Controller.createTagOutsideNote(user.getIdUser(), request.getParameter("newTagIndex"), request.getParameter("hex"));
             // refresh
             response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
     }
