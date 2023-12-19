@@ -143,9 +143,6 @@ body {
     background-color: rgb(31 41 55 / var(--tw-bg-opacity)) !important;
 }
 
-.dark .cdx-warning {
-    filter: invert(1);
-}
 
 .dark .ce-block--selected .ce-block__content {
     --tw-bg-opacity: 1 !important;

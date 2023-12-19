@@ -93,7 +93,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
         </div>
 </div>
 
-<script src="js/previewNote.js?v=5"></script>
+<script src="js/previewNote.js?v=7"></script>
 <script defer>
 		<% for (ExtendedNote note : notes) { %>
 			// Preview note with keys id and content in single array

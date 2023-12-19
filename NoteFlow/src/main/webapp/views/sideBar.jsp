@@ -46,7 +46,7 @@
     <div class=" md:h-full overflow-hidden">
         <div id="tagsWrapper" class="flex md:flex-col h-full relative scroll-shadow-s after:transition-all after:duration-500">
             <div id="tagsContainer"
-                class="tagsContainer relative flex hide-scrollbar md:flex-col md:items-center min-h-[10px] h-full overflow-auto gap-2 py-2 w-full md:ps-4 md:mx-0 mx-4">
+                class="tagsContainer relative flex hide-scrollbar md:flex-col md:items-center min-h-[10px] h-full overflow-x-auto overflow-y-hidden md:overflow-x-hidden md:overflow-y-auto gap-2 py-2 w-full md:ps-4 md:mx-0 mx-4">
                 <%-- Favoris --%>
                 <div onclick="toggleOnlyFavParams()"
                     class="mb-0 md:mb-3 text-xs px-2 py-1 bg-[#FFF5E5] flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none <%= request.getParameter("onlyFav") != null && "true".equals(request.getParameter("onlyFav")) ? "outline outline-[2.5px] outline-[#F18600]" : "" %>">
@@ -56,8 +56,8 @@
                 <%-- Tags --%>
                 <% for (Tag tag : AllTagsUser) { %>
                 <div onclick="toggleTagParams(<%= tag.getIdTag() %>)"
-                    class="text-xs px-2 py-1 dark:bg-[<%= tag.getHex() %>]/50 bg-[<%= tag.getHex() %>]/50 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none outline-[<%= tag.getHex() %>] <%= request.getParameter("tag") != null && request.getParameter("tag").equals(String.valueOf(tag.getIdTag())) ? "outline outline-[2.5px]" : "" %>">
-                    <p class="text-[<%= tag.getHex() %>]"><%= tag.getLibelle() %></p>
+                    class="text-xs px-2 py-1 dark:bg-[<%= tag.getHex() %>]/20 bg-[<%= tag.getHex() %>]/20 flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none outline-[<%= tag.getHex() %>] <%= request.getParameter("tag") != null && request.getParameter("tag").equals(String.valueOf(tag.getIdTag())) ? "outline outline-[2.5px]" : "" %>">
+                    <p class="whitespace-nowrap text-[<%= tag.getHex() %>]"><%= tag.getLibelle() %></p>
                 </div>
                 <% } %>
 

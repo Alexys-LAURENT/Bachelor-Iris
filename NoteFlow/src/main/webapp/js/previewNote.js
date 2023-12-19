@@ -29,7 +29,12 @@ function handlePreview(note) {
                     block.data.content[rowIndex][cellIndex] = block.data.content[rowIndex][cellIndex].replace(/class=\\\"([^\\"]*)\\\"/g, "class='$1'");
                 });
             });
-        }
+        }else if(block.data.message || block.data.title){
+			block.data.message = decodeURIComponent(block.data.message);
+			block.data.message = block.data.message.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
+			block.data.title = decodeURIComponent(block.data.title);
+			block.data.title = block.data.title.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
+		}
     });
 
     html = "";
@@ -146,7 +151,7 @@ function createMarker(data) {
 function createWarning(data) {
     return `
         <div class="flex gap-2 w-full">
-            <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' class="mt-3 dark:invert transition-all duration-500">
+            <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' class="mt-3 dark:invert transition-all duration-500 hidden md:block">
                 <rect x='5' y='5' width='14' height='14' rx='4' stroke='black' stroke-width='2'/>
                 <line x1='12' y1='9' x2='12' y2='12' stroke='black' stroke-width='2' stroke-linecap='round'/>
                 <path d='M12 15.02V15.01' stroke='black' stroke-width='2' stroke-linecap='round'/>

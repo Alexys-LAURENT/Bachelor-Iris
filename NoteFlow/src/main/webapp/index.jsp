@@ -79,7 +79,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/index.css?v=6">
+    <link rel="stylesheet" href="css/index.css?v=7">
     <script defer src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
