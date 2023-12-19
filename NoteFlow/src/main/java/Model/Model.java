@@ -18,23 +18,6 @@ public class Model {
     private static Connexion maConnexion = new Connexion("localhost:3306",
             "syncpro", "root", "");
 
-    /******************* GESTION DES CLIENTS *******************/
-    // public static void insertClient(Client unClient) {
-    // String req = "insert into client values(null,'"
-    // + unClient.getNom() + "','"
-    // + unClient.getPrenom() + "','"
-    // + unClient.getAdresse() + "');";
-    // try {
-    // maConnexion.seConnecter();
-    // Statement unStat = maConnexion.getMaConnexion().createStatement();
-    // unStat.execute(req);
-    // unStat.close();
-    // maConnexion.seDeconnecter();
-    // } catch (SQLException exp) {
-    // System.out.println("Erreur d'execution : " + req + " : " + exp);
-    // }
-
-    // }
 
     public static User checkToken(String token) {
         String sql = "SELECT * FROM token WHERE token = ?;";
@@ -89,16 +72,21 @@ public class Model {
         ArrayList<ExtendedNote> lesNotes = new ArrayList<ExtendedNote>();
 
         if ("null".equals(categorie) || "".equals(categorie)) {
-            req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where n.idUser = ?";
+            req = "SELECT n.*, COALESCE(c.libelle, '') AS libelle, COALESCE(c.hex, '') AS hex\r\n"
+            		+ "FROM notes n\r\n"
+            		+ "LEFT JOIN categories c ON n.idCategorie = c.idCategorie\r\n"
+            		+ "WHERE n.idUser = ? LIMIT 100";
         } else {
             // check if categorie is a categorie from user
             if (!checkIfTagIsFromUser(categorie, idUser)) {
-                req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where n.idUser = ?";
+                req = "SELECT n.*, COALESCE(c.libelle, '') AS libelle, COALESCE(c.hex, '') AS hex\r\n"
+                		+ "FROM notes n\r\n"
+                		+ "LEFT JOIN categories c ON n.idCategorie = c.idCategorie\r\n"
+                		+ "WHERE n.idUser = ? LIMIT 100";
             } else {
                 req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where c.idCategorie = ? AND n.idUser = ?";
             }
         }
-
         try {
             maConnexion.seConnecter();
             PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
@@ -147,8 +135,10 @@ public class Model {
     }
 
     public static ExtendedNote getNoteById(int idNote) {
-        String req = "select n.*, c.libelle, c.hex from notes n inner join categories c on n.idCategorie = c.idCategorie where idNote = "
-                + idNote + ";";
+        String req = "SELECT n.*, COALESCE(c.libelle, '') AS libelle, COALESCE(c.hex, '') AS hex\r\n"
+        		+ "FROM notes n\r\n"
+        		+ "LEFT JOIN categories c ON n.idCategorie = c.idCategorie\r\n"
+        		+ "WHERE n.idNote = "+ idNote +" LIMIT 100";
         ExtendedNote uneNote = null;
         try {
             maConnexion.seConnecter();
@@ -347,7 +337,6 @@ public class Model {
     }
 
     public static boolean createNote(String titre, String idCategory, int idUser) {
-        System.out.println("Model: " + titre + " " + idCategory + " " + idUser);
         String req = "";
         if ("0".equals(idCategory)) {
             req = "INSERT INTO notes (titre, idCategorie, idUser, content) VALUES (?, null, ?, '')";

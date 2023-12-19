@@ -156,7 +156,7 @@ Create table
         idCategorie int,
         titre VARCHAR(255) not null,
         isFavorite BOOLEAN NOT NULL DEFAULT false,
-        content longtext not null,
+        content longtext not null ,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         constraint PK_NOTES PRIMARY KEY(idNote),
         constraint FK_NOTES_USER FOREIGN KEY(idUser) REFERENCES users(idUser),
@@ -851,7 +851,7 @@ values (
         1,
         "Ma première note",
         false,
-        "Ceci est ma première note",
+        "'{\"time\":1702981067980,\"blocks\":[],\"version\":\"2.28.2\"}'",
         CURRENT_TIMESTAMP
     );
 
@@ -862,7 +862,7 @@ values (
         1,
         "Ma deuxième note",
         true,
-        "Ceci est ma deuxième note",
+        "'{\"time\":1702981067980,\"blocks\":[],\"version\":\"2.28.2\"}'",
         CURRENT_TIMESTAMP
     );
 
@@ -873,6 +873,6 @@ values (
         1,
         "Ma troisième note",
         false,
-        "Ceci est ma troisième note",
+        "'{\"time\":1702981067980,\"blocks\":[],\"version\":\"2.28.2\"}'",
         CURRENT_TIMESTAMP
     );
