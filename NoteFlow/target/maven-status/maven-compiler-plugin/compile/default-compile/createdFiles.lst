@@ -1,7 +1,11 @@
 controller\ExtendedNote.class
+controller\RenameNoteServlet.class
 controller\Controller.class
 Model\Model.class
 Model\Connexion.class
+controller\GetNoteContentServlet.class
 controller\Note.class
+controller\SaveNoteServlet.class
+controller\Tag.class
 controller\ToggleThemeModeServlet.class
 controller\User.class
