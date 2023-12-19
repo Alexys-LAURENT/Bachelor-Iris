@@ -19,7 +19,7 @@
   <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
 </svg>
 
-        <div class="transition-all duration-500 w-full h-[40px] rounded-t-md border-2 border-b-0 bg-white dark:border-gray-800 px-8 text-lg font-semibold flex items-center justify-between dark:bg-[<%= noteEdit.getHex() %>]/20 bg-[<%= noteEdit.getHex() %>]/10 dark:text-[<%= noteEdit.getHex() %>] text-[<%= noteEdit.getHex() %>]">
+        <div class="transition-all duration-500 w-full h-[40px] rounded-t-md border-2 border-b-0 bg-white dark:border-gray-800 px-8 text-lg font-semibold flex items-center justify-between dark:bg-[<%= noteEdit.getHex() %>]/20 bg-[<%= noteEdit.getHex() %>]/20 dark:text-[<%= noteEdit.getHex() %>] text-[<%= noteEdit.getHex() %>]">
                 <div class="flex items-center gap-2">
                         <div>
                                 <%= noteEdit.getLibelle() %>
