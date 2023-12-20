@@ -10,6 +10,10 @@ public class Controller {
         return Model.getAllNotes(filter, idUser);
     }
 
+    public static ArrayList<User> getCollegues(int idUser) {
+        return Model.getCollegues(idUser);
+    }
+
     public static ArrayList<ExtendedNote> returnFavNotes(ArrayList<ExtendedNote> notes) {
         ArrayList<ExtendedNote> favNotes = new ArrayList<ExtendedNote>();
         for (ExtendedNote note : notes) {
@@ -22,6 +26,10 @@ public class Controller {
 
     public static boolean renameNote(String titre, int idNote) {
         return Model.renameNote(titre, idNote);
+    }
+
+    public static ArrayList<ExtendedNote> returnSharedNotes(int idUser) {
+        return Model.returnSharedNotes(idUser);
     }
 
     public static boolean toggleFavorite(int idNote) {
@@ -48,8 +56,8 @@ public class Controller {
         return Model.toggleThemeMode(themeMode, idUser);
     }
 
-    public static ExtendedNote getNoteById(int idNote) {
-        return Model.getNoteById(idNote);
+    public static ExtendedNote getNoteById(int idNote, int idUser) {
+        return Model.getNoteById(idNote, idUser);
     }
 
     public static ArrayList<Tag> getUserTags(int idUser) {
@@ -69,7 +77,39 @@ public class Controller {
         return Model.createTagOutsideNote(idUser, tagName, hex);
     }
 
+    public static boolean editTag(int idTag, String tagName, String hex) {
+        return Model.editTag(idTag, tagName, hex);
+    }
+
+    public static boolean deleteTag(int idTag) {
+        return Model.deleteTag(idTag);
+    }
+
     public static boolean createNote(String titre, String idCategory, int idUser) {
         return Model.createNote(titre, idCategory, idUser);
+    }
+
+    public static ArrayList<Share> getShares(int idNote) {
+        return Model.getShares(idNote);
+    }
+
+    public static boolean shareNoteWithUser(int idNote, int idOwner, int idShared, String permissions) {
+        return Model.shareNoteWithUser(idNote, idOwner, idShared, permissions);
+    }
+
+    public static boolean deleteShare(int idShare, int idUser) {
+        return Model.deleteShare(idShare, idUser);
+    }
+
+    public static ExtendedNote getNoteSharedById(int idNote, int idUser) {
+        return Model.getNoteSharedById(idNote, idUser);
+    }
+
+    public static String getPermission(int idNote, int idUser) {
+        return Model.getPermission(idNote, idUser);
+    }
+
+    public static boolean isShared(int idNote, int idUser) {
+        return Model.isShared(idNote, idUser);
     }
 }

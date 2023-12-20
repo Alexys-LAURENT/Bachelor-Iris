@@ -156,13 +156,26 @@ Create table
         idCategorie int,
         titre VARCHAR(255) not null,
         isFavorite BOOLEAN NOT NULL DEFAULT false,
-        content longtext not null ,
+        content longtext not null,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         constraint PK_NOTES PRIMARY KEY(idNote),
         constraint FK_NOTES_USER FOREIGN KEY(idUser) REFERENCES users(idUser),
         constraint FK_NOTES_CATEGORIE FOREIGN KEY(idCategorie) REFERENCES categories(idCategorie)
     ) engine = innodb,
     charset = utf8;
+
+CREATE TABLE
+    SharedNotes (
+        idShare INT AUTO_INCREMENT,
+        idNote INT,
+        idOwner INT,
+        idShared INT,
+        permissions VARCHAR(255),
+        PRIMARY KEY (idShare),
+        FOREIGN KEY (idNote) REFERENCES notes(idNote),
+        FOREIGN KEY (idOwner) REFERENCES users(idUser),
+        FOREIGN KEY (idShared) REFERENCES users(idUser)
+    );
 
 -- TaskMate
 

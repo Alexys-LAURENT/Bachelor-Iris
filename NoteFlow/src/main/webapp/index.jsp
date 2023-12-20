@@ -71,6 +71,28 @@
     response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
 } %>
 
+
+<% 
+    if (request.getParameter("editTagSelect") != null && request.getParameter("NewTagName") != null && request.getParameter("NewTagHex") != null) {
+        Controller.editTag(Integer.parseInt(request.getParameter("editTagSelect")), request.getParameter("NewTagName"), request.getParameter("NewTagHex"));
+        // refresh page
+        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
+    }
+%>
+
+
+<% if (request.getParameter("selectUserPartage") != null && request.getParameter("selectUserPartage") != "" && request.getParameter("selectDroitPartage") != null && request.getParameter("selectDroitPartage") != "") {
+        Controller.shareNoteWithUser(Integer.parseInt(request.getParameter("note")), user.getIdUser(), Integer.parseInt(request.getParameter("selectUserPartage")), request.getParameter("selectDroitPartage"));
+        // refresh
+        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
+} %>
+
+<% if (request.getParameter("idShare") != null) {
+        Controller.deleteShare(Integer.parseInt(request.getParameter("idShare")), user.getIdUser());
+        // refresh page
+        response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
+} %>
+
 <!DOCTYPE html>
 <html lang="en" class="<%= user != null ? user.getTheme() : "white" %>">
 <head>

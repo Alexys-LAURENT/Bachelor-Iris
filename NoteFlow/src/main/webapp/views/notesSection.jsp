@@ -15,6 +15,10 @@ if(request.getParameter("tag") != null){
 if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter("onlyFav"))){
 	notes = Controller.returnFavNotes(notes);
 }
+
+if(request.getParameter("sharedWithMe") != null && "true".equals(request.getParameter("sharedWithMe"))){
+	notes = Controller.returnSharedNotes(user.getIdUser());
+}
 %>
 
 <div class="w-full md:h-full md:min-h-0 flex p-4 md:overflow-y-auto md:overflow-x-hidden justify-center transition-all duration-500 bg-white dark:bg-dark dark:text-white">
@@ -22,16 +26,26 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
         
         
         <div class="flex flex-wrap w-full gap-4 xl:gap-8 justify-center 2xl:justify-start content-start">
-           <% for(ExtendedNote note : notes){  %>
-				
+           <% for(ExtendedNote note : notes){  
+		   		Boolean isShared = Controller.isShared(note.getIdNote(), user.getIdUser());
+				%>
 				<div class="flex flex-col relative w-full md:w-[1%] h-[300px] shadow rounded-md px-4 hover:cursor-pointer hover:scale-[1.005] hover:shadow-xl dark:shadow-gray-800 hover:border-[1px] hover:border-gray-200 flex-1-1 bg-white dark:bg-darkNote text-black dark:text-white transition-all duration-500">
 				<a href="index.jsp?token=<%= request.getParameter("token") %>&note=<%= note.getIdNote() %>">
 					<span class="absolute w-[4px] h-[45px] bg-[<%= note.getHex() %>] left-0 top-[15px]"></span>
-					<div class="flex w-full h-[40px] items-center pt-4">
-						<p class="noteTitle font-semibold max-w-full overflow-hidden text-ellipsis line-clamp-1 text-base md:text-xl">
-							<%= note.getTitle() %>
-						</p>
-						<span class="mt-[5px] w-4 h-4 min-w-4 min-h-4 rounded-full flex ms-2 bg-[<%= note.getHex() %>] <%= note.getTitle().length() >= 38 ? "hidden" : "hidden md:flex"  %>"></span>
+					<div class="flex w-full h-[40px] items-center pt-4 justify-between">
+						<div class="flex items-center">
+							<p class="noteTitle font-semibold max-w-full overflow-hidden text-ellipsis line-clamp-1 text-base md:text-xl">
+								<%= note.getTitle() %>
+							</p>
+							<span class="mt-[5px] w-4 h-4 min-w-4 min-h-4 rounded-full flex ms-2 bg-[<%= note.getHex() %>] <%= note.getTitle().length() >= 38 ? "hidden" : "hidden md:flex"  %>"></span>
+						</div>
+						<% if(isShared){ %>
+							<div title="Note partagée avec d'autres utilisateurs">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+									<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+								</svg>
+							</div>
+						<% } %>
 					</div>
 					<div class="flex flex-col max-w-full h-[210px] overflow-hidden">
 						<p class="min-h-[20px] md:min-h-[15px] text-ellipsis text-2xs md:text-xs line-clamp-[7] md:line-clamp-5">
@@ -74,6 +88,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 					</div>
 				</a>
 				<span class="flex gap-2 z-50 absolute bottom-5">
+				<% if(request.getParameter("sharedWithMe") == null){ %>
 						<form method="POST" id="form-favorite-<%= note.getIdNote() %>">
 							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="grey" class="<%= note.getIsFavorite() == 1 ? "fill-yellow-500" : "fill-gray-500 hover:fill-yellow-500" %> hover:duration-0 transition-all duration-500 bi bi-star-fill" viewBox="0 0 16 16" onclick="document.getElementById('form-favorite-<%= note.getIdNote() %>').submit()">
 	  							<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
@@ -86,6 +101,7 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 							</svg>
 							<input type="hidden" name="idNoteDelete" value="<%= note.getIdNote() %>" id="idNoteDelete">
 						</form>
+					<% } %>
 					</span>
 				</div>
 				

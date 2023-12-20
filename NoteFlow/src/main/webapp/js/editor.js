@@ -29,6 +29,7 @@ const loadData = () => {
 
 
 const editor = new EditorJS({
+    readOnly: document.getElementById('permission').value == 'Affichage' ? true : false,
     onChange: () => {
 
         editor.save().then((outputData) => {
