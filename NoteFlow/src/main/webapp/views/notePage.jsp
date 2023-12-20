@@ -20,7 +20,6 @@
                 noteEdit = Controller.getNoteSharedById(Integer.parseInt(request.getParameter("note")), user.getIdUser());
                 isShared = true;
         }
-
 %>
 
 <% if (noteEdit == null) { %>
@@ -83,7 +82,7 @@
                 <div class="transition-all duration-500 w-full h-[40px] rounded-t-md border-2 border-b-0 bg-white dark:border-gray-800 px-8 text-lg font-semibold flex items-center justify-between dark:bg-[<%= noteEdit.getHex() %>]/20 bg-[<%= noteEdit.getHex() %>]/20 dark:text-[<%= noteEdit.getHex() %>] text-[<%= noteEdit.getHex() %>]">
                         <div class="flex items-center gap-2">
                                 <div>
-                                        <%= noteEdit.getLibelle() %>
+                                        <%= noteEdit.getCategory() == 0 ? "Sans étiquette" : noteEdit.getLibelle() %>
                                 </div>
                                 <div class="relative">
                                         <%-- chevron down to show menu --%>
@@ -92,7 +91,7 @@
                                         </svg>
                                         
                                         <%-- menu --%>
-                                                <div id="tagMenu" class="hidden absolute z-10 bg-white dark:bg-darkNote dark:text-white border-2 border-gray-300 dark:border-gray-800 rounded-md shadow-lg py-1 text-sm min-w-[50px] max-h-[150px] overflow-y-auto">
+                                                <div id="tagMenu" class="hidden absolute z-10 bg-white dark:bg-darkNote dark:text-white border-2 border-gray-300 dark:border-gray-800 rounded-md shadow-lg py-1 text-sm min-w-[50px] max-h-[152px] overflow-y-auto">
                                                         <form method="POST" id="form-tag-<%= noteEdit.getIdNote() %>">
                                                                 <input type="hidden" id="idTag" name="idTag" value="<%= noteEdit.getCategory() %>">
                                                                 <% for (Tag tag : tags) {
@@ -104,13 +103,25 @@
                                                                 <%   }
                                                                 } %>
                                                         </form>
-                                                        <%-- last div to add a tag --%>
+                                                        <%-- add a tag --%>
                                                         <div class="flex items-center px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-500 cursor-pointer" onclick="showToastAddTag()">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ms-2 bi bi-bookmark-plus-fill" viewBox="0 0 16 16">
                                                                         <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5m6.5-11a.5.5 0 0 0-1 0V6H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V7H10a.5.5 0 0 0 0-1H8.5z"/>
                                                                 </svg>
                                                                 <label for="addTag" class="cursor-pointer pe-2 ps-1 text-sm text-green-500">Créer</label>
                                                         </div>
+                                                        <% if (noteEdit.getCategory() != 0) { %>
+                                                                <%-- delete the tag --%>
+                                                                <form method="POST" id="deleteTagFromNote">
+                                                                        <input type="hidden" name="idNotedeleteTagFromNote" value="<%= noteEdit.getIdNote() %>">
+                                                                        <div class="flex items-center px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-500 cursor-pointer" onclick="document.getElementById('deleteTagFromNote').submit()">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ms-2 bi bi-bookmark-x-fill" viewBox="0 0 16 16">
+                                                                                        <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+                                                                                </svg>
+                                                                                <label for="deleteTag" class="cursor-pointer pe-2 ps-1 text-sm text-red-500">Retirer</label>
+                                                                        </div>
+                                                                </form>
+                                                        <% } %>
                                                 </div>
                                 </div>
                         </div>
@@ -126,21 +137,21 @@
         <% } %>
         <div class="dark:bg-darkNote dark:text-white px-8 bg-white border-2 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between gap-2 <%= isShared ? "border-t-2 rounded-t-md" : "border-t-0" %>">
                 <div class="text-3xl max-w-[80%] w-[80%] font-bold">
-                        <input onblur="handleInputBlur()" id="inputNoteTitle" type="text" class="w-full focus:outline-none text-ellipsis bg-transparent" value="<%= noteEdit.getTitle() %>">
+                        <input onblur="handleInputBlur()" id="inputNoteTitle" type="text" class="w-full focus:outline-none text-ellipsis bg-transparent" value="<%= noteEdit.getTitle() %>" <%= (isShared && Controller.getPermission(noteEdit.getIdNote(), user.getIdUser()).equals("Affichage")) ? "disabled" : "" %>>
                 </div>
                 <div class="w-[20%] flex justify-end">
                         <%-- timestamp jour mois année en français --%>
 			<% 
 				LocalDateTime timestamp = noteEdit.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			%>
-			<span class="text-sm line-clamp-2 text-ellipsis"><%= "Le " + timestamp.getDayOfMonth() + " " + timestamp.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + timestamp.getYear() + ", " + timestamp.getHour() + "h" + String.format("%02d", timestamp.getMinute()) %></span>
+			<span id="timestampNote" class="text-sm line-clamp-2 text-ellipsis"><%= "Le " + timestamp.getDayOfMonth() + " " + timestamp.getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH) + " " + timestamp.getYear() + ", " + timestamp.getHour() + "h" + String.format("%02d", timestamp.getMinute()) %></span>
                 </div>
         </div>
         <div id="editorjs" class="rounded-b-md dark:bg-darkNote dark:text-white bg-white border-2 border-t-0 dark:border-gray-800 transition-all duration-500 w-full h-full overflow-y-auto overflow-x-hidden"></div>
 </div>
 
 
-<script type="module" defer src="js/editor.js?v=5"></script>
+<script type="module" defer src="js/editor.js?v=7"></script>
 <script>
 function goBack() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -156,7 +167,8 @@ document.getElementById("inputNoteTitle").addEventListener("keyup", function(eve
             type: "POST",
             data: {
                 titre: document.getElementById("inputNoteTitle").value.length > 0 ? document.getElementById("inputNoteTitle").value : "Sans titre",
-                idNote: new URLSearchParams(window.location.search).get("note")
+                idNote: new URLSearchParams(window.location.search).get("note"),
+                idUser: <%= user.getIdUser() %>
             }
         });
 });

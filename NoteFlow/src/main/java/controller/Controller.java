@@ -24,8 +24,8 @@ public class Controller {
         return favNotes;
     }
 
-    public static boolean renameNote(String titre, int idNote) {
-        return Model.renameNote(titre, idNote);
+    public static boolean renameNote(String titre, int idNote, int idUser) {
+        return Model.renameNote(titre, idNote, idUser);
     }
 
     public static ArrayList<ExtendedNote> returnSharedNotes(int idUser) {
@@ -111,5 +111,9 @@ public class Controller {
 
     public static boolean isShared(int idNote, int idUser) {
         return Model.isShared(idNote, idUser);
+    }
+
+    public static boolean deleteTagFromNote(int idNote, int idUser) {
+        return Model.deleteTagFromNote(idNote, idUser);
     }
 }

@@ -96,7 +96,7 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 							<input type="hidden" name="idNoteToggleFavoriteIndex" value="<%= note.getIdNote() %>" id="idNoteToggleFavorite2">
 						</form>
 						<form method="POST" id="form-delete-<%= note.getIdNote() %>">
-							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="black" class="hover:fill-red-500 dark:hover:fill-red-500 dark:fill-white bi bi-trash3-fill hover:duration-0 transition-all duration-500" viewBox="0 0 16 16" onclick="showToastDelete(<%= note.getIdNote() %>, '<%= note.getTitle() %>')">
+							<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="black" class="hover:fill-red-500 dark:hover:fill-red-500 dark:fill-white bi bi-trash3-fill hover:duration-0 transition-all duration-500" viewBox="0 0 16 16" onclick="showToastDeleteNote(<%= note.getIdNote() %>, '<%= note.getTitle() %>')">
 						  		<path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
 							</svg>
 							<input type="hidden" name="idNoteDelete" value="<%= note.getIdNote() %>" id="idNoteDelete">
@@ -122,7 +122,7 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 <script>
 
 		// Show toast when deleting a note
-		function showToastDelete(idNote, title) {
+		function showToastDeleteNote(idNote, title) {
 			const Toast = Swal.mixin({
 				toast: true,
 				customClass: {
@@ -131,30 +131,28 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 					cancelButton: 'bg-red-500 text-white',
 				},
 				position: 'top',
-				width: 'fit-content',
 				showConfirmButton: false,
 				showCancelButton: false,
 				timer: 0,
-				timerProgressBar: true,
-				didOpen: (toast) => {
-					toast.addEventListener('mouseenter', Swal.stopTimer)
-					toast.addEventListener('mouseleave', Swal.resumeTimer)
-				}
+				timerProgressBar: true
 			});
 
 			Toast.fire({
 				icon: 'warning',
 				title: 'Êtes-vous sûr?',
-				text: "Vous ne pourrez pas revenir en arrière!",
+				html: `
+					<div class="text-red-500">
+						Vous ne pourrez pas revenir en arrière!
+					</div>
+					`,
 				showCancelButton: true,
 				showConfirmButton: true,
-				confirmButtonText: "Oui, supprimer!",
-				cancelButtonText: "Non, annuler!",
-				reverseButtons: true
+				confirmButtonText: "Supprimer",
+				cancelButtonText: "Annuler",
 			}).then((result) => {
 				if (result.isConfirmed) {
 						// Delete note
-						localStorage.setItem('showConfirmation', true);
+						localStorage.setItem('showConfirmationDeleteNote', true);
 						document.getElementById('form-delete-' + idNote).submit();
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					Toast.fire({
@@ -168,7 +166,7 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 		}
 
 		// Show toast after deleting a note
-		function showToastConfirmDelete(title, text) {
+		function showToastConfirmDeleteNote(title, text) {
 			const Toast = Swal.mixin({
 				toast: true,
 				customClass: {
@@ -176,13 +174,8 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 				},
 				position: 'top',
 				timer: 2000,
-				width: 'fit-content',
 				timerProgressBar: true,
-				showConfirmButton: false,
-				didOpen: (toast) => {
-					toast.addEventListener('mouseenter', Swal.stopTimer)
-					toast.addEventListener('mouseleave', Swal.resumeTimer)
-				}
+				showConfirmButton: false
 			});
 
 			Toast.fire({
@@ -194,9 +187,9 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 		}
 
 		// Check if confirmation message should be shown
-		const showConfirmation = localStorage.getItem('showConfirmation');
-		if (showConfirmation) {
-			localStorage.removeItem('showConfirmation');
-			showToastConfirmDelete("Supprimée", "La note a bien été supprimée.");
+		const showConfirmationDeleteNote = localStorage.getItem('showConfirmationDeleteNote');
+		if (showConfirmationDeleteNote) {
+			localStorage.removeItem('showConfirmationDeleteNote');
+			showToastConfirmDeleteNote("Supprimée", "La note a bien été supprimée.");
 		}
 	</script>

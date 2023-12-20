@@ -40,34 +40,66 @@ const loadData = () => {
             }
 
             editor.render(jsonData)
-            .then(() => {            
-                document.getElementById('editorjs').addEventListener('input', function (e) {
-                    if (e.inputType === 'insertText' || e.inputType === 'deleteContentBackward') {
-                        document.getElementById('savingIcon').classList.remove('hidden');
-                        document.getElementById('savedSuccess').classList.add('hidden');
-                        document.getElementById('savedFail').classList.add('hidden');
-                    }
-                });
-            
-                const targetNode = document.getElementById('editorjs');
-            
-                const observerOptions = {
-                    childList: true,
-                    subtree: true
-                };
-            
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'childList') {
+                .then(() => {
+                    document.getElementById('editorjs').addEventListener('input', function (e) {
+                        if (e.inputType === 'insertText' || e.inputType === 'deleteContentBackward') {
                             document.getElementById('savingIcon').classList.remove('hidden');
                             document.getElementById('savedSuccess').classList.add('hidden');
                             document.getElementById('savedFail').classList.add('hidden');
                         }
                     });
-                });
-            
-                observer.observe(targetNode, observerOptions);
-            })
+
+                    document.getElementById('editorjs').addEventListener('paste', function (e) {
+                        document.getElementById('savingIcon').classList.remove('hidden');
+                        document.getElementById('savedSuccess').classList.add('hidden');
+                        document.getElementById('savedFail').classList.add('hidden');
+                    });
+
+                    const targetNode = document.getElementById('editorjs');
+
+                    const observerOptions = {
+                        childList: true,
+                        subtree: true
+                    };
+
+                    function hasExcludedClass(node) {
+                        while (node) {
+                            if (node.nodeType === Node.ELEMENT_NODE && (node.classList.contains('ce-toolbar') || node.classList.contains('ce-inline-toolbar'))) {
+                                return true;
+                            }
+                            node = node.parentNode;
+                        }
+                        return false;
+                    }
+
+                    const observer = new MutationObserver(function (mutations) {
+                        mutations.forEach(function (mutation) {
+                            if (mutation.type === 'childList') {
+                                let ignoreMutation = false;
+                                mutation.addedNodes.forEach(function (node) {
+                                    if (hasExcludedClass(node)) {
+                                        ignoreMutation = true;
+                                    }
+                                });
+                                mutation.removedNodes.forEach(function (node) {
+                                    if (hasExcludedClass(node)) {
+                                        ignoreMutation = true;
+                                    }
+                                });
+                                if (ignoreMutation) {
+                                    return;
+                                }
+
+                                // Handle other mutations
+                                document.getElementById('savingIcon').classList.remove('hidden');
+                                document.getElementById('savedSuccess').classList.add('hidden');
+                                document.getElementById('savedFail').classList.add('hidden');
+                            }
+                        });
+                    });
+
+                    observer.observe(targetNode, observerOptions);
+                })
         }
     })
 }
@@ -98,6 +130,7 @@ const editor = new EditorJS({
                     document.getElementById('savingIcon').classList.add('hidden');
                     document.getElementById('savedSuccess').classList.remove('hidden');
                     document.getElementById('savedFail').classList.add('hidden');
+                    updateLastModification();
                 },
                 error: function () {
                     document.getElementById('savingIcon').classList.add('hidden');
@@ -355,32 +388,39 @@ editor.isReady
     )
 
 function showToastErrorSaving() {
-        const Toast = Swal.mixin({
-                toast: true,
-                customClass: {
-                        popup: 'text-xs rounded-md border border-gray-300 shadow-lg p-4 bg-white',
-                        confirmButton: 'bg-[#0F68A9] text-white',
-                        cancelButton: 'bg-red-500 text-white',
-                },
-                position: 'top',
-		        showConfirmButton: false,
-		        showCancelButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-        });
+    const Toast = Swal.mixin({
+        toast: true,
+        customClass: {
+            popup: 'text-xs rounded-md border border-gray-300 shadow-lg p-4 bg-white',
+            confirmButton: 'bg-[#0F68A9] text-white',
+            cancelButton: 'bg-red-500 text-white',
+        },
+        position: 'top',
+        showConfirmButton: false,
+        showCancelButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
 
-        Toast.fire({
-                icon: 'error',
-                title: 'Attention !',
-                html: `
+    Toast.fire({
+        icon: 'error',
+        title: 'Attention !',
+        html: `
                     <div class="text-red-500">
                         Une erreur est survenue lors de la sauvegarde de la note,
                         tout nouveau contenu ajouté risque de ne pas être sauvegardé.
                     </div>
                     `
-        });
+    });
+}
+
+function updateLastModification() {
+    let timestamp = new Date();
+    let months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    let formattedDate = "Le " + timestamp.getDate() + " " + months[timestamp.getMonth()] + " " + timestamp.getFullYear() + ", " + timestamp.getHours() + "h" + String(timestamp.getMinutes()).padStart(2, '0');
+    document.getElementById('timestampNote').innerText = formattedDate;
 }

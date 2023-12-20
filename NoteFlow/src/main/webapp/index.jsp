@@ -93,6 +93,14 @@
         response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
 } %>
 
+
+<% if (request.getParameter("idNotedeleteTagFromNote") != null) {
+        Controller.deleteTagFromNote(Integer.parseInt(request.getParameter("note")), user.getIdUser());
+        //refresh
+        response.sendRedirect("index.jsp" + "?token=" + request.getParameter("token") + "&note=" + request.getParameter("note"));
+} %>
+
+
 <!DOCTYPE html>
 <html lang="en" class="<%= user != null ? user.getTheme() : "white" %>">
 <head>

@@ -15,7 +15,8 @@ public class RenameNoteServlet extends HttpServlet {
         // Get the theme mode from the request
         String titre = request.getParameter("titre");
         int idNote = Integer.parseInt(request.getParameter("idNote"));
+        int idUser = Integer.parseInt(request.getParameter("idUser"));
 
-        Controller.renameNote(titre, idNote);
+        Controller.renameNote(titre, idNote, idUser);
     }
 }
