@@ -53,13 +53,13 @@
                 <%-- Favoris --%>
                 <div onclick="toggleOnlyFavParams()"
                     class="min-h-[26px] mb-0 md:mb-3 text-xs px-2 py-1 bg-[#FFF5E5] flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none <%= request.getParameter("onlyFav") != null && "true".equals(request.getParameter("onlyFav")) ? "outline outline-[2.5px] outline-[#F18600]" : "" %>">
-                    <p class="text-[#F18600]">Favoris</p>
+                    <p class="whitespace-nowrap text-[#F18600]">Favoris</p>
                 </div>
 
                 <%-- Partagées avec moi --%>
                 <div onclick="toggleSharedWithMeParams()"
                     class="min-h-[26px] mb-0 md:mb-3 text-xs px-2 py-1 bg-[#8eb9fb] flex w-fit rounded-md md:w-full md:justify-center md:max-w-full md:text-base md:py-1 md:font-semibold cursor-pointer select-none <%= request.getParameter("sharedWithMe") != null && "true".equals(request.getParameter("sharedWithMe")) ? "outline outline-[2.5px] outline-[#0e79ff]" : "" %>">
-                    <p class="text-[#0e79ff]">Partagées avec moi</p>
+                    <p class="whitespace-nowrap text-[#0e79ff]">Partagées avec moi</p>
                 </div>
 
                 <%-- Tags --%>

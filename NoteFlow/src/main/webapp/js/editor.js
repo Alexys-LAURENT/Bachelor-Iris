@@ -1,3 +1,5 @@
+
+
 function getUrlParam(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
@@ -20,10 +22,54 @@ const loadData = () => {
             // replace pattern class="\...\" to class='...'
             decodedData = decodedData.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
 
+            // replace pattern style="\...\" to style='...'
+            decodedData = decodedData.replace(/style=\\"([^\\"]*)\\"/g, "style='$1'");
 
-            editor.render(JSON.parse(JSON.parse(decodedData)));
+            // replace pattern href="\...\" to href='...'
+            decodedData = decodedData.replace(/href=\\"([^\\"]*)\\"/g, "href='$1'");
+
+            var jsonData = JSON.parse(JSON.parse(decodedData));
+            if (jsonData.blocks && jsonData.blocks.length === 0) {
+                jsonData.blocks.push({
+                    "id": "",
+                    "type": "paragraph",
+                    "data": {
+                        "text": ""
+                    }
+                });
+            }
+
+            editor.render(jsonData)
+            .then(() => {            
+                document.getElementById('editorjs').addEventListener('input', function (e) {
+                    if (e.inputType === 'insertText' || e.inputType === 'deleteContentBackward') {
+                        document.getElementById('savingIcon').classList.remove('hidden');
+                        document.getElementById('savedSuccess').classList.add('hidden');
+                        document.getElementById('savedFail').classList.add('hidden');
+                    }
+                });
+            
+                const targetNode = document.getElementById('editorjs');
+            
+                const observerOptions = {
+                    childList: true,
+                    subtree: true
+                };
+            
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList') {
+                            document.getElementById('savingIcon').classList.remove('hidden');
+                            document.getElementById('savedSuccess').classList.add('hidden');
+                            document.getElementById('savedFail').classList.add('hidden');
+                        }
+                    });
+                });
+            
+                observer.observe(targetNode, observerOptions);
+            })
         }
-    });
+    })
 }
 
 
@@ -47,7 +93,18 @@ const editor = new EditorJS({
                 data: {
                     idNote: getUrlParam('note'),
                     content: JSON.stringify(encodedData),
-                }
+                },
+                success: function () {
+                    document.getElementById('savingIcon').classList.add('hidden');
+                    document.getElementById('savedSuccess').classList.remove('hidden');
+                    document.getElementById('savedFail').classList.add('hidden');
+                },
+                error: function () {
+                    document.getElementById('savingIcon').classList.add('hidden');
+                    document.getElementById('savedSuccess').classList.add('hidden');
+                    document.getElementById('savedFail').classList.remove('hidden');
+                    showToastErrorSaving();
+                },
             });
 
         }).catch((error) => {
@@ -296,3 +353,34 @@ editor.isReady
         console.log(`Editor.js initialization failed because of ${reason}`)
     }
     )
+
+function showToastErrorSaving() {
+        const Toast = Swal.mixin({
+                toast: true,
+                customClass: {
+                        popup: 'text-xs rounded-md border border-gray-300 shadow-lg p-4 bg-white',
+                        confirmButton: 'bg-[#0F68A9] text-white',
+                        cancelButton: 'bg-red-500 text-white',
+                },
+                position: 'top',
+		        showConfirmButton: false,
+		        showCancelButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+        });
+
+        Toast.fire({
+                icon: 'error',
+                title: 'Attention !',
+                html: `
+                    <div class="text-red-500">
+                        Une erreur est survenue lors de la sauvegarde de la note,
+                        tout nouveau contenu ajouté risque de ne pas être sauvegardé.
+                    </div>
+                    `
+        });
+}

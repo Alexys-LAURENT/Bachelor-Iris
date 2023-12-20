@@ -46,17 +46,36 @@
         <input type="hidden" id="permission" value="Modification">
 <% } %>
 
-<div class="flex items-center gap-2">
-        <svg onclick="goBack()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer dark:fill-white" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
-        </svg>
-
-        <% if (!isShared) { %>
-                <svg id="shareButton" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer dark:fill-white" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"/>
+<div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+                <svg onclick="goBack()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer dark:fill-white" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
                 </svg>
-        <% } %>
 
+                <% if (!isShared) { %>
+                        <svg id="shareButton" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer dark:fill-white" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5"/>
+                        </svg>
+                <% } %>
+        </div>
+        <div class="flex me-2 items-center">
+                <div title="Sauvegarde en cours">
+                        <svg id="savingIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="hidden animate-spin bi bi-arrow-repeat dark:fill-white" viewBox="0 0 16 16">
+                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                        </svg>
+                </div>
+                <div title="Sauvegardé">
+                        <svg id="savedSuccess" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check2 fill-green-500" viewBox="0 0 16 16">
+                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                </div>
+                <div title="Erreur lors de la sauvegarde">
+                        <svg id="savedFail" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="hidden bi bi-x fill-red-500" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                </div>
+        </div>
 </div>
 
 
@@ -121,7 +140,7 @@
 </div>
 
 
-<script type="module" defer src="js/editor.js?v=3"></script>
+<script type="module" defer src="js/editor.js?v=5"></script>
 <script>
 function goBack() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -157,7 +176,6 @@ function showToastAddTag() {
                         cancelButton: 'bg-red-500 text-white',
                 },
                 position: 'top',
-                width: 'fit-content',
 		showConfirmButton: false,
 		showCancelButton: false,
                 timer: 0,

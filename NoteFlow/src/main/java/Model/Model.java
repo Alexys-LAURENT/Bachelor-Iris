@@ -232,7 +232,7 @@ public class Model {
 
     public static boolean updateNote(int idUser, int idNote, String outputData) {
         String checkPermissionQuery = "SELECT * FROM notes WHERE idNote = ? AND (idUser = ? OR idNote IN (SELECT idNote FROM sharednotes WHERE idShared = ? AND permissions LIKE 'Modification'))";
-        String updateQuery = "UPDATE notes SET content = ? WHERE idNote = ?";
+        String updateQuery = "UPDATE notes SET content = ? , timestamp=CURRENT_TIMESTAMP() WHERE idNote = ?";
     
         try {
             maConnexion.seConnecter();
