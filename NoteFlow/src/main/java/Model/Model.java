@@ -230,19 +230,39 @@ public class Model {
         }
     }
 
-    public static boolean updateNote(int idNote, String outputData) {
-        String req = "UPDATE notes SET content = ?, timestamp=CURRENT_TIMESTAMP() WHERE idNote = ?";
+    public static boolean updateNote(int idUser, int idNote, String outputData) {
+        String checkPermissionQuery = "SELECT * FROM notes WHERE idNote = ? AND (idUser = ? OR idNote IN (SELECT idNote FROM sharednotes WHERE idShared = ? AND permissions LIKE 'Modification'))";
+        String updateQuery = "UPDATE notes SET content = ? WHERE idNote = ?";
+    
         try {
             maConnexion.seConnecter();
-            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
-            unStat.setString(1, outputData);
-            unStat.setInt(2, idNote);
-            unStat.executeUpdate();
-            unStat.close();
+    
+            // Vérifier la permission
+            PreparedStatement checkPermissionStat = maConnexion.getMaConnexion().prepareStatement(checkPermissionQuery);
+            checkPermissionStat.setInt(1, idNote);
+            checkPermissionStat.setInt(2, idUser);
+            checkPermissionStat.setInt(3, idUser);
+            ResultSet permissionResult = checkPermissionStat.executeQuery();
+    
+            if (!permissionResult.next()) {
+                checkPermissionStat.close();
+                maConnexion.seDeconnecter();
+                return false; // L'utilisateur n'a pas la permission de mettre à jour la note
+            }
+    
+            checkPermissionStat.close();
+    
+            // Mettre à jour la note
+            PreparedStatement updateStat = maConnexion.getMaConnexion().prepareStatement(updateQuery);
+            updateStat.setString(1, outputData);
+            updateStat.setInt(2, idNote);
+            updateStat.executeUpdate();
+    
+            updateStat.close();
             maConnexion.seDeconnecter();
             return true;
         } catch (SQLException exp) {
-            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            System.out.println("Erreur d'execution : " + exp);
             return false;
         }
     }

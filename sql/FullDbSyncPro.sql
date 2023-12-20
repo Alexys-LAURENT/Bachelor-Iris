@@ -172,10 +172,11 @@ CREATE TABLE
         idShared INT,
         permissions VARCHAR(255),
         PRIMARY KEY (idShare),
-        FOREIGN KEY (idNote) REFERENCES notes(idNote),
+        FOREIGN KEY (idNote) REFERENCES notes(idNote) ON DELETE CASCADE,
         FOREIGN KEY (idOwner) REFERENCES users(idUser),
         FOREIGN KEY (idShared) REFERENCES users(idUser)
-    );
+    ) engine = innodb,
+    charset = utf8;
 
 -- TaskMate
 

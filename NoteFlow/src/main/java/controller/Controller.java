@@ -40,8 +40,8 @@ public class Controller {
         return Model.delete(idNote);
     }
 
-    public static boolean updateNote(int idNote, String outputData) {
-        return Model.updateNote(idNote, outputData);
+    public static boolean updateNote(int idUser, int idNote, String outputData) {
+        return Model.updateNote(idUser, idNote, outputData);
     }
 
     public static String getNoteContent(int idNote) {

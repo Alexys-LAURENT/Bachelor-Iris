@@ -45,8 +45,8 @@ const editor = new EditorJS({
                 url: "/noteflow/saveNote",
                 type: "POST",
                 data: {
-                    content: JSON.stringify(encodedData),
                     idNote: getUrlParam('note'),
+                    content: JSON.stringify(encodedData),
                 }
             });
 
