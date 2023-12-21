@@ -135,11 +135,11 @@
                         </div>
                 </div>
         <% } %>
-        <div class="dark:bg-darkNote dark:text-white px-8 bg-white border-2 border-b-0 dark:border-gray-800 transition-all duration-500 w-full h-[100px] overflow-hidden flex items-center justify-between gap-2 <%= isShared ? "border-t-2 rounded-t-md" : "border-t-0" %>">
-                <div class="text-3xl max-w-[80%] w-[80%] font-bold">
+        <div class="dark:bg-darkNote dark:text-white p-4 sm:py-0 sm:px-8 bg-white border-2 border-b-0 dark:border-gray-800 transition-colors duration-500 w-full h-[100px] overflow-hidden flex-col sm:flex-row flex items-center justify-between gap-2 <%= isShared ? "border-t-2 rounded-t-md" : "border-t-0" %>">
+                <div class="text-3xl w-full sm:w-[60%] font-bold">
                         <input onblur="handleInputBlur()" id="inputNoteTitle" type="text" class="w-full focus:outline-none text-ellipsis bg-transparent" value="<%= noteEdit.getTitle() %>" <%= (isShared && Controller.getPermission(noteEdit.getIdNote(), user.getIdUser()).equals("Affichage")) ? "disabled" : "" %>>
                 </div>
-                <div class="w-[20%] flex justify-end">
+                <div class="w-full sm:w-[40%] flex justify-start sm:justify-end">
                         <%-- timestamp jour mois année en français --%>
 			<% 
 				LocalDateTime timestamp = noteEdit.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -151,7 +151,7 @@
 </div>
 
 
-<script type="module" defer src="js/editor.js?v=7"></script>
+<script type="module" defer src="js/editor.js?v=1"></script>
 <script>
 function goBack() {
     const urlParams = new URLSearchParams(window.location.search);
