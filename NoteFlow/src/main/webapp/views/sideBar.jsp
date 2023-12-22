@@ -199,7 +199,7 @@ function toggleThemeMode() {
 
 function toggleThemeModeInBdd() {
     $.ajax({
-        url: "/noteflow/toggleThemeMode",
+        url: "/toggleThemeMode",
         type: "POST",
         data: {
             theme: document.getElementsByTagName('html')[0].classList.contains('dark') ? 'dark' : 'white',

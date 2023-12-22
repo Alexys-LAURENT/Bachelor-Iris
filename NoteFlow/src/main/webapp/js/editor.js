@@ -6,7 +6,7 @@ function getUrlParam(name) {
 
 const loadData = () => {
     $.ajax({
-        url: "/noteflow/getNote",
+        url: "/getNote",
         type: "GET",
         data: {
             idNote: getUrlParam('note'),
@@ -120,7 +120,7 @@ const editor = new EditorJS({
 
 
             $.ajax({
-                url: "/noteflow/saveNote",
+                url: "/saveNote",
                 type: "POST",
                 data: {
                     idNote: getUrlParam('note'),

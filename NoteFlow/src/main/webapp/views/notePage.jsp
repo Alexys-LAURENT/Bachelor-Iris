@@ -165,13 +165,13 @@ function goBack() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     // redirect to home page
-    window.location.href = "/noteflow?token=" + token;
+    window.location.href = "?token=" + token;
 }
 
 document.getElementById("inputNoteTitle").addEventListener("keyup", function(event) {
 
         $.ajax({
-            url: "/noteflow/renameNote",
+            url: "/renameNote",
             type: "POST",
             data: {
                 titre: document.getElementById("inputNoteTitle").value.length > 0 ? document.getElementById("inputNoteTitle").value : "Sans titre",
@@ -250,7 +250,7 @@ $("#shareButton").click(function() {
 
 function loadCollegues() {
     $.ajax({
-        url: 'getColleguesAndShares', // URL of the server-side script that returns the collegues and shares
+        url: '/getColleguesAndShares', // URL of the server-side script that returns the collegues and shares
         type: 'GET',
         data: { 
                 idUser: <%= user.getIdUser() %>,
