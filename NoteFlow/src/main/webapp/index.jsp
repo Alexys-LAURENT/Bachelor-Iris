@@ -63,12 +63,12 @@
 %>
 
 <% if (request.getParameter("newNoteIndex") != null) {
-    Controller.createNote(
+    int newNoteId = Controller.createNote(
         request.getParameter("newNoteIndex"),
         request.getParameter("idCategorie"),
         user.getIdUser()
     );
-    response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
+    response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "" ) + "&note=" + newNoteId);
 } %>
 
 

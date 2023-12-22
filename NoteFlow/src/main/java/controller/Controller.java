@@ -85,7 +85,7 @@ public class Controller {
         return Model.deleteTag(idTag);
     }
 
-    public static boolean createNote(String titre, String idCategory, int idUser) {
+    public static int createNote(String titre, String idCategory, int idUser) {
         return Model.createNote(titre, idCategory, idUser);
     }
 

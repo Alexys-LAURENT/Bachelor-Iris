@@ -439,16 +439,18 @@ public class Model {
         }
     }
 
-    public static boolean createNote(String titre, String idCategory, int idUser) {
+    public static int createNote(String titre, String idCategory, int idUser) {
         String req = "";
         if ("0".equals(idCategory)) {
             req = "INSERT INTO notes (titre, idCategorie, idUser, content) VALUES (?, null, ?, '')";
         } else {
             req = "INSERT INTO notes (titre, idCategorie, idUser, content) VALUES (?, ?, ?, '')";
         }
+        int generatedId = -1;
         try {
             maConnexion.seConnecter();
-            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req,
+                    Statement.RETURN_GENERATED_KEYS);
             if ("0".equals(idCategory)) {
                 unStat.setString(1, titre);
                 unStat.setInt(2, idUser);
@@ -458,13 +460,16 @@ public class Model {
                 unStat.setInt(3, idUser);
             }
             unStat.executeUpdate();
+            ResultSet rs = unStat.getGeneratedKeys();
+            if (rs.next()) {
+                generatedId = rs.getInt(1);
+            }
             unStat.close();
             maConnexion.seDeconnecter();
-            return true;
         } catch (SQLException exp) {
             System.out.println("Erreur d'execution : " + req + " : " + exp);
-            return false;
         }
+        return generatedId;
     }
 
     public static ArrayList<Share> getShares(int idNote) {

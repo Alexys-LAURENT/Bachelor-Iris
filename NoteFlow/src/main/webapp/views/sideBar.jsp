@@ -517,11 +517,9 @@ function showToastCreateNote(){
                 }).then((result) => {
                 if (result.isConfirmed) {
                         if(document.getElementById("newNoteInput").value.length === 0 || document.getElementById("newNoteInput").value === ""){
-                                localStorage.setItem("showConfirmation", "CreateNote");
                                 document.getElementById("newNoteInput").value = "Sans titre";
                                 document.getElementById("createNoteForm").submit();
                         } else {
-                                localStorage.setItem("showConfirmation", "CreateNote");
                                 document.getElementById("createNoteForm").submit();
                         }
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -568,9 +566,6 @@ if (showConfirmation === "CreateTag") {
     localStorage.removeItem('showConfirmation');
 } else if (showConfirmation === "DeleteTag") {
     showToastConfirmCreateTag("Succès", "L'étiquette a bien été supprimée");
-    localStorage.removeItem('showConfirmation');
-} else if (showConfirmation === "CreateNote") {
-    showToastConfirmCreateTag("Succès", "La note a bien été créée");
     localStorage.removeItem('showConfirmation');
 }
 
