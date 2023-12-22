@@ -21,15 +21,15 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 }
 %>
 
-<div class="w-full md:h-full md:min-h-0 flex p-4 md:overflow-y-auto md:overflow-x-hidden justify-center transition-all duration-500 bg-white dark:bg-dark dark:text-white">
+<div class="w-full md:h-full md:min-h-0 flex justify-center overflow-y-auto overflow-x-hidden transition-all duration-500 bg-white dark:bg-dark dark:text-white">
         
         
         
-        <div class="flex flex-wrap w-full gap-4 xl:gap-8 justify-center 2xl:justify-start content-start">
+        <div class="flex flex-wrap w-full h-full p-4 gap-4 xl:gap-8 justify-center 2xl:justify-start content-start">
            <% for(ExtendedNote note : notes){  
 		   		Boolean isShared = Controller.isShared(note.getIdNote(), user.getIdUser());
 				%>
-				<div class="flex flex-col relative w-full md:w-[1%] h-[300px] shadow rounded-md px-4 hover:cursor-pointer hover:scale-[1.005] hover:shadow-xl dark:shadow-gray-800 hover:border-[1px] hover:border-gray-200 flex-1-1 bg-white dark:bg-darkNote text-black dark:text-white transition-all duration-500">
+				<div class="flex flex-col relative w-full md:w-[1%] h-[300px] shadow rounded-md px-4 hover:cursor-pointer hover:scale-[1.005] hover:shadow-xl dark:shadow-gray-800 hover:border-[1px] hover:border-gray-200 flex-1-1 bg-white dark:bg-darkNote text-black dark:text-white transition-all duration-500 select-none">
 				<a href="index.jsp?token=<%= request.getParameter("token") %>&note=<%= note.getIdNote() %>">
 					<span class="absolute w-[4px] h-[45px] bg-[<%= note.getHex() %>] left-0 top-[15px]"></span>
 					<div class="flex w-full h-[40px] items-center pt-4 justify-between">
@@ -109,7 +109,7 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
         </div>
 </div>
 
-<script src="js/previewNote.js?v=7"></script>
+<script src="js/previewNote.js?v=2"></script>
 <script defer>
 		<% for (ExtendedNote note : notes) { %>
 			// Preview note with keys id and content in single array

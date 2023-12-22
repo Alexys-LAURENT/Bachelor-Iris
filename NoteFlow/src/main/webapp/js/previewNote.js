@@ -9,7 +9,7 @@ function handlePreview(note) {
     var preview = document.getElementById("notePreview" + note.id);
 
     // keep only the first 3 blocks
-    note.content = note.content.blocks.slice(0, 3);
+    note.content = note.content.blocks.slice(0, 5);
 
     //decode html tag like %3C to <
     //if block.data.text is undefined, check block.data.items, if it is undefined, check block.data.content
@@ -29,12 +29,12 @@ function handlePreview(note) {
                     block.data.content[rowIndex][cellIndex] = block.data.content[rowIndex][cellIndex].replace(/class=\\\"([^\\"]*)\\\"/g, "class='$1'");
                 });
             });
-        }else if(block.data.message || block.data.title){
-			block.data.message = decodeURIComponent(block.data.message);
-			block.data.message = block.data.message.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
-			block.data.title = decodeURIComponent(block.data.title);
-			block.data.title = block.data.title.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
-		}
+        } else if (block.data.message || block.data.title) {
+            block.data.message = decodeURIComponent(block.data.message);
+            block.data.message = block.data.message.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
+            block.data.title = decodeURIComponent(block.data.title);
+            block.data.title = block.data.title.replace(/class=\\"([^\\"]*)\\"/g, "class='$1'");
+        }
     });
 
     html = "";
@@ -81,20 +81,24 @@ function handlePreview(note) {
 }
 
 function createHeader(data) {
-    return `<h${data.level} class="!my-0">${data.text}</h${data.level}>`;
+    var text = data.text.length > 1750 ? data.text.substring(0, 1750) + "..." : data.text;
+    return `<h${data.level} class="!my-0">${text}</h${data.level}>`;
 }
 
 function createParagraph(data) {
+    var text = data.text.length > 1750 ? data.text.substring(0, 1750) + "..." : data.text;
     return `
     <div class="break-words">
-        ${data.text}
+        ${text}
     </div>`;
 }
 
 function createList(data) {
     var html = `<ul class="${data.style === "ordered" ? "list-decimal" : "list-disc"} p-auto">`;
+    data.items = data.items.slice(0, 5); // Limit to the first five items
     data.items.forEach(item => {
-        html += `<li>${item.content}</li>`;
+        var itemText = item.content.length > 1750 ? item.content.substring(0, 1750) + "..." : item.content;
+        html += `<li>${itemText}</li>`;
     });
     html += `</ul>`;
     return html;
@@ -102,11 +106,17 @@ function createList(data) {
 
 function createTable(data) {
     var html = `<table class="w-full border-collapse">`;
+    data.content = data.content.slice(0, 5); // Limit to the first five rows
     data.content.forEach(row => {
+        if (row.length > 3) {
+            row = row.slice(0, 3); // Limit to the first three cells
+        }
+        var cellWidth = 100 / row.length; // Calculate cell width
         html += `<tr>`;
         row.forEach(cell => {
-            html += `<td class="first:border-l-0 last:border-r-0 py-1 border border-black dark:border-white text-black dark:text-white transition-all duration-500 w-[33%] break-all leading-[30px] px-2 align-baseline">
-                ${cell}
+            var cellText = cell.length > 100 ? cell.substring(0, 1750 / row.length / 1) + "..." : cell; // Limit cell text to 100 characters
+            html += `<td class="first:border-l-0 last:border-r-0 py-1 border border-black dark:border-white w-[${cellWidth}%] break-all leading-[30px] px-2 align-baseline">
+                ${cellText}
             </td>`;
         });
         html += `</tr>`;
@@ -116,16 +126,17 @@ function createTable(data) {
 }
 
 function createQuote(data) {
+    var text = data.text.length > 1750 ? data.text.substring(0, 1750) + "..." : data.text;
+    var caption = data.caption.length > 1750 ? data.caption.substring(0, 1750) + "..." : data.caption;
     return `
         <div class="flex flex-col gap-2">
             <div class="min-h-[156px] bg-transparent text-black dark:text-white border border-gray-300 rounded-md p-2 text-sm transition-all duration-500">
-                ${data.text}
+                ${text}
             </div>
             <div class="min-h-[44px] bg-transparent text-black dark:text-white border border-gray-300 rounded-md p-2 text-sm transition-all duration-500">
-                ${data.caption}
+                ${caption}
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
 function createCode(data) {

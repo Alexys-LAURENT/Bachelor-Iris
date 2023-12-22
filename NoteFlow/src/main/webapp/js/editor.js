@@ -1,5 +1,3 @@
-
-
 function getUrlParam(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
@@ -43,6 +41,7 @@ const loadData = () => {
                 .then(() => {
                     document.getElementById('editorjs').addEventListener('input', function (e) {
                         if (e.inputType === 'insertText' || e.inputType === 'deleteContentBackward') {
+                            document.getElementById('isSaving').value = 'true';
                             document.getElementById('savingIcon').classList.remove('hidden');
                             document.getElementById('savedSuccess').classList.add('hidden');
                             document.getElementById('savedFail').classList.add('hidden');
@@ -50,6 +49,7 @@ const loadData = () => {
                     });
 
                     document.getElementById('editorjs').addEventListener('paste', function (e) {
+                        document.getElementById('isSaving').value = 'true';
                         document.getElementById('savingIcon').classList.remove('hidden');
                         document.getElementById('savedSuccess').classList.add('hidden');
                         document.getElementById('savedFail').classList.add('hidden');
@@ -127,12 +127,14 @@ const editor = new EditorJS({
                     content: JSON.stringify(encodedData),
                 },
                 success: function () {
+                    document.getElementById('isSaving').value = 'false';
                     document.getElementById('savingIcon').classList.add('hidden');
                     document.getElementById('savedSuccess').classList.remove('hidden');
                     document.getElementById('savedFail').classList.add('hidden');
                     updateLastModification();
                 },
                 error: function () {
+                    document.getElementById('isSaving').value = 'false';
                     document.getElementById('savingIcon').classList.add('hidden');
                     document.getElementById('savedSuccess').classList.add('hidden');
                     document.getElementById('savedFail').classList.remove('hidden');

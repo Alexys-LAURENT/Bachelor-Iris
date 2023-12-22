@@ -214,6 +214,9 @@ function toggleOnlyFavParams(){
     if (urlParams.has('onlyFav')) {
         urlParams.delete('onlyFav');
     } else {
+        if (urlParams.has('sharedWithMe')) {
+            urlParams.delete('sharedWithMe');
+        }
         urlParams.append('onlyFav', true);
     }
     window.location.search = urlParams;
@@ -222,6 +225,9 @@ function toggleOnlyFavParams(){
 function toggleTagParams(idTag){
     // Toggle tag params in url
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('sharedWithMe')) {
+        urlParams.delete('sharedWithMe');
+    }
     if (urlParams.has('tag') && urlParams.get('tag') != idTag) {
         urlParams.delete('tag');
         urlParams.append('tag', idTag);
@@ -239,6 +245,12 @@ function toggleSharedWithMeParams(){
     if (urlParams.has('sharedWithMe')) {
         urlParams.delete('sharedWithMe');
     } else {
+        if (urlParams.has('onlyFav')) {
+            urlParams.delete('onlyFav');
+        }
+        if (urlParams.has('tag')) {
+            urlParams.delete('tag');
+        }
         urlParams.append('sharedWithMe', true);
     }
     window.location.search = urlParams;

@@ -45,6 +45,8 @@
         <input type="hidden" id="permission" value="Modification">
 <% } %>
 
+<input type="hidden" id="isSaving" value="false">
+
 <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
                 <svg onclick="goBack()" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-short hover:cursor-pointer dark:fill-white" viewBox="0 0 16 16">
@@ -154,6 +156,12 @@
 <script type="module" defer src="js/editor.js?v=1"></script>
 <script>
 function goBack() {
+        if (document.getElementById("isSaving").value === "true") {
+                setTimeout(function() {
+                        goBack();
+                }, 250);
+                return;
+        }
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     // redirect to home page
