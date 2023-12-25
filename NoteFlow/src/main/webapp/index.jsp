@@ -19,14 +19,14 @@
 <%
     if(request.getParameter("idNoteToggleFavoriteIndex") != null){
         int idNoteToggleFavorite = Integer.parseInt(request.getParameter("idNoteToggleFavoriteIndex"));
-        Controller.toggleFavorite(idNoteToggleFavorite);
+        Controller.toggleFavorite(idNoteToggleFavorite, user.getIdUser());
         // refresh
         response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
     }
 
     if(request.getParameter("idNoteDelete") != null){
         int idNoteDelete = Integer.parseInt(request.getParameter("idNoteDelete"));
-        Controller.delete(idNoteDelete);
+        Controller.delete(idNoteDelete, user.getIdUser());
         // refresh
         response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : ""));
     }
@@ -44,7 +44,7 @@
 <%
         if(request.getParameter("idNoteToggleFavorite") != null){
                 int idNoteToggleFavorite = Integer.parseInt(request.getParameter("idNoteToggleFavorite"));
-                Controller.toggleFavorite(idNoteToggleFavorite);
+                Controller.toggleFavorite(idNoteToggleFavorite, user.getIdUser());
                 // refresh
                 response.sendRedirect("index.jsp" + (request.getParameter("token") != null ? "?token=" + request.getParameter("token") : "") + (request.getParameter("note") != null ? "&note=" + request.getParameter("note") : ""));
         }

@@ -32,12 +32,12 @@ public class Controller {
         return Model.returnSharedNotes(idUser);
     }
 
-    public static boolean toggleFavorite(int idNote) {
-        return Model.toggleFavorite(idNote);
+    public static boolean toggleFavorite(int idNote, int idUser) {
+        return Model.toggleFavorite(idNote, idUser);
     }
 
-    public static boolean delete(int idNote) {
-        return Model.delete(idNote);
+    public static boolean delete(int idNote, int idUser) {
+        return Model.delete(idNote, idUser);
     }
 
     public static boolean updateNote(int idUser, int idNote, String outputData) {

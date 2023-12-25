@@ -5,6 +5,7 @@
 <%@ page import="java.time.ZoneId" %>
 <%
 ArrayList<ExtendedNote> notes;
+
 if(request.getParameter("tag") != null){
 	String tag = request.getParameter("tag");
 	// pass the user id with user.getIdUser() wich is a number as a string
@@ -19,6 +20,9 @@ if(request.getParameter("onlyFav") != null && "true".equals(request.getParameter
 if(request.getParameter("sharedWithMe") != null && "true".equals(request.getParameter("sharedWithMe"))){
 	notes = Controller.returnSharedNotes(user.getIdUser());
 }
+
+// sort notes by timestamp
+notes.sort((ExtendedNote n1, ExtendedNote n2) -> n2.getTimestamp().compareTo(n1.getTimestamp()));
 %>
 
 <div class="w-full md:h-full md:min-h-0 flex justify-center overflow-y-auto overflow-x-hidden transition-all duration-500 bg-white dark:bg-dark dark:text-white">
@@ -40,12 +44,19 @@ if(request.getParameter("sharedWithMe") != null && "true".equals(request.getPara
 							<span class="mt-[5px] w-4 h-4 min-w-4 min-h-4 rounded-full flex ms-2 bg-[<%= note.getHex() %>] <%= note.getTitle().length() >= 38 ? "hidden" : "hidden md:flex"  %>"></span>
 						</div>
 						<% if(isShared){ %>
-							<div title="Note partagée avec d'autres utilisateurs">
+							<div title="Note partagée avec d'autres utilisateurs" class="cursor-default">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+									<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+								</svg>
+							</div>
+						<% }  else if (request.getParameter("sharedWithMe") != null) { %>
+							<div title="Note partagée par <%= note.getPrenom() + " " + note.getNom() %>" class="cursor-default">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
 									<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
 								</svg>
 							</div>
 						<% } %>
+								
 					</div>
 					<div class="flex flex-col max-w-full h-[210px] overflow-hidden">
 						<p class="min-h-[20px] md:min-h-[15px] text-ellipsis text-2xs md:text-xs line-clamp-[7] md:line-clamp-5">

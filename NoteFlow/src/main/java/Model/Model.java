@@ -219,32 +219,52 @@ public class Model {
         }
     }
 
-    public static boolean toggleFavorite(int idNote) {
-        String req = "update notes set isFavorite = !isFavorite where idNote = " + idNote + ";";
+    public static boolean toggleFavorite(int idNote, int idUser) {
+        String checkPermissionQuery = "SELECT * FROM notes WHERE idNote = ? AND idUser = ?";
+        String req = "update notes set isFavorite = !isFavorite where idNote = ?";
         try {
             maConnexion.seConnecter();
-            Statement unStat = maConnexion.getMaConnexion().createStatement();
-            unStat.execute(req);
+
+            // Vérifier la permission
+            PreparedStatement checkPermissionStat = maConnexion.getMaConnexion().prepareStatement(checkPermissionQuery);
+            checkPermissionStat.setInt(1, idNote);
+            checkPermissionStat.setInt(2, idUser);
+            ResultSet permissionResult = checkPermissionStat.executeQuery();
+
+            if (!permissionResult.next()) {
+                checkPermissionStat.close();
+                maConnexion.seDeconnecter();
+                return false; // L'utilisateur n'a pas la permission de mettre à jour la note
+            }
+
+            checkPermissionStat.close();
+
+            // Mettre à jour la note
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setInt(1, idNote);
+            unStat.executeUpdate();
             unStat.close();
             maConnexion.seDeconnecter();
             return true;
         } catch (SQLException exp) {
-            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            System.out.println("Erreur d'execution : " + exp);
             return false;
         }
     }
 
-    public static boolean delete(int idNote) {
-        String req = "delete from notes where idNote = " + idNote + ";";
+    public static boolean delete(int idNote, int idUser) {
+        String req = "delete from notes where idNote = ? and idUser = ?";
         try {
             maConnexion.seConnecter();
-            Statement unStat = maConnexion.getMaConnexion().createStatement();
-            unStat.execute(req);
+            PreparedStatement unStat = maConnexion.getMaConnexion().prepareStatement(req);
+            unStat.setInt(1, idNote);
+            unStat.setInt(2, idUser);
+            unStat.executeUpdate();
             unStat.close();
             maConnexion.seDeconnecter();
             return true;
         } catch (SQLException exp) {
-            System.out.println("Erreur d'execution : " + req + " : " + exp);
+            System.out.println("Erreur d'execution : " + exp);
             return false;
         }
     }
@@ -562,9 +582,10 @@ public class Model {
     }
 
     public static ArrayList<ExtendedNote> returnSharedNotes(int idUser) {
-        String req = "SELECT n.*, COALESCE(c.libelle, '') AS libelle, COALESCE(c.hex, '') AS hex\r\n"
-                + "FROM notes n\r\n"
-                + "LEFT JOIN categories c ON n.idCategorie = c.idCategorie\r\n"
+        String req = "SELECT n.*, COALESCE(c.libelle, '') AS libelle, COALESCE(c.hex, '') AS hex, u.nom, u.prenom "
+                + "FROM notes n "
+                + "LEFT JOIN categories c ON n.idCategorie = c.idCategorie "
+                + "INNER JOIN users u ON n.idUser = u.idUser "
                 + "WHERE n.idNote IN (SELECT idNote FROM sharednotes WHERE idShared = ?) LIMIT 100";
         ArrayList<ExtendedNote> lesNotes = new ArrayList<ExtendedNote>();
         try {
@@ -576,7 +597,8 @@ public class Model {
                 ExtendedNote uneNote = new ExtendedNote(desRes.getInt("idNote"),
                         desRes.getString("titre"),
                         desRes.getString("content"), desRes.getInt("idCategorie"), desRes.getInt("isFavorite"),
-                        desRes.getString("libelle"), desRes.getString("hex"), desRes.getTimestamp("timestamp"));
+                        desRes.getString("libelle"), desRes.getString("hex"), desRes.getTimestamp("timestamp"),
+                        desRes.getString("nom"), desRes.getString("prenom")); // Add user's name and surname
                 lesNotes.add(uneNote);
             }
             unStat.close();

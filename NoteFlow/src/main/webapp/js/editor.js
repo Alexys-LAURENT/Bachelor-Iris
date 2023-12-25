@@ -55,6 +55,15 @@ const loadData = () => {
                         document.getElementById('savedFail').classList.add('hidden');
                     });
 
+                    document.addEventListener('keydown', function (e) {
+                        if (e.ctrlKey && e.key === 'z') {
+                            document.getElementById('isSaving').value = 'true';
+                            document.getElementById('savingIcon').classList.remove('hidden');
+                            document.getElementById('savedSuccess').classList.add('hidden');
+                            document.getElementById('savedFail').classList.add('hidden');
+                        }
+                    });
+
                     const targetNode = document.getElementById('editorjs');
 
                     const observerOptions = {
