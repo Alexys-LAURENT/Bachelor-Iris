@@ -207,10 +207,12 @@ Create table
 Create table
     fichiers(
         idFichier int not null auto_increment,
+        idUser int not null auto_increment,
         idDossier int not null,
         nom VARCHAR(255) not null,
         constraint PK_FICHIERS PRIMARY KEY(idFichier),
-        constraint FK_FICHIERS_DOSSIER FOREIGN KEY(idDossier) REFERENCES dossiers(idDossier)
+        constraint FK_FICHIERS_DOSSIER FOREIGN KEY(idDossier) REFERENCES dossiers(idDossier),
+        constraint FK_FICHIERS_USER FOREIGN KEY(idUser) REFERENCES users(idUser)
     ) engine = innodb,
     charset = utf8;
 
