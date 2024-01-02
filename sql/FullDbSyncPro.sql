@@ -207,7 +207,7 @@ Create table
 Create table
     fichiers(
         idFichier int not null auto_increment,
-        idUser int not null auto_increment,
+        idUser int not null,
         idDossier int not null,
         nom VARCHAR(255) not null,
         constraint PK_FICHIERS PRIMARY KEY(idFichier),
