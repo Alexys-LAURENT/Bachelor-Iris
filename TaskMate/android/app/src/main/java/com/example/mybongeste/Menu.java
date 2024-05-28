@@ -39,7 +39,7 @@ public class Menu extends AppCompatActivity {
     private static ArrayList<Todo> mesTodos = new ArrayList<Todo>();
     private TextView welcomeText, emptyText ;
 
-    private Button createToDoBtn;
+    private Button createToDoBtn, logoutBtn;
 
     public static ArrayList<Todo> getMesTodos() {
         return mesTodos;
@@ -76,6 +76,16 @@ public class Menu extends AppCompatActivity {
                 Intent intent = new Intent(Menu.this, TodoForm.class);
                 intent.putExtra("action", "create");
                 intent.putExtra("loggedUser", unePersonne.stringify());
+                startActivity(intent);
+            }
+        });
+
+        this.logoutBtn = findViewById(R.id.logoutButton);
+        this.logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Menu.this, MainActivity.class);
+                Toast.makeText(Menu.this, "Déconnexion réussie", Toast.LENGTH_LONG).show();
                 startActivity(intent);
             }
         });
