@@ -1,0 +1,22 @@
+/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/* scrollbars for * */
+
+[b-phnrv4vpyi]::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+[b-phnrv4vpyi]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+[b-phnrv4vpyi]::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+[b-phnrv4vpyi]::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

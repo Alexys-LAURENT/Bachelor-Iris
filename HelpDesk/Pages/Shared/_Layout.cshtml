@@ -1,0 +1,211 @@
+﻿@using System.Diagnostics
+@{
+    UserNamespace.User User = Controleur.GetUser(Context.Request.Query["token"]);
+    // getUser with token from url
+    var Tickets = new List<TicketNamespace.Ticket>();
+
+    if (User == null)
+    {
+        Context.Response.Redirect("/Login");
+        IgnoreBody();
+        return;
+    }
+
+    var isTechnicien = Controleur.IsTechnicien(User.IdUser);
+
+    if (isTechnicien)
+    {
+        Tickets = Controleur.GetTicketsTechnicien(User.IdUser);
+    }
+    else
+    {
+        Tickets = Controleur.GetTicketsUser(User.IdUser);
+    }
+
+    if (Context.Request.Method == "POST")
+    {
+        Console.WriteLine(Context.Request.Form["openNewTicket"]);
+        if (Context.Request.Form["openNewTicket"] == "openNewTicket")
+        {
+            Console.WriteLine(Context.Request.Form["titre"]);
+            Console.WriteLine(Context.Request.Form["description"]);
+            Console.WriteLine(Context.Request.Form["application"]);
+            int idNewTicket = Controleur.OpenNewTicket(User.IdUser,
+            Context.Request.Form["titre"],
+            Context.Request.Form["description"],
+            Context.Request.Form["application"]);
+            Context.Response.Redirect("index?token=" + Context.Request.Query["token"] + "&idTicket=" + idNewTicket);
+        }
+
+    }
+
+    if (Context.Request.Method == "POST")
+    {
+        Console.WriteLine(Context.Request.Form["darkMode"]);
+        if (Context.Request.Form["darkMode"] == "toggleTheme")
+        {
+            string? idTicket = Context.Request.Query["idTicket"];
+            Controleur.ToggleDarkMode(User.IdUser);
+            Context.Response.Redirect("?token=" + Context.Request.Query["token"] + (idTicket != null ? "&idTicket=" + idTicket
+            : ""));
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en" class="@User.Theme">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HelpDesk</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Carnet.styles.css" asp-append-version="true" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="https://images.chatsphere.alexyslaurent.com/helpdesk16x16.png" type="image/png" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        secondary: '#243748',
+                        tertiary: '#4B749F',
+                        bgLight: '#F5F5F5',
+                        bgDark: '#121212',
+                        textDark: '#333333',
+                        textLight: '#FFFFFF',
+                    }
+                }
+            },
+            darkMode: 'class',
+        }
+    </script>
+</head>
+
+<body>
+    <main class="flex flex-col md:flex-row w-full h-screen md:overflow-hidden">
+        <nav
+            class="flex flex-col w-full md:w-2/12 md:min-w-[250px] md:max-w-[250px] md:h-screen pt-2 gap-2 transition-colors duration-500 md:border-e-2 dark:border-gray-800 z-10 bg-bgLight dark:bg-bgDark text-textDark dark:text-textLight">
+            <div class="w-full flex flex-col px-4 gap-4 h-full border-b-2 md:border-b-0">
+
+                @if (!isTechnicien)
+                {
+                    <button class="w-full bg-secondary rounded-md py-2 text-white font-semibold"
+                        onclick="document.getElementById('newTicketDialog').showModal()">
+                        Ouvrir un ticket
+                    </button>
+                    <dialog
+                        class="shadow relative p-4 pt-8 w-[500px] min-h-[300px] bg-bgLight dark:bg-secondary text-textDark dark:text-textLight rounded-md"
+                        id="newTicketDialog">
+                        <form method="post">
+                            <div class="w-full h-full flex flex-col gap-4">
+                                <input type="text" name="titre" placeholder="Titre"
+                                    class="bg-white dark:bg-bgDark w-full rounded-md py-2 px-2" required />
+                                <textarea name="description" placeholder="Description"
+                                    class="bg-white dark:bg-bgDark w-full rounded-md py-2 px-2 min-h-[85px] max-h-[250px] overflow-y-auto"
+                                    required></textarea>
+                                <select name="application"
+                                    class="bg-white dark:bg-bgDark w-full rounded-md py-2 px-2 cursor-pointer" required>
+                                    <option value="Sprintify">Sprintify</option>
+                                    <option value="CloudNest">CloudNest</option>
+                                    <option value="HelpDesk">HelpDesk</option>
+                                    <option value="NoteFlow">NoteFlow</option>
+                                    <option value="ChatSphere">ChatSphere</option>
+                                    <option value="TaskMate">TaskMate</option>
+                                    <option value="Plateforme Centralisée">Plateforme Centralisée</option>
+                                </select>
+                                <button type="submit" name="openNewTicket" value="openNewTicket"
+                                    class="w-full bg-white dark:bg-bgDark rounded-md py-2 text-black dark:text-white font-semibold">
+                                    Ouvrir le ticket
+                                </button>
+                            </div>
+                        </form>
+                        <button class="absolute top-2 right-2" onclick="document.getElementById('newTicketDialog').close()">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </button>
+                    </dialog>
+                }
+                else
+                {
+                    <a href="@("/Tickets?token=" + Context.Request.Query["token"])">
+                        <button class="w-full bg-secondary rounded-md py-2 text-white font-semibold">
+                            Voir tous les tickets
+                        </button>
+                    </a>
+                }
+
+                @if (Tickets.Count != 0)
+                {
+                    <div
+                        class="pb-1 flex md:flex-col flex-row gap-4 md:overflow-y-auto md:overflow-x-hidden overflow-x-auto overflow-y-hidden">
+                        @foreach (var ticket in Tickets)
+                        {
+                            int idTicket;
+                            int.TryParse(Context.Request.Query["idTicket"], out idTicket);
+                            <a class="@(ticket.IdTicket == idTicket ? "bg-tertiary text-white" : (ticket.Etat == "Terminé" ? "bg-green-500 text-white" : "bg-white dark:bg-secondary")) min-w-[150px] min-h-[40px] flex justify-center items-center w-full rounded-md shadow py-2 px-2)"
+                                href=" @("/?token=" + Context.Request.Query["token"] + "&idTicket=" + ticket.IdTicket)">
+                                <p class="max-w-[300px] md:max-w-[210px] line-clamp-1 text-ellipsis text-center">
+                                    @ticket.Titre
+                                </p>
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+
+            <footer
+                class="hidden md:flex w-full h-[68px] border-t-2 items-center flex gap-2 px-3 justify-between dark:border-gray-800 transition-colors duration-500">
+                <div class="flex gap-2 items-center">
+                    <div class="bg-cover bg-center aspect-square rounded-md bg-gray-500 w-[45px] h-[45px]"
+                        style="@("background-image: url(https://images.chatsphere.alexyslaurent.com/" + User.Pp +")")"
+                        alt="Photo de profil">
+                    </div>
+                    <p class="font-semibold w-full text-elipsis line-clamp-1 text-black dark:text-white">
+                        @User.Prenom @User.Nom
+                    </p>
+                </div>
+                <div>
+                    <form method="POST" id="darkModeForm">
+                        <div class="hover:cursor-pointer" onclick="document.getElementById('darkModeForm').submit();">
+                            <svg id="moonSvg" class="dark:hidden flex" xmlns="http://www.w3.org/2000/svg" width="20"
+                                height="20" fill="black" viewBox="0 0 16 16">
+                                <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0
+                                1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0
+                                12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
+                                </path>
+                            </svg>
+
+                            <svg id="sunSvg" class="hidden dark:flex" xmlns="http://www.w3.org/2000/svg" width="25"
+                                height="25" fill="white" viewBox="0 0 16 16">
+                                <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5
+                                0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1
+                                .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414
+                                1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05
+                                13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707
+                                0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343
+                                3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
+                                </path>
+                            </svg>
+                        </div>
+                        <input type="hidden" name="darkMode" id="darkMode" value="toggleTheme" />
+                    </form>
+                </div>
+            </footer>
+        </nav>
+        <div
+            class="w-full h-full md:min-h-0 flex justify-center overflow-y-auto overflow-x-hidden bgLight dark:bg-bgDark text-textDark dark:text-textLight transition-colors duration-500">
+            @RenderBody()
+        </div>
+    </main>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+<resources>
+    <color name="primary">#FFCF67</color>
+    <color name="colorPrimary">#FFCF67</color>
+    <color name="colorSecondary">#D3321D</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorSecondaryDark">#D32F2F</color>
+    <color name="colorAccent">#000000</color>
+    <color name="colorAccentDark">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="buttonBackground">@color/colorPrimary</color> <!-- Couleur de fond pour les boutons normaux -->
+    <color name="buttonBackgroundPressed">#FDBB2D</color> <!-- Couleur de fond pour les boutons normaux -->
+    <color name="buttonCancelBackground">#FF5722</color> <!-- Couleur de fond pour le bouton Annuler -->
+    <color name="buttonSaveBackground">#4CAF50</color> <!-- Couleur de fond pour le bouton Valider -->
+</resources>

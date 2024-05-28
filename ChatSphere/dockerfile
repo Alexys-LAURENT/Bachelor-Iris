@@ -1,0 +1,18 @@
+# Utiliser une image de base avec PHP et Apache
+FROM php:8.1-apache
+
+# Installer les extensions PHP nécessaires
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Copier le contenu de votre projet dans le répertoire de l'image
+COPY . /var/www/html/
+
+# Donner les permissions appropriées au répertoire
+RUN chown -R www-data:www-data /var/www/html
+
+# Modifier la configuration Apache pour écouter sur le port 8081
+RUN sed -i 's/Listen 80/Listen 8081/' /etc/apache2/ports.conf
+RUN sed -i 's/:80/:8081/' /etc/apache2/sites-available/000-default.conf
+
+# Lancer Apache en mode "foreground"
+CMD ["apache2-foreground"]

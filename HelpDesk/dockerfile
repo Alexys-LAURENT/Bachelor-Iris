@@ -1,0 +1,16 @@
+# FROM microsoft/dotnet:8.0-aspnetcore-runtime AS base-net8
+FROM mcr.microsoft.com/dotnet/sdk:8.0-noble AS base-net8
+WORKDIR /app
+
+COPY . .
+RUN dotnet build
+RUN dotnet publish -c Release
+
+# FROM microsoft/dotnet:8.0-aspnetcore-runtime AS final
+FROM mcr.microsoft.com/dotnet/sdk:8.0-noble AS final
+
+WORKDIR /app
+
+COPY --from=base-net8 /app/bin/Release/net8.0/publish .
+
+ENTRYPOINT ["dotnet", "Carnet.dll"]  # Remplacez par le nom de votre fichier DLL principal

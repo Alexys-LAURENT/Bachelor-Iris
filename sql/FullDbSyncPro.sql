@@ -196,7 +196,7 @@ Create table
 
 Create table
     dossiers(
-        idDossier int not null auto_increment,
+        idDossier VARCHAR(255) not null,
         idUser int not null,
         nom VARCHAR(255) not null,
         constraint PK_DOSSIERS PRIMARY KEY(idDossier),
@@ -206,9 +206,9 @@ Create table
 
 Create table
     fichiers(
-        idFichier int not null auto_increment,
+        idFichier VARCHAR(255) not null,
         idUser int not null,
-        idDossier int not null,
+        idDossier VARCHAR(255),
         nom VARCHAR(255) not null,
         constraint PK_FICHIERS PRIMARY KEY(idFichier),
         constraint FK_FICHIERS_DOSSIER FOREIGN KEY(idDossier) REFERENCES dossiers(idDossier),
@@ -218,8 +218,8 @@ Create table
 
 Create table
     partages_dossiers(
-        idPartageDossier int not null auto_increment,
-        idDossier int not null,
+        idPartageDossier VARCHAR(255) not null,
+        idDossier VARCHAR(255) not null,
         insertions BOOLEAN NOT NULL,
         modifications BOOLEAN NOT NULL,
         dateDebut TIMESTAMP NOT NULL,
@@ -231,8 +231,8 @@ Create table
 
 Create table
     partages_fichiers(
-        idPartageFichier int not null auto_increment,
-        idFichier int not null,
+        idPartageFichier VARCHAR(255) not null,
+        idFichier VARCHAR(255) not null,
         dateDebut TIMESTAMP NOT NULL,
         dateFin TIMESTAMP NOT NULL,
         constraint PK_PARTAGES_FICHIERS PRIMARY KEY(idPartageFichier),
@@ -242,7 +242,7 @@ Create table
 
 Create table
     partages_fichiers_users(
-        idPartageFichier int not null,
+        idPartageFichier VARCHAR(255) not null,
         idUser int not null,
         constraint PK_PARTAGES_FICHIERS_USERS PRIMARY KEY(idPartageFichier, idUser),
         constraint FK_PARTAGES_FICHIERS_USERS_PARTAGE FOREIGN KEY(idPartageFichier) REFERENCES partages_fichiers(idPartageFichier),
@@ -252,7 +252,7 @@ Create table
 
 Create table
     partages_dossiers_users(
-        idPartageDossier int not null,
+        idPartageDossier VARCHAR(255) not null,
         idUser int not null,
         constraint PK_PARTAGES_DOSSIERS_USERS PRIMARY KEY(idPartageDossier, idUser),
         constraint FK_PARTAGES_DOSSIERS_USERS_PARTAGE FOREIGN KEY(idPartageDossier) REFERENCES partages_dossiers(idPartageDossier),
