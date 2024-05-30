@@ -3,12 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-// Configure Antiforgery options
-builder.Services.AddAntiforgery(options =>
+builder.Services.AddMvc().AddRazorPagesOptions(options =>
 {
-    options.Cookie.SameSite = SameSiteMode.None; // Set the SameSite policy to None
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Ensure the cookie is sent only over HTTPS
-    options.Cookie.HttpOnly = true; // Ensure the cookie is accessible only through HTTP requests
+    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
 });
 
 var app = builder.Build();
