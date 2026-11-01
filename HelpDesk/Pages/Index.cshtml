@@ -1,0 +1,220 @@
+﻿@page
+@using System.Diagnostics
+@model IndexModel
+@{
+    UserNamespace.User User = Controleur.GetUser(Request.Query["token"]);
+    if (User == null)
+    {
+        Response.Redirect("/Login");
+        return;
+    }
+
+    var isTechnicien = Controleur.IsTechnicien(User.IdUser);
+
+    int idTicket = 0;
+    var lesMessages = new List<MessageNamespace.Message>();
+    int.TryParse(Request.Query["idTicket"], out idTicket);
+    TicketNamespace.Ticket leTicket = Controleur.GetTicket(idTicket);
+
+    if (leTicket != null)
+    {
+        lesMessages = Controleur.GetMessagesTicket(leTicket.IdTicket);
+    }
+
+    if (Request.Method == "POST")
+    {
+        if (Request.Form["sendMessage"] == "Envoyer")
+        {
+            Console.WriteLine(Request.Form["message"]);
+            Controleur.SendMessage(User.IdUser, idTicket, Request.Form["message"]);
+            Response.Redirect("/Index?token=" + Request.Query["token"] + "&idTicket=" + idTicket);
+        }
+    }
+
+    if (Request.Method == "POST")
+    {
+        Console.WriteLine(Request.Form["resolveTicket"]);
+        if (Request.Form["resolveTicket"] == "Résoudre")
+        {
+            Console.WriteLine(Request.Form["MessageResolution"]);
+            Controleur.ResolveTicket(idTicket, Request.Form["MessageResolution"]);
+            Response.Redirect("/Index?token=" + Request.Query["token"] + "&idTicket=" + idTicket);
+        }
+    }
+
+    var previousMessageIdUser = 0;
+}
+
+
+<div class="w-full h-full flex flex-col">
+
+    <div class="relative flex-1 flex flex-col overflow-y-auto">
+        <div class="w-full h-full flex flex-col gap-4 items-center">
+            @if (leTicket != null)
+            {
+                <div
+                    class="w-full h-12 border-b dark:border-gray-800 divide-x flex gap-2 p-1 items-center dark:divide-gray-800 transition-all duration-500">
+                    <div class="w-fit h-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            class="w-6 h-6 cursor-pointer text-textDark dark:text-textLight transition-all duration-500"
+                            stroke="currentColor" onclick="document.getElementById('dialogDescription').showModal()">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                        </svg>
+                        <dialog
+                            class="relative p-4 pt-8 w-[500px] h-[300px] bg-bgLight dark:bg-secondary text-textDark dark:text-textLight rounded-md"
+                            id="dialogDescription">
+                            <div class="w-full h-full flex">
+                                <p>
+                                    @leTicket.Description
+                                </p>
+                            </div>
+                            <button class="absolute top-2 right-2"
+                                onclick="document.getElementById('dialogDescription').close()">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </button>
+                        </dialog>
+                    </div>
+                    <div
+                        class="w-full h-full p-2 flex items-center justify-center text-textDark dark:text-textLight transition-all duration-500">
+                        @leTicket.Titre
+                    </div>
+                    @if (isTechnicien && leTicket.IdTechnicien != 0)
+                    {
+                        <div class="w-fit h-full p-2">
+                            <button class="w-full h-full rounded-md"
+                                onclick="document.getElementById('dialogResolution').showModal()">
+                                @{
+                                    var btnText = "";
+                                }
+                                @if (leTicket.Etat == "Terminé")
+                                {
+                                    btnText = "Modifier";
+                                }
+                                else
+                                {
+                                    btnText = "Résoudre";
+                                }
+                                @btnText
+                            </button>
+                            <dialog
+                                class="relative p-4 pt-8 w-[500px] h-[300px] bg-bgLight dark:bg-secondary text-textDark dark:text-textLight rounded-md"
+                                id="dialogResolution">
+                                <div class="w-full h-full flex">
+                                    <form method="post" class="w-full h-full flex flex-col gap-2">
+                                        <textarea class="bg-white dark:bg-bgDark border rounded-md h-[200px] w-full p-1"
+                                            name="MessageResolution" id="MessageResolution" placeholder="Message de résolution">
+                                            @{
+                                                if (leTicket.Etat == "Terminé")
+                                                {
+                                                    @leTicket.MessageResolution
+                                                }
+                                            }</textarea>
+                                        <button class="bg-white dark:bg-bgDark py-1 px-3 max-h-[50px] rounded-md" type="submit"
+                                            name="resolveTicket" value="Résoudre">Résoudre
+                                        </button>
+                                    </form>
+                                </div>
+                                <button class="absolute top-2 right-2"
+                                    onclick="document.getElementById('dialogResolution').close()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </button>
+                            </dialog>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="px-2 w-full max-w-[1000px] h-full">
+                    @foreach (var message in lesMessages)
+                    {
+                        var nextMessageIdUser = lesMessages.IndexOf(message) + 1 < lesMessages.Count
+                        ? lesMessages[lesMessages.IndexOf(message) + 1].IdUser
+                        : 0;
+                        if (message.IdUser == User.IdUser)
+                        {
+                            <div class="@(previousMessageIdUser != message.IdUser ? "pt-3" : "") w-full flex justify-end">
+                                <p
+                                    class="@("text-right text-white/80 flex flex-col gap-1 max-w-[75%] rounded-md p-2 bg-[#4B749F] " + (previousMessageIdUser == message.IdUser ? "rounded-tr-none " : "") + (nextMessageIdUser == message.IdUser ? "rounded-br-none" : ""))">
+                                    @message.Content
+                                    <span class="text-xs text-white/40">
+                                        @DateTime.Parse(message.Timestamp.ToString()).ToString("dd MMMM yyyy, HH:mm")
+                                    </span>
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="@(previousMessageIdUser != message.IdUser ? "pt-3" : "") w-full flex justify-start">
+                                <p
+                                    class="@("text-left text-black/80 flex flex-col gap-1 max-w-[75%] rounded-md p-2 bg-[#f5f5f5] " + (previousMessageIdUser == message.IdUser ? "rounded-tl-none " : "") + (nextMessageIdUser == message.IdUser ? "rounded-bl-none" : ""))">
+                                    @message.Content
+                                    <span class="text-xs text-black/40">
+                                        @DateTime.Parse(message.Timestamp.ToString()).ToString("dd MMMM yyyy, HH:mm")
+                                    </span>
+                                </p>
+                            </div>
+                        }
+                        previousMessageIdUser = message.IdUser;
+                    }
+
+                    @if (leTicket.Etat == "Terminé")
+                    {
+                        <div class="w-full flex flex-col items-center">
+                            <div class="flex py-4 w-full">
+                                <div class="flex w-full border-1 border-b"></div>
+                            </div>
+                            <p
+                                class="text-center text-white flex flex-col gap-1 max-w-[75%] rounded-md p-2 border bg-[#243748]">
+                                @leTicket.MessageResolution
+                            </p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="flex w-full h-full items-center justify-center">
+                    <p>
+                        Veuillez selectionner un ticket
+                    </p>
+                </div>
+            }
+        </div>
+
+        @if (isTechnicien && leTicket != null && leTicket.IdTechnicien == 0)
+        {
+            @* warning if technicien anwser ticket will be assigned *@
+            <div class="absolute w-[300px] bottom-2 right-2 bg-red-500 text-white p-1 rounded-md">
+                <p>
+                    Ce ticket n'est pas encore assigné, en répondant vous serez assigné à ce ticket
+                </p>
+            </div>
+        }
+
+    </div>
+    @if (leTicket != null && leTicket.Etat != "Terminé")
+    {
+        <div
+            class="p-1 w-full min-h-[62px] divide-x flex border-t-2 dark:border-gray-800 items-center justify-center transition-all duration-500">
+            <form method="post" class="w-full divide-x flex items-center justify-center">
+                <div class="px-2 w-[90%] mx-auto">
+                    <textarea
+                        class="border rounded-md bg-white dark:bg-secondary h-[46px] min-h-[46px] max-h-[150px] w-full p-1"
+                        name="message" id="message" placeholder="Votre message"></textarea>
+                </div>
+                <button class="py-1 px-3 max-h-[50px]" type="submit" name="sendMessage" value="Envoyer">
+                    Envoyer
+                </button>
+            </form>
+        </div>
+    }
+</div>

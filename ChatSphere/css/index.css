@@ -1,0 +1,45 @@
+:is(.dark *) {
+    border-color: #2e2e2e
+}
+
+body {
+    margin: 0;
+}
+
+.text-3xs {
+    font-size: 0.6rem;
+}
+
+.text-2xs {
+    font-size: 0.7rem;
+}
+
+
+.defaultAvatar {
+    background-image: url("../images/User-Profile.png");
+    background-position-y: center;
+    background-size: contain;
+}
+
+/* scrollbar */
+*::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+    background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+@media (min-width: 1024px) {
+    .text-3xs {
+        font-size: 0.7rem;
+    }
+}

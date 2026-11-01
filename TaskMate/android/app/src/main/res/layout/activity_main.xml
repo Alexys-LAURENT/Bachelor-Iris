@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- Image -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/taskmate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        />
+
+    <!-- Email Input -->
+    <EditText
+        android:id="@+id/idEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Email"
+        android:padding="10dp" />
+
+    <!-- Mot de passe Input -->
+    <EditText
+        android:id="@+id/idMdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idEmail"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Mot de passe"
+        android:inputType="textPassword"
+        android:padding="10dp" />
+
+    <!-- Bouton Connexion -->
+    <Button
+        android:id="@+id/idConnexion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idMdp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Se connecter"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</RelativeLayout>

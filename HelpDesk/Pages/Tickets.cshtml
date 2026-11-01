@@ -1,0 +1,108 @@
+﻿@page
+@using System.Diagnostics
+@model IndexModel
+@{
+    UserNamespace.User User = Controleur.GetUser(Request.Query["token"]);
+    var isTechnicien = Controleur.IsTechnicien(User.IdUser);
+    if (User == null || !isTechnicien)
+    {
+        Response.Redirect("/Login");
+        return;
+    }
+
+    string application = Request.Query.TryGetValue("application", out var applicationQuery) ? applicationQuery.ToString() :
+    "All";
+    string titre = Request.Query.TryGetValue("titre", out var titreQuery) ? titreQuery.ToString() : "";
+    string description = Request.Query.TryGetValue("description", out var descriptionQuery) ? descriptionQuery.ToString() :
+    "";
+
+    List<TicketNamespace.Ticket> Tickets = Controleur.GetAllTickets(application, titre, description);
+
+    @* applications object with id and name without fetching Controleur*@
+    List<object> Applications = new List<object>
+{
+new { IdApplication = 1, Nom = "ChatSphere" },
+new { IdApplication = 2, Nom = "Sprintify" },
+new { IdApplication = 3, Nom = "CloudNest" },
+new { IdApplication = 4, Nom = "HelpDesk" },
+new { IdApplication = 5, Nom = "NoteFlow" },
+new { IdApplication = 6, Nom = "TaskMate" },
+new { IdApplication = 7, Nom = "Plateforme Centralisée" }
+};
+}
+
+
+<div class="w-full h-full flex flex-col">
+    @* filters *@
+    <div
+        class="w-full h-[50px] divide-x flex justify-around items-center border-b py-2 dark:border-gray-800 dark:divide-gray-800">
+        <div class="w-1/3 h-full flex justify-center items-center">
+            <input type="text" name="titre" placeholder="Titre"
+                class="bg-white dark:bg-secondary w-[90%] rounded-md py-2 px-2"
+                onkeydown="if (event.keyCode == 13) handleFiltersChange()" value="@titre">
+        </div>
+        <div class="w-1/3 h-full flex justify-center items-center">
+            <input type="text" name="description" placeholder="Description"
+                class="bg-white dark:bg-secondary w-[90%] rounded-md py-2 px-2"
+                onkeydown="if (event.keyCode == 13) handleFiltersChange()" value="@description">
+        </div>
+        <div class="w-1/3 h-full flex justify-center items-center">
+            <select name="application" class="bg-white dark:bg-secondary w-[90%] rounded-md py-2 px-2 cursor-pointer"
+                onchange="handleFiltersChange()">
+                <option value="All" selected="@((application == "All") ? "selected" : null)">
+                    Toutes les applications
+                </option>
+                <option value="Sprintify" selected="@((application == "Sprintify") ? "selected" : null)">
+                    Sprintify
+                </option>
+                <option value="CloudNest" selected="@((application == "CloudNest") ? "selected" : null)">
+                    CloudNest
+                </option>
+                <option value="HelpDesk" selected="@((application == "HelpDesk") ? "selected" : null)">
+                    HelpDesk
+                </option>
+                <option value="NoteFlow" selected="@((application == "NoteFlow") ? "selected" : null)">
+                    NoteFlow
+                </option>
+                <option value="ChatSphere" selected="@((application == "ChatSphere") ? "selected" : null)">
+                    ChatSphere
+                </option>
+                <option value="TaskMate" selected="@((application == "TaskMate") ? "selected" : null)">
+                    TaskMate
+                </option>
+                <option value="Plateforme Centralisée"
+                    selected="@((application == "Plateforme Centralisée") ? "selected" : null)">
+                    Plateforme Centralisée
+                </option>
+            </select>
+        </div>
+    </div>
+
+
+
+
+
+    @foreach (var ticket in Tickets)
+    {
+        <a class="w-full min-h-[50px] divide-x flex justify-center items-center cursor-pointer dark:border-gray-800 border-b hover:bg-gray-100 dark:hover:bg-secondary dark:divide-gray-800"
+            href="@("/index?token=" + Request.Query["token"] + "&idTicket=" + ticket.IdTicket)">
+            <div class="w-1/3 h-full flex justify-center items-center text-center">
+                <p>@ticket.Titre</p>
+            </div>
+            <div class="w-1/3 px-2 h-full flex justify-center items-center">
+                <p>@ticket.Description</p>
+            </div>
+            <div class="w-1/3 h-full flex justify-center items-center text-center">
+                @* get application name from Applications object *@
+                <p>@((Applications.Find(app => ((dynamic)app).IdApplication == ticket.IdApplication) as dynamic)?.Nom)</p>
+            </div>
+        </a>
+    }
+
+</div>
+
+<script>
+    function handleFiltersChange() {
+        window.location.href = "/Tickets?token=" + "@(Request.Query["token"])" + "&application=" + document.querySelector("select[name=application]").value + "&titre=" + document.querySelector("input[name=titre]").value + "&description=" + document.querySelector("input[name=description]").value;
+    }
+</script>

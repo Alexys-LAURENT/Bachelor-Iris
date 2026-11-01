@@ -1,0 +1,26 @@
+/ChatSphere/Controller/config_bdd.php
+/ChatSphere/Controller/test.txt
+
+.env
+.env.local
+.env.all
+
+/NoteFlow/.settings
+
+# Local environment and generated files
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.exemple
+**/*.class
+
+# Local configuration and runtime data
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.exemple
+**/node_modules/
+**/.next/
+**/.gradle/
+**/*.sqlite
+**/*.sqlite3
