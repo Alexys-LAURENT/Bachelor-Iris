@@ -5,7 +5,7 @@ namespace Carnet
 {
     public class Controleur
     {
-        private static Modele unModele = new Modele("", "", "", "");
+        private static Modele unModele = new Modele(System.Environment.GetEnvironmentVariable("HELPDESK_DB_HOST") ?? throw new System.InvalidOperationException("Set HELPDESK_DB_HOST"), System.Environment.GetEnvironmentVariable("HELPDESK_DB_NAME") ?? throw new System.InvalidOperationException("Set HELPDESK_DB_NAME"), System.Environment.GetEnvironmentVariable("HELPDESK_DB_USER") ?? throw new System.InvalidOperationException("Set HELPDESK_DB_USER"), System.Environment.GetEnvironmentVariable("HELPDESK_DB_PASSWORD") ?? throw new System.InvalidOperationException("Set HELPDESK_DB_PASSWORD"));
         public static List<Ticket> GetAllTickets(string application, string titre, string description)
         {
             return unModele.GetAllTickets(application, titre, description);

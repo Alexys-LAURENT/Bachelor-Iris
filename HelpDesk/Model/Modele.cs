@@ -28,7 +28,7 @@ namespace Carnet
             }
             catch (Exception exp)
             {
-                Console.WriteLine("Erreur de connexion a : " + url + " : " + exp);
+                Console.WriteLine("Database connection configuration failed; credentials are not logged.");
             }
         }
 

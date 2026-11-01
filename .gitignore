@@ -24,3 +24,6 @@
 **/.gradle/
 **/*.sqlite
 **/*.sqlite3
+
+HelpDesk/bin/
+HelpDesk/obj/
